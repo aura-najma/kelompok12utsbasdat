@@ -61,7 +61,6 @@ class PasienController extends Controller
                 return redirect('/cekstokobat')->with('success', 'Data pasien dan pembelian berhasil disimpan.');
             }
     
-            return redirect()->back()->with('success', 'Data pasien dan pembelian berhasil disimpan.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi error: ' . $e->getMessage());
         }

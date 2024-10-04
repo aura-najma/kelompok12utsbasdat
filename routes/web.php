@@ -13,9 +13,9 @@ Route::get('/', function () {
 });
 
 // Route for login page for apoteker
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+//Route::get('/login', function () {
+  //  return view('login');
+//})->name('login');
 
 // Route for pasien pasien
 Route::get('/pasien', function () {
@@ -114,12 +114,8 @@ Route::get('/evaluasiapotek', function () {
     return view('evaluasiapotek');
 })->name('evaluasiapotek');
 
-<<<<<<< HEAD
-use App\Http\Controllers\DashboardController;
-=======
 // bagian dyah
-use App\Http\Controllers\LoginController;
->>>>>>> 9e6040112a071691bcab210871ab4a8e99e0b553
+use App\Http\Controllers\DashboardController;
 
 Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [DashboardController::class, 'login']);

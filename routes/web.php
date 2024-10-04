@@ -121,6 +121,11 @@ Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login
 Route::post('/login', [DashboardController::class, 'login']);
 Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 
+
+Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [DashboardController::class, 'login'])->name('login');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+
 use App\Http\Controllers\EvaluasiController;
 
 Route::get('/evaluasi', [EvaluasiController::class, 'create'])->name('evaluasi.create');

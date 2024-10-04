@@ -114,11 +114,11 @@ Route::get('/evaluasiapotek', function () {
     return view('evaluasiapotek');
 })->name('evaluasiapotek');
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [DashboardController::class, 'login']);
+Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 
 
 

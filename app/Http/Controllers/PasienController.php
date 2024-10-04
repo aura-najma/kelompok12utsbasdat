@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pasien;
 use App\Models\Pembelian;
+use Illuminate\Support\Str;
+
 
 class PasienController extends Controller
 {
@@ -16,6 +18,7 @@ class PasienController extends Controller
     public function store(Request $request)
     {
         try {
+
             // Validasi data input
             $request->validate([
                 'no_telepon' => 'required|string|max:15',
@@ -40,14 +43,17 @@ class PasienController extends Controller
             if ($request->hasFile('resep')) {
                 $resepPath = $request->file('resep')->store('resep', 'public');
             }
-    
+
+            // Generate `new_id`
+            $newId = 'PB-' . substr($request->no_telepon, -4) . '-' . now()->format('YmdHi');
+
             // Simpan data pembelian
             $pembelian = Pembelian::create([
+                'new_id' => $newId, // Set new_id sesuai dengan kebutuhan
                 'no_telepon' => $request->no_telepon,
                 'keluhan' => $request->keluhan,
                 'resep' => $resepPath, // Nilai bisa `null` jika tidak ada resep
             ]);
-
                     // Redirect berdasarkan apakah file `resep` ada atau tidak
             if ($resepPath) {
                 return redirect('/cekobatkeras')->with('success', 'Data pasien dan pembelian berhasil disimpan.');

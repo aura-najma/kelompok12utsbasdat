@@ -9,8 +9,12 @@ class Pembelian extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['no_telepon', 'keluhan', 'resep'];
-
+    protected $fillable = [
+        'new_id',
+        'no_telepon',
+        'keluhan',
+        'resep',
+    ];
     // Relasi ke model Pasien
     public function pasien()
     {

@@ -21,8 +21,13 @@ class DashboardController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        // Autentikasi user berdasarkan NIP dan password
-        if (Auth::attempt(['nip' => $credentials['nip'], 'password' => $credentials['password']])) {
+        // Pengecekan manual NIP dan password yang valid
+        if (($credentials['nip'] == '1' && $credentials['password'] == 'katak') ||
+            ($credentials['nip'] == '2' && $credentials['password'] == 'kadal')) {
+            
+            // Set session atau autentikasi manual
+            Auth::loginUsingId($credentials['nip']);
+
             // Redirect ke halaman dashboard jika berhasil login
             return redirect()->intended('dashboard');
         }

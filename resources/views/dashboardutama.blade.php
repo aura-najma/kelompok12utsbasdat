@@ -52,27 +52,56 @@
     </style>
 </head>
 <body>
-    <div class="d-flex">
-        <div class="sidebar">
-            <div class="profile">
-                <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
-                <h5 id="apotekerName">Selamat Datang, Apoteker</h5>
-                <p>No Registrasi: <span id="apotekerRegNo">123456789</span></p>
-            </div>
-            <h4 class="text-center">Dashboard Apoteker</h4>
-            <nav class="nav flex-column">
-                <a class="nav-link" href="#" onclick="window.location.href='cekstokobat'">Cek Stok Obat</a>
-                <a class="nav-link" href="#" onclick="window.location.href='validasidokter'">Validasi Dokter</a>
-                <a class="nav-link" href="#" onclick="window.location.href='inputpasien'">Pembelian Obat</a>
-                <a class="nav-link" href="#" onclick="window.location.href='analisispenjualan'">Analisis Penjualan</a>
-            </nav>
-            <button class="btn logout-btn w-100 mt-3" onclick="logout()">Logout</button>
+<div class="d-flex">
+    <div class="sidebar">
+        <div class="profile">
+            <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
+            <h5 id="apotekerName">Selamat Datang, Apoteker</h5>
+            <p>No Registrasi: <span id="apotekerRegNo">123456789</span></p>
         </div>
-        <div class="content flex-grow-1">
-            <h2>Selamat Datang di Dashboard Apoteker</h2>
-            <p>Di sini Anda dapat mengelola data obat, pasien, dan analisis penjualan.</p>
-        </div>
+        <h4 class="text-center">Dashboard Apoteker</h4>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="#" onclick="window.location.href='/cekstokobat'">Cek Stok Obat</a>
+            <a class="nav-link" href="#" onclick="window.location.href='/validasidokter'">Validasi Dokter</a>
+            <a class="nav-link" href="#" onclick="window.location.href='/inputpasien'">Pembelian Obat</a>
+            <a class="nav-link" href="#" onclick="window.location.href='/analisispenjualan'">Analisis Penjualan</a>
+            <!-- Tambahkan link baru untuk Daftar Pasien -->
+            <a class="nav-link" href="#" onclick="window.location.href='/daftar-pasien'">Daftar Pasien</a>
+            <!-- Tambahkan link baru untuk Lihat Stok Obat -->
+            <a class="nav-link" href="#" onclick="window.location.href='/lihatstokobat'">Lihat Stok Obat</a>
+        </nav>
+        <button class="btn logout-btn w-100 mt-3" onclick="logout()">Logout</button>
     </div>
+    <div class="content flex-grow-1">
+        <h2>Selamat Datang di Dashboard Apoteker</h2>
+        <p>Di sini Anda dapat mengelola data obat, pasien, dan analisis penjualan.</p>
+    </div>
+</div>
+<div class="d-flex">
+    <div class="sidebar">
+        <div class="profile">
+            <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
+            <h5 id="apotekerName">Selamat Datang, Apoteker</h5>
+            <p>No Registrasi: <span id="apotekerRegNo">123456789</span></p>
+        </div>
+        <h4 class="text-center">Dashboard Apoteker</h4>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="#" onclick="window.location.href='/validasidokter'">Validasi Dokter</a>
+            <a class="nav-link" href="#" onclick="window.location.href='/inputpasien'">Pembelian Obat</a>
+            <a class="nav-link" href="#" onclick="window.location.href='/analisispenjualan'">Analisis Penjualan</a>
+            <!-- Tambahkan link baru untuk Daftar Pasien -->
+            <a class="nav-link" href="#" onclick="window.location.href='/daftar-pasien'">Daftar Pasien</a>
+            <!-- Tambahkan link baru untuk Lihat Stok Obat -->
+            <a class="nav-link" href="#" onclick="window.location.href='/lihatstokobat'">Lihat Stok Obat</a>
+        </nav>
+        <button class="btn logout-btn w-100 mt-3" onclick="logout()">Logout</button>
+    </div>
+    <div class="content flex-grow-1">
+        <h2>Selamat Datang di Dashboard Apoteker</h2>
+        <p>Di sini Anda dapat mengelola data obat, pasien, dan analisis penjualan.</p>
+    </div>
+</div>
+
 
     <script>
         // Sample dynamic name generation

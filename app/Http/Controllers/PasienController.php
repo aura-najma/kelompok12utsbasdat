@@ -73,4 +73,14 @@ class PasienController extends Controller
         // Kembalikan data pasien dalam format JSON
         return response()->json($pasien);
     }
+
+    public function listPasien()
+    {
+        // Ambil semua data pasien dari database
+        $pasienList = Pasien::all();
+    
+        // Kirim data pasien ke view
+        return view('daftarPasien', compact('pasienList'));
+    }
+
 }

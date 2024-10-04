@@ -25,9 +25,12 @@
         .text-custom {
             color: #2295B4; 
         }
-        .btn-toggle:hover {
-            background-color: #a4c757; 
-            color: yellow; 
+        .btn-custom {
+            background-color: #2295B4; 
+            color: white; 
+        }
+        .btn-custom:hover {
+            background-color: #1a758e; 
         }
     </style>
 </head>
@@ -44,7 +47,7 @@
             <label for="password" class="form-label text-custom">Password</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
-        <button type="submit" class="btn btn-custom w-100" style="background-color: #2295B4; color: white;">Login</button>
+        <button type="submit" class="btn btn-custom w-100">Login</button>
         @if ($errors->any())
             <div class="alert alert-danger mt-3">
                 {{ $errors->first('nip') }}

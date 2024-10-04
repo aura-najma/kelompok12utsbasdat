@@ -12,45 +12,53 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
         }
         .login-container {
-            background-color: white; 
+            background-color: white;
             padding: 2rem;
-            border-radius: 10px;
+            border-radius: 5px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 300px;
+            width: 400px;
         }
-        .text-custom {
-            color: #2295B4; 
+        h2 {
+            color: #2295B4;
         }
-        .btn-toggle:hover {
-            background-color: #a4c757; 
-            color: yellow; 
+        .btn-login {
+            background-color: #2295B4;
+            color: white;
+        }
+        .btn-login:hover {
+            background-color: #1a758e;
         }
     </style>
 </head>
 <body>
-<div class="login-container">
-    <h3 class="text-custom">Login Apoteker</h3>
-    <form id="loginForm" action="{{ route('login') }}" method="POST">
-        @csrf
-        <div class="mb-3">
-            <label for="nip" class="form-label text-custom">Nomor Induk Pegawai</label>
-            <input type="text" class="form-control" id="nip" name="nip" required>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label text-custom">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-        <button type="submit" class="btn btn-custom w-100" style="background-color: #2295B4; color: white;">Login</button>
+    <div class="login-container">
+        <h2 class="text-center">Login Apoteker</h2>
+
+        <!-- Menampilkan pesan error jika ada -->
         @if ($errors->any())
-            <div class="alert alert-danger mt-3">
-                {{ $errors->first('nip') }}
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
-    </form>
-</div>
+
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="nip" class="form-label">Nomor Induk Pegawai (NIP)</label>
+                <input type="text" class="form-control" id="nip" name="nip" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-login w-100">Login</button>
+        </form>
+    </div>
 </body>
 </html>

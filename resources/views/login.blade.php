@@ -22,10 +22,6 @@
             text-align: center;
             width: 300px;
         }
-        img {
-            max-width: 100%;
-            margin-bottom: 1rem;
-        }
         .text-custom {
             color: #2295B4; 
         }
@@ -34,61 +30,27 @@
             color: yellow; 
         }
     </style>
-    <script>
-        function togglePassword() {
-            const passwordField = document.getElementById('password');
-            const toggleButton = document.getElementById('togglePasswordButton');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleButton.innerText = 'Hide';
-            } else {
-                passwordField.type = 'password';
-                toggleButton.innerText = 'Show Me';
-            }
-        }
-    </script>
 </head>
 <body>
 <div class="login-container">
-    <img src="{{ asset('img/1.png') }}" alt="Logo">
     <h3 class="text-custom">Login Apoteker</h3>
-    <form id="loginForm">
+    <form id="loginForm" action="{{ route('login') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label for="nomorRegistrasi" class="form-label text-custom">Nomor Registrasi Apoteker</label>
-            <input type="text" class="form-control" id="nomorRegistrasi" name="nomor_registrasi" required>
+            <label for="nip" class="form-label text-custom">Nomor Induk Pegawai</label>
+            <input type="text" class="form-control" id="nip" name="nip" required>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label text-custom">Password</label>
-            <div class="input-group">
-                <input type="password" class="form-control" id="password" name="password" required>
-                <button type="button" class="btn btn-outline-secondary btn-toggle" id="togglePasswordButton" onclick="togglePassword()">Show Me</button>
-            </div>
+            <input type="password" class="form-control" id="password" name="password" required>
         </div>
         <button type="submit" class="btn btn-custom w-100" style="background-color: #2295B4; color: white;">Login</button>
+        @if ($errors->any())
+            <div class="alert alert-danger mt-3">
+                {{ $errors->first('nip') }}
+            </div>
+        @endif
     </form>
 </div>
-
-<script>
-function togglePassword() {
-    var passwordField = document.getElementById('password');
-    var toggleButton = document.getElementById('togglePasswordButton');
-    if (passwordField.type === 'password') {
-        passwordField.type = 'text';
-        toggleButton.textContent = 'Hide';
-    } else {
-        passwordField.type = 'password';
-        toggleButton.textContent = 'Show Me';
-    }
-}
-
-// Handle form submission and redirect to dashboard
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form from submitting normally
-    window.location.href = "{{ route('dashboardutama') }}"; // Redirect to dashboard page
-});
-</script>
-
-
 </body>
 </html>

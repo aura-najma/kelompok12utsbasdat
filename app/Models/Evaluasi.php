@@ -9,6 +9,8 @@ class Evaluasi extends Model
 {
     use HasFactory;
 
+    protected $table = 'evaluasi';
+
     protected $fillable = [
         'id_pembeli',
         'tanggal_transaksi',

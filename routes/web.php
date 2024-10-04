@@ -132,6 +132,7 @@ Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
 Route::post('/pasien', [PasienController::class, 'store'])->name('pasien.store');
 
 // Route untuk mengambil data pasien lama berdasarkan no_telepon (AJAX)
-Route::get('/pasien/{no_telepon}', [PasienController::class, 'getPasienByPhone'])->name('pasien.getByPhone');
 
 
+
+Route::get('/get-pasien', [PasienController::class, 'getPasien']);

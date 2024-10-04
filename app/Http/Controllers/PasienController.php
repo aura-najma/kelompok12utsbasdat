@@ -62,10 +62,15 @@ class PasienController extends Controller
     }
     
 
-    // Fungsi untuk mengambil data pasien lama berdasarkan no_telepon
-    public function getPasienByPhone($no_telepon)
+    public function getPasien(Request $request)
     {
-        $pasien = Pasien::where('no_telepon', $no_telepon)->first();
+        // Ambil `no_telepon` dari request
+        $noTelepon = $request->query('no_telepon');
+
+        // Cari data pasien berdasarkan `no_telepon`
+        $pasien = Pasien::where('no_telepon', $noTelepon)->first();
+
+        // Kembalikan data pasien dalam format JSON
         return response()->json($pasien);
     }
 }

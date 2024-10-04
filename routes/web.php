@@ -123,6 +123,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\ObatController;
 
 
 // Route untuk menampilkan halaman form pasien dan pembelian
@@ -134,5 +135,6 @@ Route::post('/pasien', [PasienController::class, 'store'])->name('pasien.store')
 // Route untuk mengambil data pasien lama berdasarkan no_telepon (AJAX)
 
 
+Route::get('/lihatstokobat', [ObatController::class, 'index']);
 
 Route::get('/get-pasien', [PasienController::class, 'getPasien']);

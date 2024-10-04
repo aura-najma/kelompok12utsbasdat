@@ -57,44 +57,21 @@
         <div class="profile">
             <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
             <h5 id="apotekerName">Selamat Datang, Apoteker</h5>
-            <p>No Registrasi: <span id="apotekerRegNo">123456789</span></p>
+            <p>No Registrasi: <span id="apotekerRegNo">{{ session('authenticated_nip') }}</span></p>
         </div>
         <h4 class="text-center">Dashboard Apoteker</h4>
         <nav class="nav flex-column">
-            <a class="nav-link" href="#" onclick="window.location.href='/cekstokobat'">Cek Stok Obat</a>
-            <a class="nav-link" href="#" onclick="window.location.href='/validasidokter'">Validasi Dokter</a>
-            <a class="nav-link" href="#" onclick="window.location.href='/inputpasien'">Pembelian Obat</a>
-            <a class="nav-link" href="#" onclick="window.location.href='/analisispenjualan'">Analisis Penjualan</a>
-            <!-- Tambahkan link baru untuk Daftar Pasien -->
-            <a class="nav-link" href="#" onclick="window.location.href='/daftar-pasien'">Daftar Pasien</a>
-            <!-- Tambahkan link baru untuk Lihat Stok Obat -->
-            <a class="nav-link" href="#" onclick="window.location.href='/lihatstokobat'">Lihat Stok Obat</a>
+            <a class="nav-link" href="/cekstokobat">Cek Stok Obat</a>
+            <a class="nav-link" href="/validasidokter">Validasi Dokter</a>
+            <a class="nav-link" href="/inputpasien">Pembelian Obat</a>
+            <a class="nav-link" href="/analisispenjualan">Analisis Penjualan</a>
+            <a class="nav-link" href="/daftar-pasien">Daftar Pasien</a>
+            <a class="nav-link" href="/lihatstokobat">Lihat Stok Obat</a>
         </nav>
-        <button class="btn logout-btn w-100 mt-3" onclick="logout()">Logout</button>
-    </div>
-    <div class="content flex-grow-1">
-        <h2>Selamat Datang di Dashboard Apoteker</h2>
-        <p>Di sini Anda dapat mengelola data obat, pasien, dan analisis penjualan.</p>
-    </div>
-</div>
-<div class="d-flex">
-    <div class="sidebar">
-        <div class="profile">
-            <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
-            <h5 id="apotekerName">Selamat Datang, Apoteker</h5>
-            <p>No Registrasi: <span id="apotekerRegNo">123456789</span></p>
-        </div>
-        <h4 class="text-center">Dashboard Apoteker</h4>
-        <nav class="nav flex-column">
-            <a class="nav-link" href="#" onclick="window.location.href='/validasidokter'">Validasi Dokter</a>
-            <a class="nav-link" href="#" onclick="window.location.href='/inputpasien'">Pembelian Obat</a>
-            <a class="nav-link" href="#" onclick="window.location.href='/analisispenjualan'">Analisis Penjualan</a>
-            <!-- Tambahkan link baru untuk Daftar Pasien -->
-            <a class="nav-link" href="#" onclick="window.location.href='/daftar-pasien'">Daftar Pasien</a>
-            <!-- Tambahkan link baru untuk Lihat Stok Obat -->
-            <a class="nav-link" href="#" onclick="window.location.href='/lihatstokobat'">Lihat Stok Obat</a>
-        </nav>
-        <button class="btn logout-btn w-100 mt-3" onclick="logout()">Logout</button>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn logout-btn w-100 mt-3">Logout</button>
+        </form>
     </div>
     <div class="content flex-grow-1">
         <h2>Selamat Datang di Dashboard Apoteker</h2>
@@ -102,21 +79,14 @@
     </div>
 </div>
 
+<script>
+    // Sample dynamic name generation
+    const apotekerNames = ["Putri Ayudia", "Bagus Rahman", "Siti Aisyah", "Ahmad Zain", "Rina Lestari"];
+    const randomName = apotekerNames[Math.floor(Math.random() * apotekerNames.length)];
+    document.getElementById('apotekerName').textContent = `Selamat Datang, ${randomName}`;
 
-    <script>
-        // Sample dynamic name generation
-        const apotekerNames = ["Putri Ayudia", "Bagus Rahman", "Siti Aisyah", "Ahmad Zain", "Rina Lestari"];
-        const randomName = apotekerNames[Math.floor(Math.random() * apotekerNames.length)];
-        document.getElementById('apotekerName').textContent = `Selamat Datang, ${randomName}`;
-
-        // Example of a static registration number for now
-        document.getElementById('apotekerRegNo').textContent = 'STR12345678901234';
-
-        // Logout function
-        function logout() {
-            // Redirect to logout page or handle logout logic
-            window.location.href = "logout"; // Adjust URL to actual logout page
-        }
-    </script>
+    // Example of a static registration number for now
+    document.getElementById('apotekerRegNo').textContent = '{{ session("authenticated_nip") }}';
+</script>
 </body>
 </html>

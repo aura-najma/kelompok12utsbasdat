@@ -60,5 +60,12 @@
             <button type="submit" class="btn btn-login w-100">Login</button>
         </form>
     </div>
+
+    <script>
+        // Menangani alur login
+        document.querySelector('form').addEventListener('submit', function(event) {
+            // Tindakan tambahan bisa ditambahkan di sini
+        });
+    </script>
 </body>
 </html>

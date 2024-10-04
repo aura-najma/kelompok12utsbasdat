@@ -121,6 +121,11 @@ Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login
 Route::post('/login', [DashboardController::class, 'login']);
 Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 
+use App\Http\Controllers\EvaluasiController;
+
+Route::get('/evaluasi', [EvaluasiController::class, 'create'])->name('evaluasi.create');
+Route::post('/evaluasi', [EvaluasiController::class, 'store'])->name('evaluasi.store');
+
 
 // bagian aura
 use App\Http\Controllers\PasienController;

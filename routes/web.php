@@ -114,6 +114,7 @@ Route::get('/evaluasiapotek', function () {
     return view('evaluasiapotek');
 })->name('evaluasiapotek');
 
+// bagian dyah
 use App\Http\Controllers\LoginController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -121,7 +122,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-
+// bagian aura
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ObatController;
 
@@ -138,3 +139,17 @@ Route::post('/pasien', [PasienController::class, 'store'])->name('pasien.store')
 Route::get('/lihatstokobat', [ObatController::class, 'index']);
 
 Route::get('/get-pasien', [PasienController::class, 'getPasien']);
+// Route untuk menampilkan form tambah stok
+Route::get('/lihatstokobat/tambah-stok', function () {
+    return view('tambahStok'); // Mengarahkan ke resources/views/tambahStok.blade.php
+});
+
+// Route untuk memproses penambahan stok
+Route::post('/lihatstokobat/tambah-stok', [ObatController::class, 'tambahStok']);
+// Route untuk menampilkan form tambah obat
+Route::get('/lihatstokobat/tambah-obat', function () {
+    return view('tambahObat'); // Mengarahkan ke resources/views/tambahObat.blade.php
+});
+
+// Route untuk memproses penambahan obat baru
+Route::post('/lihatstokobat/tambah-obat', [ObatController::class, 'tambahObat']);

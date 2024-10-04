@@ -85,12 +85,14 @@
             fetch(`/get-pasien?no_telepon=${noTelepon}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Data pasien:', data); // Cek data yang diterima
+
                     if (data) {
                         // Isi field form dengan data pasien lama
-                        document.getElementById('nama').value = data.nama;
-                        document.getElementById('tanggal_lahir').value = data.tanggal_lahir;
-                        document.getElementById('alamat').value = data.alamat;
-                        document.getElementById('alergi_obat').value = data.alergi_obat;
+                        document.getElementById('nama').value = data.nama || '';
+                        document.getElementById('tanggal_lahir').value = data.tanggal_lahir || '';
+                        document.getElementById('alamat').value = data.alamat || '';
+                        document.getElementById('alergi_obat').value = data.alergi_obat || '';
                     } else {
                         // Kosongkan field jika data pasien tidak ditemukan
                         document.getElementById('nama').value = '';
@@ -102,7 +104,10 @@
                 .catch(error => console.error('Error:', error));
         }
     }
+
     </script>
+
+    
                     <!-- BASE YANG DIPAKE CONTROLLER DAN MODEL PASIEN-->
 
 </body>

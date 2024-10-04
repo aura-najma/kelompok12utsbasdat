@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('kategori'); // Kategori
             $table->string('jenis_obat'); // Jenis obat
             $table->integer('stok'); // Stok
-            $table->date('tanggal_produksi'); // Tanggal produksi
             $table->date('tanggal_kadaluwarsa'); // Tanggal kadaluwarsa
             $table->decimal('harga_satuan', 8, 2); // Harga satuan
             $table->string('kategori_obat_keras')->nullable(); // Kategori obat keras, nullable jika tidak ada

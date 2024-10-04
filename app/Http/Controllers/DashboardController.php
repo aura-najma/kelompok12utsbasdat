@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -24,14 +23,14 @@ class DashboardController extends Controller
         if (($credentials['nip'] === '1' && $credentials['password'] === 'katak') ||
             ($credentials['nip'] === '2' && $credentials['password'] === 'kadal')) {
             
-            // Set session secara manual
-            session(['nip' => $credentials['nip']]);
+            // Set session secara manual, hanya jika NIP dan password benar
+            session(['authenticated_nip' => $credentials['nip']]);
 
             // Redirect ke halaman dashboard jika berhasil login
             return redirect()->intended('dashboard');
         }
 
-        // Kembali ke halaman login jika gagal
+        // Jika gagal login, kembalikan ke form login dengan pesan error
         return back()->withErrors([
             'nip' => 'Nomor Induk Pegawai atau password salah.',
         ])->onlyInput('nip');
@@ -39,19 +38,19 @@ class DashboardController extends Controller
 
     public function logout(Request $request)
     {
-        // Hapus session NIP
-        $request->session()->forget('nip');
+        // Hapus session NIP untuk logout
+        $request->session()->forget('authenticated_nip');
         return redirect('/login'); // Redirect ke halaman login setelah logout
     }
 
     public function dashboard()
     {
-        // Cek apakah session 'nip' ada
-        if (session('nip')) {
+        // Cek apakah session 'authenticated_nip' ada
+        if (session('authenticated_nip')) {
             return view('dashboard'); // Pastikan ada file dashboard.blade.php di folder resources/views
         }
 
-        // Jika tidak ada, redirect ke halaman login
+        // Jika session tidak ada, redirect ke halaman login
         return redirect('/login');
     }
 }

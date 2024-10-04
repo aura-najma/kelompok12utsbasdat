@@ -71,183 +71,61 @@
 
 </head>
 <body>
-<div class="container mt-5">
-    
-    <form action="/evaluasi" method="POST">
-    <h1 class="text-center">Evaluasi Pelayanan Apotek</h1>
-
-        <!-- 1. Dimensi Fasilitas Berwujud -->
-        <div class="mb-4">
-            <h4>1. Fasilitas Berwujud</h4>
-
-            <label>Apotek terlihat bersih dan rapi</label>
-            <select name="fasilitas_bersih_rapi" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Bagian dalam dan luar ruangan tertata dengan rapi</label>
-            <select name="fasilitas_tata_ruangan" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Alat-alat yang dipakai lengkap dan bersih</label>
-            <select name="fasilitas_alat_lengkap" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Petugas apotek berpakaian bersih dan rapi</label>
-            <select name="fasilitas_pakaian_petugas" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-        </div>
-
-        <!-- 2. Dimensi Kehandalan -->
-        <div class="mb-4">
-            <h4>2. Kehandalan</h4>
-            <label>Pelayanan obat cepat</label>
-            <select name="kehandalan_pelayanan_cepat" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Obat tersedia dengan lengkap</label>
-            <select name="kehandalan_obat_lengkap" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Harga obat sesuai</label>
-            <select name="kehandalan_harga_obat" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Pelayanan ramah</label>
-            <select name="kehandalan_pelayanan_ramah" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Petugas selalu siap membantu</label>
-            <select name="kehandalan_petugas_bantu" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-        </div>
-
-        <!-- 3. Dimensi Ketanggapan -->
-        <div class="mb-4">
-            <h4>3. Ketanggapan</h4>
-            <label>Petugas cepat tanggap terhadap keluhan konsumen</label>
-            <select name="ketanggapan_keluhan_cepat" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Petugas solutif terhadap masalah konsumen</label>
-            <select name="ketanggapan_solusi_masalah" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Terjalin komunikasi yang baik antara petugas dan konsumen</label>
-            <select name="ketanggapan_komunikasi_baik" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Informasi tentang obat jelas dan mudah dimengerti</label>
-            <select name="ketanggapan_info_obat" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-        </div>
-
-        <!-- 4. Dimensi Keyakinan -->
-        <div class="mb-4">
-            <h4>4. Keyakinan</h4>
-            <label>Obat yang dibeli terjamin kualitasnya</label>
-            <select name="keyakinan_obat_terjamin" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Obat yang diberikan sesuai dengan yang diminta</label>
-            <select name="keyakinan_obat_sesuai" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-        </div>
-
-        <!-- 5. Dimensi Empati -->
-        <div class="mb-4">
-            <h4>5. Empati</h4>
-            <label>Petugas memberikan pelayanan kepada semua konsumen tanpa memandang status sosial</label>
-            <select name="empati_tanpa_diskriminasi" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-
-            <label>Konsumen merasa nyaman selama menunggu obat</label>
-            <select name="empati_nyaman_menunggu" class="form-select">
-                <option value="Cukup">Cukup</option>
-                <option value="Baik">Baik</option>
-                <option value="Kurang">Kurang</option>
-            </select>
-        </div>
-
-         <!-- 3. Progress Bar untuk penilaian -->
-         <div class="mb-4">
-            <h4>3. Skor Penilaian Keseluruhan</h4>
-            <label>Seberapa puas Anda terhadap pelayanan apotek?</label>
-            <input type="range" class="form-range" min="0" max="100" step="10" id="skor_penilaian" name="skor_penilaian">
-            <div class="progress mt-3">
-                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+<body>
+    <div class="container">
+        <h3 class="text-center">Evaluasi Pelanggan</h3>
+        <form action="{{ route('evaluasi.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="id_pembeli" class="form-label">ID Pembeli</label>
+                <input type="text" class="form-control" id="id_pembeli" name="id_pembeli" required>
             </div>
-        </div>
-
-        <!-- 4. Komentar -->
-        <div class="mb-4">
-            <h4>4. Komentar Tambahan</h4>
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Berikan komentar Anda di sini" id="komentar" name="komentar" style="height: 100px;"></textarea>
-                <label for="komentar">Komentar</label>
+            <div class="mb-3">
+                <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
+                <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
             </div>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Evaluasi Keadaan Apotek</label>
+                <select class="form-select" name="evaluasi_apotek" required>
+                    <option value="" disabled selected>Pilih evaluasi</option>
+                    <option value="Sangat Baik">Sangat Baik</option>
+                    <option value="Baik">Baik</option>
+                    <option value="Cukup">Cukup</option>
+                    <option value="Buruk">Buruk</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Evaluasi Pelayanan</label>
+                <select class="form-select" name="evaluasi_pelayanan" required>
+                    <option value="" disabled selected>Pilih evaluasi</option>
+                    <option value="Sangat Baik">Sangat Baik</option>
+                    <option value="Baik">Baik</option>
+                    <option value="Cukup">Cukup</option>
+                    <option value="Buruk">Buruk</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Evaluasi Pemberian Obat</label>
+                <select class="form-select" name="evaluasi_obat" required>
+                    <option value="" disabled selected>Pilih evaluasi</option>
+                    <option value="Sangat Baik">Sangat Baik</option>
+                    <option value="Baik">Baik</option>
+                    <option value="Cukup">Cukup</option>
+                    <option value="Buruk">Buruk</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="rating_apotek" class="form-label">Rating Apotek (1-10)</label>
+                <input type="number" class="form-control" id="rating_apotek" name="rating_apotek" min="1" max="10" required>
+            </div>
+            <div class="mb-3">
+                <label for="komentar" class="form-label">Komentar Tambahan</label>
+                <textarea class="form-control" id="komentar" name="komentar" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Kirim Evaluasi</button>
+        </form>
+    </div>
 
-        <!-- Tombol Submit -->
-        <button type="submit" class="btnbtn-primary">Kirim Evaluasi</button>
-    </form>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    const slider = document.getElementById('skor_penilaian');
-    const progressBar = document.querySelector('.progress-bar');
-    slider.addEventListener('input', function() {
-        progressBar.style.width = `${slider.value}%`;
-        progressBar.textContent = `${slider.value}%`;
-    });
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

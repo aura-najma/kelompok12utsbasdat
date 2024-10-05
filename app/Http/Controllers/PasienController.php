@@ -56,10 +56,12 @@ class PasienController extends Controller
             ]);
                     // Redirect berdasarkan apakah file `resep` ada atau tidak
             if (!is_null($resepPath)) {
-                return redirect('/cekobatkeras')->with('success', 'Data pasien dan pembelian berhasil disimpan dengan resep.');
+                return redirect()->route('cekobatkeras', ['id_pembelian' => $idPembelian])
+                    ->with('success', 'Data pasien dan pembelian berhasil disimpan dengan resep.');
             } else {
-                return redirect('/cekstokobat')->with('success', 'Data pasien dan pembelian berhasil disimpan tanpa resep.');
-            }
+                return redirect()->route('cekstokobat', ['id_pembelian' => $idPembelian])
+                    ->with('success', 'Data pasien dan pembelian berhasil disimpan tanpa resep.');
+                }
                     
     
         } catch (\Exception $e) {

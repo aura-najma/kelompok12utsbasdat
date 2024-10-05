@@ -83,13 +83,13 @@
                         <td>
                             <!-- Form untuk memilih jumlah obat yang ingin dibeli -->
                             <div class="quantity-control">
-                                <button type="button" onclick="decreaseQuantity('{{ $obat->id }}')">-</button>
-                                <input type="number" name="quantities[{{ $obat->id }}]" id="quantity-{{ $obat->id }}" value="0" min="0">
-                                <button type="button" onclick="increaseQuantity('{{ $obat->id }}')">+</button>
+                                <button type="button" onclick="decreaseQuantity('{{ $obat->no_bpom}}')">-</button>
+                                <input type="number" name="quantities[{{ $obat->no_bpom}}]" id="quantity-{{ $obat->no_bpom}}" value="0" min="0">
+                                <button type="button" onclick="increaseQuantity('{{ $obat->no_bpom}}')">+</button>
                             </div>
                             <!-- Hidden fields untuk informasi obat -->
-                            <input type="hidden" name="names[{{ $obat->id }}]" value="{{ $obat->nama }}">
-                            <input type="hidden" name="prices[{{ $obat->id }}]" value="{{ $obat->harga_satuan }}">
+                            <input type="hidden" name="names[{{ $obat->no_bpom}}]" value="{{ $obat->nama }}">
+                            <input type="hidden" name="prices[{{ $obat->no_bpom}}]" value="{{ $obat->harga_satuan }}">
                         </td>
                     </tr>
                     @endforeach

@@ -78,14 +78,20 @@ class ObatController extends Controller
         return redirect('/lihatstokobat')->with('message', 'Obat baru berhasil ditambahkan.');
     }
 
-    public function cekstok()
-    {
-        // Ambil semua data obat dari database
-        $obatList = Obat::all();
 
-        // Kirim data obat ke view
-        return view('cekstokobat', compact('obatList'));
-    }
+        // Fungsi untuk mengecek stok obat
+    public function cekStok(Request $request)
+        {
+            // Ambil `id_pembelian` dari request
+            $idPembelian = $request->query('id_pembelian');
+    
+            // Ambil semua data obat dari tabel `obats`
+            $obatList = Obat::all();
+    
+            // Kirim data obat dan `id_pembelian` ke view
+            return view('cekstokobat', compact('obatList', 'idPembelian'));
+        }
+    
 
     
 

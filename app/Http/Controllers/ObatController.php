@@ -82,16 +82,17 @@ class ObatController extends Controller
         // Fungsi untuk mengecek stok obat
         public function cekStok(Request $request)
         {
-            // Ambil `id_pembelian` dari request
+            // Validasi untuk memastikan id_pembelian ada
+            $request->validate([
+                'id_pembelian' => 'required|string',
+            ]);
+        
             $idPembelian = $request->query('id_pembelian');
-    
-            // Ambil semua data obat dari tabel `obats`
             $obatList = Obat::all();
-    
-            // Kirim data obat dan `id_pembelian` ke view
+            dump($idPembelian); // Ini akan menampilkan nilai tetapi melanjutkan eksekusi
+
             return view('cekstokobat', compact('obatList', 'idPembelian'));
         }
-    
 
     
 

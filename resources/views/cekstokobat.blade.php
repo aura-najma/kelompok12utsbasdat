@@ -35,10 +35,8 @@
     <h1>Cek Stok Obat</h1>
 
     <!-- Menampilkan ID Pembelian -->
-    <p>ID Pembelian: {{ $id_pembelian }}</p>
-
-    <form>
-        <input type="hidden" name="id_pembelian" value="{{ $id_pembelian }}">
+    <form action="{{ route('transaksi.store') }}" method="POST">
+        @csrf
         
         @if($obatList->isNotEmpty())
             <table>
@@ -60,7 +58,7 @@
                         <td>{{ $obat->harga_satuan }}</td>
                         <td>
                             <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', false)">-</button>
-                            <input type="number" id="qty-{{ $obat->no_bpom }}" name="obats[{{ $obat->no_bpom }}][jumlah]" value="0" min="0">
+                            <input type="number" id="qty-{{ $obat->no_bpom }}" name="obats[{{ $obat->no_bpom }}][jumlah]" value="0" min="0" oninput="checkQuantity()">
                             <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', true)">+</button>
 
                             <input type="hidden" name="obats[{{ $obat->no_bpom }}][harga_satuan]" value="{{ $obat->harga_satuan }}">
@@ -70,7 +68,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <button type="button" class="disabled" disabled>Beli Obat (Dinonaktifkan)</button>
+            <button type="submit">Beli Obat</button>
         @else
             <p>Tidak ada obat yang tersedia saat ini.</p>
         @endif
@@ -86,6 +84,28 @@
                 qtyInput.value = currentQty + 1;
             } else {
                 if (currentQty > 0) qtyInput.value = currentQty - 1;
+            }
+            checkQuantity();
+        }
+
+        // Fungsi untuk memeriksa jumlah obat dan mengaktifkan tombol beli
+        function checkQuantity() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            let enableButton = false;
+
+            inputs.forEach(input => {
+                if (parseInt(input.value) > 0) {
+                    enableButton = true;
+                }
+            });
+
+            const purchaseButton = document.getElementById('purchase-button');
+            if (enableButton) {
+                purchaseButton.classList.remove('disabled');
+                purchaseButton.disabled = false;
+            } else {
+                purchaseButton.classList.add('disabled');
+                purchaseButton.disabled = true;
             }
         }
     </script>

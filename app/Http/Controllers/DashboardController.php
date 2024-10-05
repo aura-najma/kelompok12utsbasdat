@@ -45,8 +45,7 @@ class DashboardController extends Controller
         Auth::logout();
         return redirect('/login'); // Redirect ke halaman login setelah logout
     }
-
-    public function dashboardutama()
+    public function dashboard()
 {
     // Ambil nama pengguna dari session
     $user = session('user');

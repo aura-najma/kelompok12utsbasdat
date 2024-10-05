@@ -98,11 +98,11 @@
                                     <div class="col-lg-12">
                                         <div class="white-button first-button scroll-to-section">
                                             <!-- Ubah href ke route login -->
-                                            <a href="{route('/login')}">Login</a>
+                                            <a href="#">Login</a>
                                         </div>
                                         <div class="white-button scroll-to-section">
                                             <!-- Ubah href ke route evaluasi -->
-                                            <a href="{{route('/evaluasiapotek')}}">Evaluasi</a>
+                                            <a href="#">Evaluasi</a>
                                         </div>
                                     </div>
                                 </div>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth; // Pastikan ini ada
 class DashboardController extends Controller
 {
     public function showLoginForm()
@@ -44,8 +44,7 @@ class DashboardController extends Controller
         // Logout user
         Auth::logout();
         return redirect('/login'); // Redirect ke halaman login setelah logout
-    }
-    
+    } 
     public function dashboard()
 {
     // Ambil nama pengguna dari session

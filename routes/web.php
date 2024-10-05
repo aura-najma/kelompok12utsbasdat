@@ -91,6 +91,10 @@ use App\Http\Controllers\DokterController;
 
 Route::get('/validasidokter', [DokterController::class, 'index']);
 
+use App\Http\Controllers\InvoiceController;
+
+Route::get('/invoice/{id_invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
+
 
 // bagian aura
 use App\Http\Controllers\PasienController;

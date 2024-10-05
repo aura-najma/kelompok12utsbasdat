@@ -35,10 +35,8 @@
     <h1>Cek Stok Obat</h1>
 
     <!-- Menampilkan ID Pembelian -->
-    <p>ID Pembelian: {{ $id_pembelian }}</p>
 
     <form>
-        <input type="hidden" name="id_pembelian" value="{{ $id_pembelian }}">
         
         @if($obatList->isNotEmpty())
             <table>

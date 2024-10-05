@@ -56,8 +56,8 @@
     <div class="sidebar">
         <div class="profile">
             <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
-            <h5>Selamat Datang, {{ $nip }}</h5>
-            <p>No Registrasi: {{ $nip == 'Dyah Ayu' ? 'STR1234567890' : 'STR0987654321' }}</p>
+            <h5>Selamat Datang, {{ $user }}</h5>
+            <p>No Registrasi: {{ $user == 'Dyah Ayu' ? 'STR1234567890' : 'STR0987654321' }}</p>
         </div>
         <h4 class="text-center">Dashboard Apoteker</h4>
         <nav class="nav flex-column">

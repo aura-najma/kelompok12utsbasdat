@@ -30,7 +30,7 @@ class DashboardController extends Controller
                 session(['user' => 'Aura Najma']);
             }
     
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboardutama');
         }
     
         return back()->withErrors([

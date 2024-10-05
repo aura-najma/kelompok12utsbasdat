@@ -12,6 +12,7 @@ class TransaksiController extends Controller
     {
         // Ambil ID Pembelian dari request
         $idPembelian = $request->input('id_pembelian');
+        dump($idPembelian); // Ini akan menampilkan nilai, tetapi eksekusi akan berlanjut
 
         // Ambil data obat yang dibeli
         $obats = $request->input('obats', []);
@@ -26,6 +27,7 @@ class TransaksiController extends Controller
             $namaObat = $data['nama'];
 
             // Hanya simpan jika jumlah yang dibeli lebih dari 0
+            // Hanya simpan jika jumlah yang dibeli lebih dari 0
             if ($jumlah > 0) {
                 // Kurangi stok dari tabel obats
                 $obat = Obat::where('no_bpom', $obatId)->first();
@@ -34,10 +36,20 @@ class TransaksiController extends Controller
                     $obat->save(); // Simpan perubahan stok
                 }
 
+                // Debugging: tampilkan data transaksi yang akan disimpan
+                dump([
+                    'id_transaksi' => $idTransaksi,
+                    'id_pembelian' => $idPembelian,
+                    'nama_obat' => $namaObat,
+                    'jumlah_obat' => $jumlah,
+                    'harga_satuan' => $hargaSatuan,
+                    'harga_total' => $jumlah * $hargaSatuan,
+                ]);
+
                 // Simpan data transaksi
                 Transaksi::create([
-                    'id_transaksi' => $idTransaksi, // ID transaksi yang dikustomisasi
-                    'id_pembelian' => $idPembelian, // ID Pembelian yang terhubung
+                    'id_transaksi' => $idTransaksi,
+                    'id_pembelian' => $idPembelian,
                     'nama_obat' => $namaObat,
                     'jumlah_obat' => $jumlah,
                     'harga_satuan' => $hargaSatuan,

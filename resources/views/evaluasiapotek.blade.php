@@ -3,89 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluasi Pelayanan Apotek</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Evaluasi Pelanggan</title>
     <style>
         body {
-            background-color:rgba(34, 149, 180, 0.2);
+            background-image: url('assets/images/bgeval.png'); /* Set background image */
+            background-size: cover; /* Cover the entire viewport */
+            background-repeat: no-repeat; /* Prevent repeating */
+            color: #fff; /* Text color for better readability */
         }
-
-        h4 {
-            color: rgba(34, 149, 180);
-            font-weight: bold;
-        }
-        h1 {
-            color:rgba(34, 149, 180);
-            font-weight: bold; 
-            margin-bottom: 50px;
-            
-        }
-        
-        form {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            margin-top: 15px;
-            font-weight: bold; 
-        }
-        select, input[type="range"], textarea {
-            margin-top: 10px;
-        }
-        .progress-bar {
-            background-color: rgba(34, 149, 180);
+        h2 {
+            color: #204ae6; /* Header color */
+            margin-top: 20px; /* Add some space above the header */
         }
         .form-control, .form-select {
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            background-color: rgba(34, 149, 180, 0.05);
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+            border: 1px solid #204ae6; /* Thin border with blue color */
+            color: #000; /* Text color for input fields */
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #204ae6; /* Border color on focus */
+            box-shadow: 0 0 5px rgba(32, 74, 230, 0.8); /* Add shadow on focus */
+        }
+        .form-label {
+            color: #204ae6; /* Label font color */
+        }
+        .btn-primary {
+            background-color: #204ae6; /* Button color */
+            border-color: #204ae6; /* Button border color */
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Transparent white container */
+            padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px; /* Spacing from top */
         }
-        button {
-            background-color: rgba(34, 149, 180);
-            border: none;
-            color: white;
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: rgba(34, 149, 18);
+        /* Style for the selected option */
+        option:checked, option[selected] {
+            background-color: #204ae6; /* Transparent black background */
+            color: white; /* Text color for selected option */
         }
 
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px; /* Width of the thumb */
-            height: 20px; /* Height of the thumb */
-            background: rgba(34, 149, 180); /* Change thumb color to yellow */
-            border-radius: 50%; /* Make it round */
-        }
 
-      
     </style>
-
 </head>
 <body>
-<body>
     <div class="container">
-        <h3 class="text-center">Evaluasi Pelanggan</h3>
+        <h2 class="text-center">Evaluasi Pelanggan</h2>
+        
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        
         <form action="{{ route('evaluasi.store') }}" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="id_pembeli" class="form-label">ID Pembeli</label>
+                <label for="id_pembeli" class="form-label">ID Pembeli *</label>
                 <input type="text" class="form-control" id="id_pembeli" name="id_pembeli" required>
             </div>
             <div class="mb-3">
-                <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
+                <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi *</label>
                 <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Evaluasi Keadaan Apotek</label>
+                <label class="form-label">Kebersihan dan kerapian apotek *</label>
                 <select class="form-select" name="evaluasi_apotek" required>
                     <option value="" disabled selected>Pilih evaluasi</option>
                     <option value="Sangat Baik">Sangat Baik</option>
@@ -95,7 +77,7 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Evaluasi Pelayanan</label>
+                <label class="form-label">Apoteker dan staff melayani dengan baik dan menerapkan 3S (senyum, salam, sapa)*</label>
                 <select class="form-select" name="evaluasi_pelayanan" required>
                     <option value="" disabled selected>Pilih evaluasi</option>
                     <option value="Sangat Baik">Sangat Baik</option>
@@ -105,17 +87,17 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Evaluasi Pemberian Obat</label>
+                <label class="form-label">Obat yang diberikan sesuai yang diminta, tidak lewat expired dan bersegel *</label>
                 <select class="form-select" name="evaluasi_obat" required>
                     <option value="" disabled selected>Pilih evaluasi</option>
                     <option value="Sangat Baik">Sangat Baik</option>
                     <option value="Baik">Baik</option>
-                    <option value="Cukup">Cukup</option>
+                    <option value="Cukup">Cukup</</option>
                     <option value="Buruk">Buruk</option>
                 </select>
             </div>
             <div class="mb-3">
-                <label for="rating_apotek" class="form-label">Rating Apotek (1-10)</label>
+                <label for="rating_apotek" class="form-label">Rating Apotek (1-10) *</label>
                 <input type="number" class="form-control" id="rating_apotek" name="rating_apotek" min="1" max="10" required>
             </div>
             <div class="mb-3">

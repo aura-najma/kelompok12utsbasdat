@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"> <!-- Import Poppins font -->
     <title>Evaluasi Pelanggan</title>
     <style>
         body {
@@ -11,46 +12,88 @@
             background-size: cover; /* Cover the entire viewport */
             background-repeat: no-repeat; /* Prevent repeating */
             color: #fff; /* Text color for better readability */
+            font-family: 'Poppins', sans-serif; /* Apply Poppins font to the body */
         }
-        h2 {
-            color: #204ae6; /* Header color */
-            margin-top: 20px; /* Add some space above the header */
+
+        /* New class for the h2 title */
+        .title {
+            font-size: 35px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 100px;
+            color: #fff;
+            user-select: none;
+            border-radius: 15px ;
+            background: linear-gradient(-135deg, #204ae6, #36bef8);
+            margin-top: 0px; /* Add some space above the header */
+            margin-bottom: 30px;
         }
+
         .form-control, .form-select {
-            background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
-            border: 1px solid #204ae6; /* Thin border with blue color */
-            color: #000; /* Text color for input fields */
+            background-color: rgba(32, 74, 230, 0.05); /* Transparent background */
+            border: 1px solid #204ae6; /* Border color */
+            color: #000; /* Text color */
+            font-family: 'Poppins', sans-serif; /* Apply Poppins font to input and select fields */
         }
+
         .form-control:focus, .form-select:focus {
             border-color: #204ae6; /* Border color on focus */
-            box-shadow: 0 0 5px rgba(32, 74, 230, 0.8); /* Add shadow on focus */
+            box-shadow: 0 0 5px rgba(32, 74, 230, 0.8); /* Shadow effect on focus */
         }
+
         .form-label {
             color: #204ae6; /* Label font color */
+            font-family: 'Poppins', sans-serif; /* Apply Poppins font to labels */
         }
+
         .btn-primary {
-            background-color: #204ae6; /* Button color */
-            border-color: #204ae6; /* Button border color */
+            cursor: pointer;
+            background: linear-gradient(-135deg, #204ae6, #36bef8);
+            color: #fff; /* Text color */
+            font-family: 'Poppins', sans-serif; /* Apply Poppins font to button */
+            font-weight: 600; /* Bold font for the button */
+            padding: 8px 12px; /* Padding for a larger button */
+            border-radius: 15px; /* Rounded corners */
+            width: 20%;
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for background and scale */
         }
+
+        /* Add hover effect */
+        .btn-primary:hover {
+            background-color: #1a3f88; /* Darker shade on hover */
+    
+            transform: scale(1.02); /* Slightly scale up the button */
+        }
+
+        /* Optional: Add a focus effect */
+        .btn-primary:focus {
+            outline: none; /* Remove default outline */
+            box-shadow: 0 0 5px rgba(32, 74, 230, 0.5); /* Add a shadow effect on focus */
+        }
+
         .container {
-            background-color: rgba(255, 255, 255, 0.9); /* Transparent white container */
+            background-color: rgba(255, 255, 255); /* Transparent white container */
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px; /* Spacing from top */
+            margin-top: 50px; /* Margin from the top */
+            margin-bottom: 50px;
+            max-width: 600px; /* Max width of the container */
+            margin-left: auto; /* Center container */
+            margin-right: auto; /* Center container */
+            font-family: 'Poppins', sans-serif; /* Apply Poppins font to the entire form */
         }
+
         /* Style for the selected option */
         option:checked, option[selected] {
-            background-color: #204ae6; /* Transparent black background */
+            background-color: #204ae6; /* Selected option background */
             color: white; /* Text color for selected option */
         }
-
-
     </style>
 </head>
 <body>
     <div class="container">
-        <h2 class="text-center">Evaluasi Pelanggan</h2>
+        <h2 class="title">Evaluasi Pelanggan</h2>
         
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -92,7 +135,7 @@
                     <option value="" disabled selected>Pilih evaluasi</option>
                     <option value="Sangat Baik">Sangat Baik</option>
                     <option value="Baik">Baik</option>
-                    <option value="Cukup">Cukup</</option>
+                    <option value="Cukup">Cukup</option>
                     <option value="Buruk">Buruk</option>
                 </select>
             </div>

@@ -5,52 +5,71 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use App\Models\Obat;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class TransaksiController extends Controller
 {
+    /**
+     * Store a newly created transaction in storage.
+     */
     public function store(Request $request)
     {
         // Ambil ID Pembelian dari request
         $idPembelian = $request->input('id_pembelian');
         $obats = $request->input('obats', []);
         $tanggalSekarang = now()->format('Y-m-d'); // Tanggal hari ini dalam format Y-m-d
-        
+
         // Ambil jumlah transaksi yang sudah ada untuk ID Pembelian pada tanggal hari ini
         $existingTransactionsCount = Transaksi::whereDate('created_at', $tanggalSekarang)->count();
-        
+
+        // Array untuk menyimpan data transaksi yang akan ditampilkan di invoice
+        $transaksiData = [];
+        $totalHarga = 0; // Definisikan total harga awal
+
         foreach ($obats as $obatId => $data) {
             $jumlah = $data['jumlah'];
             $hargaSatuan = $data['harga_satuan'];
             $namaObat = $data['nama'];
-    
+
             if ($jumlah > 0) {
                 // Generate nomor urut berdasarkan jumlah transaksi yang sudah ada pada hari ini
                 $transactionNumber = str_pad($existingTransactionsCount + 1, 3, '0', STR_PAD_LEFT);
                 $timestamp = now()->format('YmdHis'); // timestamp saat ini dalam format YmdHis
-                $idTransaksi = 'TR-' . $transactionNumber . '-' . $timestamp; // Tambahkan tanda strip
-    
-                // Debugging: Tampilkan ID Transaksi
-                dump('ID Transaksi: ' . $idTransaksi);
-    
+                $idTransaksi = 'TR-' . $transactionNumber . '-' . $timestamp;
+
                 // Ambil obat berdasarkan no_bpom
                 $obat = Obat::where('no_bpom', $obatId)->first();
-    
+
                 if ($obat) {
                     if ($obat->stok >= $jumlah) {
                         $obat->stok -= $jumlah;
                         $obat->save();
-    
-                        // Simpan data transaksi
+
+                        // Hitung harga total untuk obat ini
+                        $hargaTotal = $jumlah * $hargaSatuan;
+
+                        // Simpan data transaksi di database
                         Transaksi::create([
                             'id_transaksi' => $idTransaksi,
                             'id_pembelian' => $idPembelian,
                             'nama_obat' => $namaObat,
                             'jumlah_obat' => $jumlah,
                             'harga_satuan' => $hargaSatuan,
-                            'harga_total' => $jumlah * $hargaSatuan,
+                            'harga_total' => $hargaTotal,
                         ]);
-    
+
+                        // Simpan data yang diperlukan untuk invoice
+                        $transaksiData[] = [
+                            'nama_obat' => $namaObat,
+                            'jumlah_obat' => $jumlah,
+                            'harga_satuan' => $hargaSatuan,
+                            'harga_total' => $hargaTotal,
+                            'dosis' => $obat->dosis,
+                            'aturan_pakai' => $obat->aturan_pakai,
+                        ];
+
+                        // Tambahkan harga total obat ini ke total keseluruhan
+                        $totalHarga += $hargaTotal;
+
                         // Increment untuk transaksi berikutnya dalam loop
                         $existingTransactionsCount++;
                     } else {
@@ -61,10 +80,31 @@ class TransaksiController extends Controller
                 }
             }
         }
-    
-        return redirect()->back()->with('success', 'Transaksi berhasil disimpan.');
+
+        // Redirect ke halaman invoice dengan membawa data transaksi dan total harga
+        return view('invoicetransaksi', [
+            'transaksiData' => $transaksiData,
+            'idPembelian' => $idPembelian,
+            'totalHarga' => $totalHarga,
+        ]);
     }
-    
-    
-    
+
+    /**
+     * Show the invoice for a particular transaction.
+     */
+    public function showInvoice($idPembelian)
+    {
+        // Ambil transaksi berdasarkan ID Pembelian
+        $transaksiData = Transaksi::where('id_pembelian', $idPembelian)->get();
+
+        // Hitung total harga keseluruhan
+        $totalHarga = $transaksiData->sum('harga_total');
+
+        // Redirect ke halaman invoice dengan membawa data transaksi dan total harga
+        return view('invoicetransaksi', [
+            'transaksiData' => $transaksiData,
+            'idPembelian' => $idPembelian,
+            'totalHarga' => $totalHarga,
+        ]);
+    }
 }

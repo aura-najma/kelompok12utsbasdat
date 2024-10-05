@@ -135,3 +135,4 @@ use App\Http\Controllers\TransaksiController;
 
 // Route untuk menyimpan transaksi
 Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
+Route::get('/invoice/{id_pembelian}', [TransaksiController::class, 'showInvoice'])->name('invoice.show');

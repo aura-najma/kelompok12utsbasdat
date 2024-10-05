@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cek Stok Obat</title>
     <style>
-        /* Tambahkan style tambahan di sini jika diperlukan */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -37,17 +36,23 @@
     <!-- Menampilkan ID Pembelian -->
     <form action="{{ route('transaksi.store') }}" method="POST">
         @csrf
-        <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}"> <!-- Pastikan ini ada -->
+        <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}">
 
-        
         @if($obatList->isNotEmpty())
             <table>
                 <thead>
                     <tr>
                         <th>No BPOM</th>
                         <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Jenis Obat</th>
                         <th>Stok</th>
+                        <th>Tanggal Kadaluwarsa</th>
                         <th>Harga Satuan</th>
+                        <th>Kategori Obat Keras</th>
+                        <th>Dosis</th>
+                        <th>Aturan Pakai</th>
+                        <th>Rute Obat</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -56,13 +61,21 @@
                     <tr>
                         <td>{{ $obat->no_bpom }}</td>
                         <td>{{ $obat->nama }}</td>
+                        <td>{{ $obat->kategori }}</td>
+                        <td>{{ $obat->jenis_obat }}</td>
                         <td id="stok-{{ $obat->no_bpom }}">{{ $obat->stok }}</td>
+                        <td>{{ $obat->tanggal_kadaluwarsa }}</td>
                         <td>{{ $obat->harga_satuan }}</td>
+                        <td>{{ $obat->kategori_obat_keras }}</td>
+                        <td>{{ $obat->dosis }}</td>
+                        <td>{{ $obat->aturan_pakai }}</td>
+                        <td>{{ $obat->rute_obat }}</td>
                         <td>
                             <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', false)">-</button>
                             <input type="number" id="qty-{{ $obat->no_bpom }}" name="obats[{{ $obat->no_bpom }}][jumlah]" value="0" min="0" oninput="checkQuantity()">
                             <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', true)">+</button>
 
+                            <!-- Data yang akan dikirim ke transaksi -->
                             <input type="hidden" name="obats[{{ $obat->no_bpom }}][harga_satuan]" value="{{ $obat->harga_satuan }}">
                             <input type="hidden" name="obats[{{ $obat->no_bpom }}][nama]" value="{{ $obat->nama }}">
                         </td>

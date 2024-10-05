@@ -10,8 +10,8 @@ class DokterController extends Controller
     public function index()
     {
         $dokters = DB::table('dokter')->get();
-        dd($dokters); // Cek apakah data dokter diambil dengan benar
+        dd($dokters); // Ini akan menampilkan data di layar
         return view('validasidokter', ['dokters' => $dokters]);
-    }
+    }    
     
 }

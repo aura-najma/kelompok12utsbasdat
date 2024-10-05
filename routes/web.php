@@ -102,7 +102,7 @@ Route::post('/evaluasi', [EvaluasiController::class, 'store'])->name('evaluasi.s
 use App\Http\Controllers\DokterController;
 
 Route::get('/validasi-dokter', [DokterController::class, 'index'])->name('validasi.dokter');
-
+Route::get('/dokter', [DokterController::class, 'index']);
 
 // bagian aura
 use App\Http\Controllers\PasienController;

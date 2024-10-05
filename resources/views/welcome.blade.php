@@ -23,20 +23,20 @@
 
     <style>
         .logo {
-            display: flex; /* Menjaga elemen logo tetap di dalam aliran */
-            align-items: center; /* Vertically center */
+            display: flex;
+            align-items: center;
         }
 
         .logo-img {
-            width: 150px; /* Atur lebar logo sesuai kebutuhan */
-            height: auto; /* Mempertahankan rasio aspek */
-            margin-right: 10px; /* Jarak antara logo dan menu navigasi */
+            width: 150px;
+            height: auto;
+            margin-right: 10px;
         }
 
         .right-image {
-            width: 150%; /* Set width to 100% of its container */
-            max-width: 10000px; /* Set a max-width to avoid overflow */
-            height: auto; /* Maintain aspect ratio */
+            width: 150%;
+            max-width: 10000px;
+            height: auto;
         }
     </style>
 </head>
@@ -63,7 +63,7 @@
                 <div class="col-12">
                     <nav class="main-nav d-flex justify-content-between align-items-center">
                         <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
+                        <a href="#welcomeblade" class="logo">
                             <img src="assets/images/logo.png" alt="Chain App Dev" class="logo-img">
                         </a>
                         <!-- ***** Logo End ***** -->
@@ -81,7 +81,8 @@
     </header>
     <!-- ***** Header Area End ***** -->
 
-    <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <!-- Tambahkan id "welcomeblade" pada bagian utama halaman -->
+    <div class="main-banner wow fadeIn" id="welcomeblade" data-wow-duration="1s" data-wow-delay="0.5s">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -96,10 +97,12 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="white-button first-button scroll-to-section">
-                                            <a href="{{ route('login') }}">Login </a>
+                                            <!-- Ubah href ke route login -->
+                                            <a href="{route('/login')}">Login</a>
                                         </div>
                                         <div class="white-button scroll-to-section">
-                                            <a href="{{ route('evaluasiapotek') }}">Evaluasi</a>
+                                            <!-- Ubah href ke route evaluasi -->
+                                            <a href="{{route('/evaluasiapotek')}}">Evaluasi</a>
                                         </div>
                                     </div>
                                 </div>
@@ -116,6 +119,7 @@
         </div>
     </div>
 
+    <!-- Section "services" tetap untuk About Us -->
     <div id="services" class="services section">
         <div class="container">
             <div class="row">

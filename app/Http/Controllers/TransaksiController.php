@@ -51,14 +51,16 @@ class TransaksiController extends Controller
                         Transaksi::create([
                             'id_transaksi' => $idTransaksi,
                             'id_pembelian' => $idPembelian,
+                            'no_bpom' => $obat->no_bpom, // Tambahkan ini
                             'nama_obat' => $namaObat,
                             'jumlah_obat' => $jumlah,
                             'harga_satuan' => $hargaSatuan,
                             'harga_total' => $hargaTotal,
                         ]);
-
+                        
                         // Simpan data yang diperlukan untuk invoice
                         $transaksiData[] = [
+                            'no_bpom' => $obat->no_bpom, // Tambahkan ini
                             'nama_obat' => $namaObat,
                             'jumlah_obat' => $jumlah,
                             'harga_satuan' => $hargaSatuan,
@@ -66,7 +68,7 @@ class TransaksiController extends Controller
                             'dosis' => $obat->dosis,
                             'aturan_pakai' => $obat->aturan_pakai,
                         ];
-
+                        
                         // Tambahkan harga total obat ini ke total keseluruhan
                         $totalHarga += $hargaTotal;
 

@@ -29,4 +29,10 @@ class Obat extends Model
         'aturan_pakai', 
         'rute_obat'
     ];
+
+    public function transaksis()
+    {
+        return $this->hasMany(Transaksi::class, 'no_bpom', 'no_bpom');
+    }
+
 }

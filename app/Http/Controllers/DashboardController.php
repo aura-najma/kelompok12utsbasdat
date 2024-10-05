@@ -27,7 +27,7 @@ class DashboardController extends Controller
     // Simpan user ke session
     session(['user' => $user]);
 
-    return redirect()->route('dashboard');
+    return redirect()->route('dashboardutama');
     }
     
 
@@ -39,15 +39,17 @@ class DashboardController extends Controller
     }
     public function dashboardutama()
     {
+        // Ambil nama pengguna dari session
         $user = session('user');
     
-        // Debugging
+        // Periksa jika user tidak ada di session
         if (!$user) {
-            dd('User not found in session');
+            return redirect()->route('login')->withErrors(['message' => 'Anda harus login terlebih dahulu']);
         }
     
         return view('dashboardutama', compact('user'));
     }
+    
     
 
 }

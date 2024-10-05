@@ -21,11 +21,11 @@ class DashboardController extends Controller
         ]);
 
         // Aturan login ketat untuk NIP dan password
-        if (($credentials['nip'] == '1' && $credentials['password'] == 'katak') ||
-            ($credentials['nip'] == '2' && $credentials['password'] == 'kupu')) {
-            // Redirect ke halaman dashboard jika berhasil login
-            return redirect()->intended('dashboard');
+        if ($request->nip == '1' && $request->password == 'katak' || $request->nip == '2' && $request->password == 'kupu') {
+            return redirect()->route('dashboard'); // Pastikan redirect ke dashboard
         }
+        
+        
 
         // Kembali ke halaman login jika gagal
         return back()->withErrors([

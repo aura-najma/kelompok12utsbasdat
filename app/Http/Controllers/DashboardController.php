@@ -45,12 +45,17 @@ class DashboardController extends Controller
         Auth::logout();
         return redirect('/login'); // Redirect ke halaman login setelah logout
     }
-    public function dashboard()
-{
-    // Ambil nama pengguna dari session
-    $user = session('user');
-
-    return view('dashboardutama', compact('user'));
-}
+    public function dashboardutama()
+    {
+        $user = session('user');
+    
+        // Debugging
+        if (!$user) {
+            dd('User not found in session');
+        }
+    
+        return view('dashboardutama', compact('user'));
+    }
+    
 
 }

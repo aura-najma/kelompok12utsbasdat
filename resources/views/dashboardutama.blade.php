@@ -56,8 +56,8 @@
     <div class="sidebar">
         <div class="profile">
             <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
-            <h5 id="apotekerName">Selamat Datang, Apoteker</h5>
-            <p>No Registrasi: <span id="apotekerRegNo">123456789</span></p>
+            <h5>Selamat Datang, {{ $user }}</h5>
+            <p>No Registrasi: {{ $user == 'Dyah Ayu' ? 'STR1234567890' : 'STR0987654321' }}</p>
         </div>
         <h4 class="text-center">Dashboard Apoteker</h4>
         <nav class="nav flex-column">
@@ -68,28 +68,15 @@
             <a class="nav-link" href="/daftar-pasien">Daftar Pasien</a>
             <a class="nav-link" href="/lihatstokobat">Lihat Stok Obat</a>
         </nav>
-        <button class="btn logout-btn w-100 mt-3" onclick="logout()">Logout</button>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button class="btn logout-btn w-100 mt-3">Logout</button>
+        </form>
     </div>
     <div class="content flex-grow-1">
         <h2>Selamat Datang di Dashboard Apoteker</h2>
         <p>Di sini Anda dapat mengelola data obat, pasien, dan analisis penjualan.</p>
     </div>
 </div>
-
-<script>
-    // Sample dynamic name generation
-    const apotekerNames = ["Putri Ayudia", "Bagus Rahman", "Siti Aisyah", "Ahmad Zain", "Rina Lestari"];
-    const randomName = apotekerNames[Math.floor(Math.random() * apotekerNames.length)];
-    document.getElementById('apotekerName').textContent = `Selamat Datang, ${randomName}`;
-
-    // Example of a static registration number for now
-    document.getElementById('apotekerRegNo').textContent = 'STR12345678901234';
-
-    // Logout function
-    function logout() {
-        // Redirect to logout page or handle logout logic
-        window.location.href = "{{ route('logout') }}"; // Adjust URL to actual logout route
-    }
-</script>
 </body>
 </html>

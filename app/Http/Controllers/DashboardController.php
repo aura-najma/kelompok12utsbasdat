@@ -14,24 +14,30 @@ class DashboardController extends Controller
 
     public function login(Request $request)
     {
-        // Validasi input NIP dan password
         $credentials = $request->validate([
             'nip' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
-
-        // Aturan login ketat untuk NIP dan password
-        if ($request->nip == '1' && $request->password == 'katak' || $request->nip == '2' && $request->password == 'kupu') {
-            return redirect()->route('dashboardutama'); // Pastikan redirect ke dashboard
+    
+        // Verifikasi NIP dan Password
+        if (($credentials['nip'] == '1' && $credentials['password'] == 'katak') || 
+            ($credentials['nip'] == '2' && $credentials['password'] == 'kupu')) {
+    
+            // Simpan informasi pengguna ke dalam session
+            if ($credentials['nip'] == '1') {
+                session(['user' => 'Dyah Ayu']);
+            } elseif ($credentials['nip'] == '2') {
+                session(['user' => 'Aura Najma']);
+            }
+    
+            return redirect()->route('dashboard');
         }
-        
-        
-
-        // Kembali ke halaman login jika gagal
+    
         return back()->withErrors([
-            'nip' => 'Nomor Induk Pegawai atau password salah.',
+            'nip' => 'NIP atau password salah.',
         ])->onlyInput('nip');
     }
+    
 
     public function logout(Request $request)
     {

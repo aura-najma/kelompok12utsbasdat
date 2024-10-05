@@ -50,7 +50,7 @@ class DashboardController extends Controller
     // Ambil nama pengguna dari session
     $user = session('user');
 
-    return view('dashboard', compact('user'));
+    return view('dashboardutama', compact('user'));
 }
 
 }

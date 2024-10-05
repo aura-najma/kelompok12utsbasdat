@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($dokters as $dokter)
+            @foreach($dokter as $dokter)
                 <tr>
                     <td>{{ $dokter->id }}</td>
                     <td>{{ $dokter->nama_dokter }}</td>

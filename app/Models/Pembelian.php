@@ -10,7 +10,7 @@ class Pembelian extends Model
     use HasFactory;
 
     protected $fillable = [
-        'new_id',
+        'id_pembelian',
         'no_telepon',
         'keluhan',
         'resep',

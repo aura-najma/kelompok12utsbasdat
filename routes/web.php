@@ -35,43 +35,6 @@ Route::get('/beranda2', [RegistrationController::class, 'beranda2'])->name('bera
 */
 // views aja
 
-// Route for pasien pasien2
-Route::get('/pasien2', function () {
-    return view('pasien2');
-})->name('pasien2');
-
-// Route for inputdata
-Route::get('/inputdata', function () {
-    return view('inputdata');
-})->name('inputdata');
-
-// Route for obat
-Route::get('/obat', function () {
-    return view('obat');
-})->name('obat');
-
-// Route for cekout
-Route::get('/cekout', function () {
-    return view('cekout');
-})->name('cekout');
-
-// Route for eval
-Route::get('/eval', function () {
-    return view('eval');
-})->name('eval');
-
-// Route for invoice
-Route::get('/invoice', function () {
-    return view('invoice');
-})->name('invoice');
-
-Route::get('/welcome2', function () {
-    return view('welcome2');
-})->name('welcome2');
-
-Route::get('/login2', function () {
-    return view('login2');
-})->name('login2');
 
 // Route for validasi dokter (modif punya wanda)
 Route::get('/validasidokter', function () {
@@ -131,7 +94,6 @@ Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashb
 Route::get('/dashboard', [DashboardController::class, 'dashboardutama'])->name('dashboard')->middleware('auth');
 
 
-
 use App\Http\Controllers\EvaluasiController;
 
 Route::get('/evaluasi', [EvaluasiController::class, 'create'])->name('evaluasi.create');
@@ -174,5 +136,7 @@ Route::get('/lihatstokobat/tambah-obat', function () {
 Route::post('/lihatstokobat/tambah-obat', [ObatController::class, 'tambahObat']);
 use App\Http\Controllers\TransaksiController;
 
-Route::get('/cekstokobat', [TransaksiController::class, 'cekstok']);
-Route::post('/checkoutobat', [TransaksiController::class, 'checkout'])->name('checkoutobat');
+// Route untuk cek stok obat
+Route::get('/cekstokobat', [ObatController::class, 'cekStok'])->name('cekstokobat');
+// Route untuk cek obat keras
+Route::get('/cekobatkeras', [ObatController::class, 'cekObatKeras'])->name('cekobatkeras');

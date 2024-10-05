@@ -14,20 +14,28 @@ class DashboardController extends Controller
 
     public function login(Request $request)
     {
-    // Validasi NIP dan password
-    if ($request->nip == 1 && $request->password == 'katak') {
-        $user = 'Dyah Ayu';
-    } elseif ($request->nip == 2 && $request->password == 'kupu') {
-        $user = 'Aura Najma';
-    } else {
-        // Tangani jika NIP atau password salah
-        return back()->withErrors(['message' => 'NIP atau password salah']);
-    }
-
-    // Simpan user ke session
-    session(['user' => $user]);
-
-    return redirect()->route('dashboardutama');
+        $credentials = $request->validate([
+            'nip' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ]);
+    
+        // Verifikasi NIP dan Password
+        if (($credentials['nip'] == '1' && $credentials['password'] == 'katak') || 
+            ($credentials['nip'] == '2' && $credentials['password'] == 'kupu')) {
+    
+            // Simpan informasi pengguna ke dalam session
+            if ($credentials['nip'] == '1') {
+                session(['user' => 'Dyah Ayu']);
+            } elseif ($credentials['nip'] == '2') {
+                session(['user' => 'Aura Najma']);
+            }
+    
+            return redirect()->route('dashboardutama');
+        }
+    
+        return back()->withErrors([
+            'nip' => 'NIP atau password salah.',
+        ])->onlyInput('nip');
     }
     
 
@@ -37,19 +45,12 @@ class DashboardController extends Controller
         Auth::logout();
         return redirect('/login'); // Redirect ke halaman login setelah logout
     }
-    public function dashboardutama()
-    {
-        // Ambil nama pengguna dari session
-        $user = session('user');
-    
-        // Periksa jika user tidak ada di session
-        if (!$user) {
-            return redirect()->route('login')->withErrors(['message' => 'Anda harus login terlebih dahulu']);
-        }
-    
-        return view('dashboardutama', compact('user'));
-    }
-    
-    
+    public function dashboard()
+{
+    // Ambil nama pengguna dari session
+    $user = session('user');
+
+    return view('dashboardutama', compact('user'));
+}
 
 }

@@ -12,52 +12,56 @@ class TransaksiController extends Controller
     {
         // Ambil ID Pembelian dari request
         $idPembelian = $request->input('id_pembelian');
-        dump($idPembelian); // Ini akan menampilkan nilai, tetapi eksekusi akan berlanjut
-
+    
         // Ambil data obat yang dibeli
         $obats = $request->input('obats', []);
-
-        // Generate ID Transaksi (misalnya TR-xxxxxx-yyyyMMddHHmm)
         $idTransaksi = 'TR-' . substr($idPembelian, 3, 6) . '-' . now()->format('YmdHi');
-
+    
+        // Debugging: Tampilkan ID Pembelian dan ID Transaksi
+        dump('ID Pembelian: ' . $idPembelian);
+        dump('ID Transaksi: ' . $idTransaksi);
+    
         // Loop melalui setiap obat yang dibeli
         foreach ($obats as $obatId => $data) {
             $jumlah = $data['jumlah'];
             $hargaSatuan = $data['harga_satuan'];
             $namaObat = $data['nama'];
-
-            // Hanya simpan jika jumlah yang dibeli lebih dari 0
-            // Hanya simpan jika jumlah yang dibeli lebih dari 0
+    
+            // Cek apakah jumlah yang dibeli lebih dari 0
             if ($jumlah > 0) {
-                // Kurangi stok dari tabel obats
+                // Ambil obat berdasarkan no_bpom
                 $obat = Obat::where('no_bpom', $obatId)->first();
+                
+                // Cek apakah obat ada dan stok cukup
                 if ($obat) {
-                    $obat->stok -= $jumlah;
-                    $obat->save(); // Simpan perubahan stok
+                    if ($obat->stok >= $jumlah) { // Pastikan stok cukup
+                        $obat->stok -= $jumlah; // Kurangi stok
+                        $obat->save(); // Simpan perubahan stok
+    
+                        // Simpan data transaksi
+                        $transaksi = Transaksi::create([
+                            'id_transaksi' => $idTransaksi,
+                            'id_pembelian' => $idPembelian, // Tambahin ini
+                            'nama_obat' => $namaObat,
+                            'jumlah_obat' => $jumlah,
+                            'harga_satuan' => $hargaSatuan,
+                            'harga_total' => $jumlah * $hargaSatuan,
+                        ]);
+                        
+    
+                        // Debugging: Tampilkan data transaksi yang baru saja disimpan
+                        dump($transaksi); // Pastikan data yang disimpan benar
+                    } else {
+                        return redirect()->back()->with('error', 'Stok tidak cukup untuk ' . $namaObat);
+                    }
+                } else {
+                    return redirect()->back()->with('error', 'Obat tidak ditemukan.');
                 }
-
-                // Debugging: tampilkan data transaksi yang akan disimpan
-                dump([
-                    'id_transaksi' => $idTransaksi,
-                    'id_pembelian' => $idPembelian,
-                    'nama_obat' => $namaObat,
-                    'jumlah_obat' => $jumlah,
-                    'harga_satuan' => $hargaSatuan,
-                    'harga_total' => $jumlah * $hargaSatuan,
-                ]);
-
-                // Simpan data transaksi
-                Transaksi::create([
-                    'id_transaksi' => $idTransaksi,
-                    'id_pembelian' => $idPembelian,
-                    'nama_obat' => $namaObat,
-                    'jumlah_obat' => $jumlah,
-                    'harga_satuan' => $hargaSatuan,
-                    'harga_total' => $jumlah * $hargaSatuan,
-                ]);
             }
         }
-
+    
         return redirect()->back()->with('success', 'Transaksi berhasil disimpan dengan ID: ' . $idTransaksi);
     }
+    
+    
 }

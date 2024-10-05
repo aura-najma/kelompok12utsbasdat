@@ -56,7 +56,7 @@
     <div class="sidebar">
         <div class="profile">
             <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
-            <h5>Selamat Datang, {{ $user }}</h5>
+            <h5>Selamat Datang, {{user}}</h5>
         </div>
         <h4 class="text-center">Dashboard Apoteker</h4>
         <nav class="nav flex-column">

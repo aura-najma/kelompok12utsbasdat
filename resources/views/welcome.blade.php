@@ -71,7 +71,7 @@
                         <!-- ***** Navigation Menu Start ***** -->
                         <ul class="nav">
                             <li><a href="#welcomeblade">Home</a></li>
-                            <li><a href="#">About Us</a></li>
+                            <li><a href="#services">About Us</a></li>
                         </ul>
                         <!-- ***** Navigation Menu End ***** -->
                     </nav>
@@ -96,10 +96,10 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="white-button first-button scroll-to-section">
-                                            <a href="#">Login </a>
+                                            <a href="{{ route('login') }}">Login </a>
                                         </div>
                                         <div class="white-button scroll-to-section">
-                                            <a href="#">Evaluasi</a>
+                                            <a href="{{ route('evaluasiapotek') }}">Evaluasi</a>
                                         </div>
                                     </div>
                                 </div>

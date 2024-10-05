@@ -28,7 +28,7 @@
         <form action="{{ route('evaluasi.store') }}" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="id_pembeli" class="form-label">ID Pembeli</label>
+                <label for="id_pembeli" class="form-label">ID Transaksi</label>
                 <input type="text" class="form-control" id="id_pembeli" name="id_pembeli" required>
             </div>
             <div class="mb-3">

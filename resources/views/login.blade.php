@@ -13,25 +13,25 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
-html,body{
+html, body {
   display: grid;
   height: 100%;
   width: 100%;
   place-items: center;
-  background: #f2f2f2;
-  /* background: linear-gradient(-135deg, #c850c0, #4158d0); */
+  background: url('assets/images/bg.png') no-repeat center center fixed; /* Add background image */
+  background-size: cover; /* Ensures the background image covers the entire area */
 }
-::selection{
+::selection {
   background: #204ae6;
   color: #fff;
 }
-.wrapper{
+.wrapper {
   width: 380px;
   background: #fff;
   border-radius: 15px;
   box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
 }
-.wrapper .title{
+.wrapper .title {
   font-size: 35px;
   font-weight: 600;
   text-align: center;
@@ -41,16 +41,16 @@ html,body{
   border-radius: 15px 15px 0 0;
   background: linear-gradient(-135deg, #204ae6, #36bef8);
 }
-.wrapper form{
+.wrapper form {
   padding: 10px 30px 50px 30px;
 }
-.wrapper form .field{
+.wrapper form .field {
   height: 50px;
   width: 100%;
   margin-top: 20px;
   position: relative;
 }
-.wrapper form .field input{
+.wrapper form .field input {
   height: 100%;
   width: 100%;
   outline: none;
@@ -61,10 +61,10 @@ html,body{
   transition: all 0.3s ease;
 }
 .wrapper form .field input:focus,
-form .field input:valid{
+form .field input:valid {
   border-color: #36bef8;
 }
-.wrapper form .field label{
+.wrapper form .field label {
   position: absolute;
   top: 50%;
   left: 20px;
@@ -76,14 +76,14 @@ form .field input:valid{
   transition: all 0.3s ease;
 }
 form .field input:focus ~ label,
-form .field input:valid ~ label{
+form .field input:valid ~ label {
   top: 0%;
   font-size: 16px;
   color: #36bef8;
   background: #fff;
   transform: translateY(-50%);
 }
-form .content{
+form .content {
   display: flex;
   width: 100%;
   height: 50px;
@@ -91,25 +91,25 @@ form .content{
   align-items: center;
   justify-content: space-around;
 }
-form .content .checkbox{
+form .content .checkbox {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-form .content input{
+form .content input {
   width: 15px;
   height: 15px;
   background: red;
 }
-form .content label{
+form .content label {
   color: #262626;
   user-select: none;
   padding-left: 5px;
 }
-form .content .pass-link{
+form .content .pass-link {
   color: "";
 }
-form .field input[type="submit"]{
+form .field input[type="submit"] {
   color: #fff;
   border: none;
   padding-left: 0;
@@ -120,21 +120,21 @@ form .field input[type="submit"]{
   background: linear-gradient(-135deg, #204ae6, #36bef8);
   transition: all 0.3s ease;
 }
-form .field input[type="submit"]:active{
+form .field input[type="submit"]:active {
   transform: scale(0.95);
 }
-form .signup-link{
+form .signup-link {
   color: #262626;
   margin-top: 20px;
   text-align: center;
 }
 form .pass-link a,
-form .signup-link a{
+form .signup-link a {
   color: #36bef8;
   text-decoration: none;
 }
 form .pass-link a:hover,
-form .signup-link a:hover{
+form .signup-link a:hover {
   text-decoration: underline;
 }
       </style> 
@@ -150,25 +150,12 @@ form .signup-link a:hover{
                <label>Email Address</label>
             </div>
             <div class="field">
-               <input type="password" required>
-               <label>Password</label>
-            </div>
-            <div class="content">
-               <div class="checkbox">
-                  <input type="checkbox" id="remember-me">
-                  <label for="remember-me">Remember me</label>
-               </div>
-               <div class="pass-link">
-                  <a href="#">Forgot password?</a>
-               </div>
+                <input type="password" required>
+                <label>Password</label>
             </div>
             <div class="field">
-               <input type="submit" value="Login">
+                <input type="submit" value="Login">
             </div>
-            <div class="signup-link">
-               Not a member? <a href="#">Signup now</a>
-            </div>
-         </form>
       </div>
    </body>
 </html>

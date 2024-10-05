@@ -45,11 +45,11 @@ class PasienController extends Controller
             }
 
             // Generate `new_id`
-            $newId = 'PB-' . substr($request->no_telepon, -4) . '-' . now()->format('YmdHi');
+            $id_pembelian = 'PB-' . substr($request->no_telepon, -4) . '-' . now()->format('YmdHi');
 
             // Simpan data pembelian
             $pembelian = Pembelian::create([
-                'new_id' => $newId, // Set new_id sesuai dengan kebutuhan
+                'id_pembelian' => $newId, // Set new_id sesuai dengan kebutuhan
                 'no_telepon' => $request->no_telepon,
                 'keluhan' => $request->keluhan,
                 'resep' => $resepPath, // Nilai bisa `null` jika tidak ada resep

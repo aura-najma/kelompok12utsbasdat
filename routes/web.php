@@ -134,9 +134,13 @@ Route::get('/lihatstokobat/tambah-obat', function () {
 
 // Route untuk memproses penambahan obat baru
 Route::post('/lihatstokobat/tambah-obat', [ObatController::class, 'tambahObat']);
-use App\Http\Controllers\TransaksiController;
 
 // Route untuk cek stok obat
 Route::get('/cekstokobat', [ObatController::class, 'cekStok'])->name('cekstokobat');
 // Route untuk cek obat keras
 Route::get('/cekobatkeras', [ObatController::class, 'cekObatKeras'])->name('cekobatkeras');
+
+use App\Http\Controllers\TransaksiController;
+
+// Route untuk menyimpan transaksi
+Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');

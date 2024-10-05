@@ -2,61 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Obat;
+use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    public function cekstok()
+    public function store(Request $request)
     {
-        // Ambil semua data obat dari database
-        $obatList = Obat::all();
+        // Ambil ID Pembelian dari request
+        $idPembelian = $request->input('id_pembelian');
 
-        // Kirim data obat ke view
-        return view('cekstokobat', compact('obatList'));
-    }
+        // Ambil data obat yang dibeli
+        $obats = $request->input('obats', []);
 
-    public function checkout(Request $request)
-    {
-        // Dapatkan `new_id` dari session atau request
-        $newId = $request->session()->get('new_id'); // Sesuaikan sesuai aplikasi Anda
+        // Generate ID Transaksi (misalnya TR-xxxxxx-yyyyMMddHHmm)
+        $idTransaksi = 'TR-' . substr($idPembelian, 3, 6) . '-' . now()->format('YmdHi');
 
-        // Buat `id_transaksi` sekali untuk seluruh transaksi
-        $newIdShort = substr($newId, 0, 6); // Ambil 6 karakter pertama dari `new_id`
-        $timestamp = now()->format('ymdHi'); // Ambil `YYMMDDHHMM`
-        $idTransaksi = 'TR-' . $newIdShort . $timestamp; // Buat ID transaksi
+        // Loop melalui setiap obat yang dibeli
+        foreach ($obats as $obatId => $data) {
+            $jumlah = $data['jumlah'];
+            $hargaSatuan = $data['harga_satuan'];
+            $namaObat = $data['nama'];
 
-        // Looping melalui setiap obat yang dipilih
-        foreach ($request->quantities as $obatId => $quantity) {
-            if ($quantity > 0) {
-                // Dapatkan informasi obat
-                $obat = Obat::find($obatId);
-                $namaObat = $request->names[$obatId];
-                $hargaSatuan = $request->prices[$obatId];
-                $hargaTotal = $quantity * $hargaSatuan;
-
-                // Periksa stok yang mencukupi
-                if ($obat->stok < $quantity) {
-                    return redirect()->back()->with('error', 'Stok obat tidak mencukupi untuk ' . $namaObat);
+            // Hanya simpan jika jumlah yang dibeli lebih dari 0
+            if ($jumlah > 0) {
+                // Kurangi stok dari tabel obats
+                $obat = Obat::where('no_bpom', $obatId)->first();
+                if ($obat) {
+                    $obat->stok -= $jumlah;
+                    $obat->save(); // Simpan perubahan stok
                 }
 
                 // Simpan data transaksi
                 Transaksi::create([
-                    'id_transaksi' => $idTransaksi, // ID yang sama untuk semua obat dalam transaksi ini
-                    'new_id' => $newId,
+                    'id_transaksi' => $idTransaksi, // ID transaksi yang dikustomisasi
+                    'id_pembelian' => $idPembelian, // ID Pembelian yang terhubung
                     'nama_obat' => $namaObat,
-                    'jumlah' => $quantity,
+                    'jumlah_obat' => $jumlah,
                     'harga_satuan' => $hargaSatuan,
-                    'harga_total' => $hargaTotal,
+                    'harga_total' => $jumlah * $hargaSatuan,
                 ]);
-
-                // Perbarui stok obat
-                $obat->stok -= $quantity;
-                $obat->save();
             }
         }
 
-        return redirect()->route('checkoutobat')->with('success', 'Transaksi berhasil disimpan.');
+        return redirect()->back()->with('success', 'Transaksi berhasil disimpan dengan ID: ' . $idTransaksi);
     }
 }

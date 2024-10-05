@@ -25,4 +25,9 @@ class Transaksi extends Model
 
     // Set the key type to string
     protected $keyType = 'string';
+
+    public function pembelian()
+    {
+        return $this->belongsTo(Pembelian::class, 'id_pembelian', 'id_pembelian');
+    }
 }

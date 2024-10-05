@@ -9,14 +9,16 @@ class Transaksi extends Model
 {
     use HasFactory;
 
+// Transaksi.php (Model)
     protected $fillable = [
         'id_transaksi',
-        'new_id',
+        'id_pembelian',
         'nama_obat',
-        'jumlah',
+        'jumlah_obat',
         'harga_satuan',
         'harga_total',
     ];
+
 
     // Disable auto-incrementing as `id_transaksi` is not an integer
     public $incrementing = false;

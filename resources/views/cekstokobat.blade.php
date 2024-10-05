@@ -37,6 +37,8 @@
     <!-- Menampilkan ID Pembelian -->
     <form action="{{ route('transaksi.store') }}" method="POST">
         @csrf
+        <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}"> <!-- Pastikan ini ada -->
+
         
         @if($obatList->isNotEmpty())
             <table>

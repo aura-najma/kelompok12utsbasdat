@@ -1,17 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Apoteker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Pastikan ini ada
 class DashboardController extends Controller
 {
-    public function showLoginForm()
-    {
-        // Menampilkan form login
-        return view('login'); // Pastikan ada file login.blade.php di folder resources/views
-    }
-
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -19,17 +13,13 @@ class DashboardController extends Controller
             'password' => ['required', 'string'],
         ]);
     
+        // Mengambil data apoteker berdasarkan NIP
+        $apoteker = Apoteker::where('nip', $credentials['nip'])->first();
+    
         // Verifikasi NIP dan Password
-        if (($credentials['nip'] == '1' && $credentials['password'] == 'katak') || 
-            ($credentials['nip'] == '2' && $credentials['password'] == 'kupu')) {
-    
+        if ($apoteker && Hash::check($credentials['password'], $apoteker->password)) {
             // Simpan informasi pengguna ke dalam session
-            if ($credentials['nip'] == '1') {
-                session(['user' => 'Dyah Ayu']);
-            } elseif ($credentials['nip'] == '2') {
-                session(['user' => 'Aura Najma']);
-            }
-    
+            session(['user' => $apoteker->nama]);
             return redirect()->route('dashboardutama');
         }
     
@@ -37,6 +27,7 @@ class DashboardController extends Controller
             'nip' => 'NIP atau password salah.',
         ])->onlyInput('nip');
     }
+    
     
 
     public function logout(Request $request)

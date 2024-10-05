@@ -10,19 +10,26 @@ class ObatKerasController extends Controller
     /**
      * Menampilkan halaman cek obat keras.
      */
-    public function cekObatKeras($idPembelian)
+    public function cekObatKeras(Request $request)
     {
+        // Mengambil id_pembelian dari query parameter
+        $idPembelian = $request->input('id_pembelian');
+        
+        // Debugging: Melihat id_pembelian yang diterima
+        //dump($idPembelian);
+    
         // Mengambil semua nama obat dari tabel obats
         $daftarObat = Obat::pluck('nama')->toArray();
-
+    
+        // Debugging: Melihat daftar semua obat dari tabel obats
+        // dump($daftarObat);
+    
         // Mengambil semua obat yang termasuk kategori 'Obat Keras'
         $obatKeras = Obat::where('jenis_obat', 'Keras')->pluck('nama')->toArray();
-
-        // Debugging: Melihat daftar obat dan obat keras
-        dump($daftarObat);
-        dump($obatKeras);
-        dump($idPembelian);
-
+    
+        // Debugging: Melihat daftar obat yang termasuk kategori 'Obat Keras'
+       // dump($obatKeras);
+    
         // Mengirim data ke view cekobatkeras
         return view('cekobatkeras', [
             'daftarObat' => $daftarObat,
@@ -30,6 +37,8 @@ class ObatKerasController extends Controller
             'idPembelian' => $idPembelian,
         ]);
     }
+    
+    
 
     /**
      * Memproses validasi dari form cek obat keras.

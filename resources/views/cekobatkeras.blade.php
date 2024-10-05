@@ -17,6 +17,7 @@
         <!-- Token CSRF -->
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <!-- Input hidden untuk mengirimkan id_pembelian -->
+        <!-- Input hidden untuk mengirimkan id_pembelian -->
         <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}">
 
         <div id="obat-container">

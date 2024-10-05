@@ -17,10 +17,7 @@ Route::get('/login', function () {
     return view('login');
 });
 
-// Route for the pasien page
-Route::get('/pasien', function () {
-    return view('pasien');
-});
+
 
 
 
@@ -143,13 +140,13 @@ Route::get('/invoice/{id_pembelian}', [TransaksiController::class, 'showInvoice'
 use App\Http\Controllers\ObatKerasController;
 
 // Rute untuk halaman cek obat keras
-Route::get('/cekobatkeras/{id_pembelian}', [ObatKerasController::class, 'cekObatKeras'])->name('cekobatkeras');
+Route::get('/cekobatkeras', [ObatKerasController::class, 'cekObatKeras'])->name('cekobatkeras');
 
 // Rute untuk memproses cek obat keras (form POST)
 Route::post('/cekobatkeras/proses', [ObatKerasController::class, 'prosesCekObatKeras'])->name('prosesCekObatKeras');
 
 // Rute untuk validasi dokter
-Route::get('/validasidokter/{id_pembelian}', [ValidasiController::class, 'validasiDokter'])->name('validasidokter');
+Route::get('/validasidokter/{id_pembelian}', [DokterController::class, 'index'])->name('validasidokter');
 
 
 

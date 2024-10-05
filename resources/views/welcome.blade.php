@@ -1,116 +1,170 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Page - Apotek Dawai</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <title>Lifespring Drugstore</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/templatemo-chain-app-dev.css">
+    <link rel="stylesheet" href="assets/css/animated.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+
     <style>
-        body {
-            background-image: url('{{ asset('img/2.png') }}');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
+        .logo {
+            display: flex; /* Menjaga elemen logo tetap di dalam aliran */
+            align-items: center; /* Vertically center */
         }
-        .navbar {
-            background-color: white; 
-            position: absolute;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 15px 0;
+
+        .logo-img {
+            width: 150px; /* Atur lebar logo sesuai kebutuhan */
+            height: auto; /* Mempertahankan rasio aspek */
+            margin-right: 10px; /* Jarak antara logo dan menu navigasi */
         }
-        .navbar-brand {
-            color: #0056b3; 
-            font-weight: 600;
-            font-size: 1.5rem; 
-            margin-left: 20px; 
-        }
-        .navbar-text {
-            color: #0056b3; 
-            font-weight: 300;
-            font-size: 1.2rem; 
-        }
-        .welcome-container {
-            display: flex;
-            justify-content: space-between;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-            max-width: 1000px; 
-            margin: auto;
-        }
-        .left-section {
-            flex: 1;
-            margin-right: 40px; 
-        }
-        .right-section {
-            flex: 1;
-        }
-        .welcome-title {
-            color: #2295b4; 
-            font-weight: 600;
-            font-size: 2rem; 
-        }
-        .text-custom {
-            color: #2295b4; 
-        }
-        .button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #2295b4;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 500;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-        .history-image {
-            max-width: 100%; 
-            border-radius: 10px;
-        }
-        .welcome-image {
-            max-width: 100%; 
-            border-radius: 10px;
-            margin: 20px 0; 
+
+        .right-image {
+            width: 150%; /* Set width to 100% of its container */
+            max-width: 10000px; /* Set a max-width to avoid overflow */
+            height: auto; /* Maintain aspect ratio */
         }
     </style>
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand">Apotek Dawai</a>
-            <span class="navbar-text">
-                Sahabat Sehat Selalu
-            </span>
-        </div>
-    </nav>
 
-    <!-- Welcome Box -->
-    <div class="welcome-container">
-        <div class="left-section">
-            <h1 class="welcome-title">Welcome to Apotek Dawai</h1>
-            <img src="https://expertindo-training.com/wp-content/uploads/2023/10/Screenshot-2023-10-12-145346.jpg" alt="Welcome" class="welcome-image">
-            <a href="{{ route('login') }}" class="button">Login</a>
-            <button type="button" class="button" onclick="window.location.href='evaluasiapotek'">Evaluasi Apotek</button>
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-        <div class="right-section">
-            <h2 class="text-custom">APOTEK DAWAI</h2>
-            <p>Alamat: Jl. Kesehatan No. 123, Surabaya</p>
-            <p>Apotek Dawai telah melayani masyarakat sejak tahun 2005 dengan berbagai produk kesehatan dan layanan yang berkualitas.</p>
-            <img src="https://asset-a.grid.id/crop/0x0:0x0/x/photo/2019/07/02/2384103658.png" alt="Lokasi Apotek" class="history-image">
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav d-flex justify-content-between align-items-center">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">
+                            <img src="assets/images/logo.png" alt="Chain App Dev" class="logo-img">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+
+                        <!-- ***** Navigation Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="#welcomeblade">Home</a></li>
+                            <li><a href="#">About Us</a></li>
+                        </ul>
+                        <!-- ***** Navigation Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6 align-self-center">
+                            <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h2>Lifespring Drugstore</h2>
+                                        <p>Lifespring Drugstore hadir sebagai solusi lengkap untuk kesehatan,
+                                            menyediakan layanan ramah dan produk unggulan yang mendukung kesejahteraan Anda</p>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="white-button first-button scroll-to-section">
+                                            <a href="#">Login </a>
+                                        </div>
+                                        <div class="white-button scroll-to-section">
+                                            <a href="#">Evaluasi</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                                <img src="assets/images/3.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <div id="services" class="services section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="section-heading wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+                        <h4>Apotek <em>Aman dan &amp; Terpercaya</em> untuk Anda</h4>
+                        <p>Lifespring Drugstore</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="service-item first-service">
+                        <div class="icon"></div>
+                        <h4>Obat Berkualitas</h4>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="service-item second-service">
+                        <div class="icon"></div>
+                        <h4>Apoteker Professional</h4>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="service-item third-service">
+                        <div class="icon"></div>
+                        <h4>Pelayanan Ramah</h4>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="service-item fourth-service">
+                        <div class="icon"></div>
+                        <h4>Terpercaya</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/popup.js"></script>
+    <script src="assets/js/custom.js"></script>
+
 </body>
 </html>

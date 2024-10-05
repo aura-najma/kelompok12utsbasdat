@@ -78,6 +78,15 @@ class ObatController extends Controller
         return redirect('/lihatstokobat')->with('message', 'Obat baru berhasil ditambahkan.');
     }
 
+    public function cekstok()
+    {
+        // Ambil semua data obat dari database
+        $obatList = Obat::all();
+
+        // Kirim data obat ke view
+        return view('cekstokobat', compact('obatList'));
+    }
+
     
 
 }

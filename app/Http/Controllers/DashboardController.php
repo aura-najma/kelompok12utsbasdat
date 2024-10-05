@@ -22,7 +22,7 @@ class DashboardController extends Controller
 
         // Aturan login ketat untuk NIP dan password
         if ($request->nip == '1' && $request->password == 'katak' || $request->nip == '2' && $request->password == 'kupu') {
-            return redirect()->route('dasboardutama'); // Pastikan redirect ke dashboard
+            return redirect()->route('dashboardutama'); // Pastikan redirect ke dashboard
         }
         
         

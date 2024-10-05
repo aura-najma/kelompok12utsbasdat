@@ -128,6 +128,7 @@ Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 
 // Route untuk dashboard, dilindungi oleh middleware auth
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'dashboardutama'])->name('dashboard')->middleware('auth');
 
 
 

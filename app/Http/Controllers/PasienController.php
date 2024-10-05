@@ -49,7 +49,7 @@ class PasienController extends Controller
 
             // Simpan data pembelian
             $pembelian = Pembelian::create([
-                'id_pembelian' => $newId, // Set new_id sesuai dengan kebutuhan
+                'id_pembelian' => $id_pembelian, // Set new_id sesuai dengan kebutuhan
                 'no_telepon' => $request->no_telepon,
                 'keluhan' => $request->keluhan,
                 'resep' => $resepPath, // Nilai bisa `null` jika tidak ada resep

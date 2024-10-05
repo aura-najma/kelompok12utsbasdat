@@ -117,15 +117,19 @@ Route::get('/evaluasiapotek', function () {
 // bagian dyah
 use App\Http\Controllers\DashboardController;
 
-Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [DashboardController::class, 'login']);
+// Route untuk menampilkan form login
+Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login.form');
+
+// Route untuk memproses login
+Route::post('/login', [DashboardController::class, 'login'])->name('login');
+
+// Route untuk logout
 Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
 
-
-Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login.form');
-Route::post('/login', [DashboardController::class, 'login'])->name('login');
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+// Route untuk dashboard, dilindungi oleh middleware auth
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+
+
 
 use App\Http\Controllers\EvaluasiController;
 

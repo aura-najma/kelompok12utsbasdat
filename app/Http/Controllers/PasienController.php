@@ -56,9 +56,16 @@ class PasienController extends Controller
             ]);
 
             // Redirect ke halaman cek stok obat dengan membawa `id_pembelian`
-            return redirect()->route('cekstokobat', ['id_pembelian' => $idPembelian])
-                ->with('success', 'Data pasien dan pembelian berhasil disimpan' . (!is_null($resepPath) ? ' dengan resep.' : ' tanpa resep.'));
-    
+            if (!is_null($resepPath)) {
+                // Jika ada resep, redirect ke halaman cek obat keras
+                return redirect()->route('cekobatkeras', ['id_pembelian' => $idPembelian])
+                    ->with('success', 'Data pasien dan pembelian berhasil disimpan dengan resep.');
+            } else {
+                // Jika tidak ada resep, redirect ke halaman cek stok obat
+                return redirect()->route('cekstokobat', ['id_pembelian' => $idPembelian])
+                    ->with('success', 'Data pasien dan pembelian berhasil disimpan tanpa resep.');
+            }
+            
         
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Terjadi error: ' . $e->getMessage());

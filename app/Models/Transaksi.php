@@ -13,6 +13,7 @@ class Transaksi extends Model
     protected $fillable = [
         'id_transaksi',
         'id_pembelian',
+        'no_bpom',
         'nama_obat',
         'jumlah_obat',
         'harga_satuan',
@@ -29,5 +30,10 @@ class Transaksi extends Model
     public function pembelian()
     {
         return $this->belongsTo(Pembelian::class, 'id_pembelian', 'id_pembelian');
+    }
+
+    public function obat()
+    {
+        return $this->belongsTo(Obat::class, 'no_bpom', 'no_bpom');
     }
 }

@@ -17,7 +17,6 @@
         <!-- Token CSRF -->
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <!-- Input hidden untuk mengirimkan id_pembelian -->
-        <!-- Input hidden untuk mengirimkan id_pembelian -->
         <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}">
 
         <div id="obat-container">
@@ -29,13 +28,18 @@
                     <button type="button" class="btn btn-primary mt-2 cek-obat-btn" data-input-id="nama_obat_{{ $i }}">Cek Obat Keras</button>
                     <div class="validasi-container mt-2" style="display: none;">
                         <p>Obat ini termasuk kategori <strong>Obat Keras</strong>. Harap lanjut ke validasi dokter.</p>
-                        <a href="/validasidokter/{{ $idPembelian }}" class="btn btn-warning">Lanjut Validasi Dokter</a>
+                        <input type="checkbox" class="validasi-dokter-checkbox" data-input-id="nama_obat_{{ $i }}"> Centang untuk validasi dokter
+                        <a href="/validasidokter/{{ $idPembelian }}" class="btn btn-warning mt-2">Validasi Resep ke Dokter</a>
+                    </div>
+                    <div class="non-obat-keras mt-2" style="display: none;">
+                        <p>Obat ini tidak termasuk kategori <strong>Obat Keras</strong>.</p>
                     </div>
                 </div>
             @endfor
         </div>
 
-        <button type="submit" class="btn btn-success">Submit Semua Obat</button>
+        <!-- Tombol untuk melanjutkan ke halaman cek stok obat -->
+        <button type="button" id="btn-cek-stok-obat" class="btn btn-success mt-3" style="display: none;">Cek Stok Obat</button>
     </form>
 </div>
 
@@ -48,7 +52,9 @@ $(document).ready(function() {
     // Array untuk menyimpan daftar obat dari database
     let daftarObat = {!! json_encode($daftarObat) !!}; // Mengambil daftar obat dari controller
     let obatKeras = {!! json_encode($obatKeras) !!};  // Mengambil daftar obat keras dari controller
-    
+    let hasObatKeras = false; // Menandai apakah ada obat keras atau tidak
+    let idPembelian = "{{ $idPembelian }}"; // Mendapatkan id pembelian dari blade
+
     // Implementasi autocomplete untuk semua input obat
     $(".nama-obat").each(function() {
         $(this).autocomplete({
@@ -72,14 +78,58 @@ $(document).ready(function() {
         let isObatKeras = obatKeras.includes(obatTerpilih);
 
         if (isObatKeras) {
+            // Menandai bahwa ada obat keras
+            hasObatKeras = true;
             // Menampilkan kontainer validasi jika obat adalah obat keras
             $(this).siblings('.validasi-container').show();
+            $(this).siblings('.non-obat-keras').hide(); // Sembunyikan pesan non-obat keras
         } else {
-            // Menyembunyikan kontainer validasi jika obat bukan obat keras
-            $(this).siblings('.validasi-container').hide();
-            alert("Obat ini tidak termasuk kategori Obat Keras.");
+            // Menampilkan pesan jika obat bukan obat keras
+            $(this).siblings('.validasi-container').hide(); // Sembunyikan pesan obat keras
+            $(this).siblings('.non-obat-keras').show(); // Tampilkan pesan non-obat keras
         }
+
+        // Tampilkan tombol "Cek Stok Obat"
+        $("#btn-cek-stok-obat").show();
+
+        // Periksa validasi untuk menentukan apakah tombol cek stok obat dapat digunakan
+        updateCekStokObatButton();
     });
+
+    // Event untuk kotak centang validasi dokter
+    $(".validasi-dokter-checkbox").on('change', function() {
+        // Periksa validasi untuk menentukan apakah tombol cek stok obat dapat digunakan
+        updateCekStokObatButton();
+    });
+
+    // Event untuk tombol "Cek Stok Obat"
+    $("#btn-cek-stok-obat").on('click', function() {
+        // Mengarahkan ke halaman cek stok obat dengan id_pembelian sebagai query parameter
+        window.location.href = "/cekstokobat?id_pembelian=" + idPembelian;
+    });
+
+    function updateCekStokObatButton() {
+        // Jika ada obat keras, periksa apakah semua kotak centang sudah dicentang
+        if (hasObatKeras) {
+            let semuaCentang = true;
+            $(".validasi-dokter-checkbox:visible").each(function() {
+                if (!$(this).is(":checked")) {
+                    semuaCentang = false;
+                    return false; // Break loop jika ada yang belum dicentang
+                }
+            });
+
+            // Aktifkan atau nonaktifkan tombol "Cek Stok Obat" berdasarkan validasi
+            if (semuaCentang) {
+                $("#btn-cek-stok-obat").prop('disabled', false);
+            } else {
+                $("#btn-cek-stok-obat").prop('disabled', true);
+            }
+        } else {
+            // Jika tidak ada obat keras, tombol "Cek Stok Obat" diaktifkan
+            $("#btn-cek-stok-obat").prop('disabled', false);
+        }
+    }
 });
 </script>
 

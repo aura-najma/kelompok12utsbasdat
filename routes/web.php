@@ -12,28 +12,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route for login page for apoteker
-//Route::get('/login', function () {
-  //  return view('login');
-//})->name('login');
+// Route for the login page for apoteker
+Route::get('/login', function () {
+    return view('login');
+});
 
-// Route for pasien pasien
+// Route for the pasien page
 Route::get('/pasien', function () {
     return view('pasien');
-})->name('pasien');
+});
 
-/*
-// Route for the registration form
-Route::get('/form', [RegistrationController::class, 'showForm'])->name('form.show');
-Route::post('/form', [RegistrationController::class, 'submitForm'])->name('form.submit');
-
-// Route for input data page
-Route::get('/input-data', [RegistrationController::class, 'inputData'])->name('data.input');
-
-// Route for beranda2 page
-Route::get('/beranda2', [RegistrationController::class, 'beranda2'])->name('beranda2');
-*/
-// views aja
 
 
 // Route for validasi dokter (modif punya wanda)

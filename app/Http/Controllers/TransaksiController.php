@@ -13,47 +13,46 @@ class TransaksiController extends Controller
     {
         // Ambil ID Pembelian dari request
         $idPembelian = $request->input('id_pembelian');
-    
-        // Ambil data obat yang dibeli
         $obats = $request->input('obats', []);
-
-        // Ambil 16 karakter terakhir dari ID Pembelian (atau sesuai kebutuhan)
-        $idPembelianSlot = substr($idPembelian, -16);
-
-        // Loop melalui setiap obat yang dibeli
+        $tanggalSekarang = now()->format('Y-m-d'); // Tanggal hari ini dalam format Y-m-d
+        
+        // Ambil jumlah transaksi yang sudah ada untuk ID Pembelian pada tanggal hari ini
+        $existingTransactionsCount = Transaksi::whereDate('created_at', $tanggalSekarang)->count();
+        
         foreach ($obats as $obatId => $data) {
             $jumlah = $data['jumlah'];
             $hargaSatuan = $data['harga_satuan'];
             $namaObat = $data['nama'];
     
-            // Cek apakah jumlah yang dibeli lebih dari 0
             if ($jumlah > 0) {
-                // Generate 2 digit UUID baru untuk setiap obat
-                $randomDigits = mt_rand(10, 99); // 2 digit angka acak (10-99)
-                $idTransaksi = 'TR' . $randomDigits . $idPembelianSlot; // Buat ID Transaksi unik untuk setiap item
-
+                // Generate nomor urut berdasarkan jumlah transaksi yang sudah ada pada hari ini
+                $transactionNumber = str_pad($existingTransactionsCount + 1, 3, '0', STR_PAD_LEFT);
+                $timestamp = now()->format('YmdHis'); // timestamp saat ini dalam format YmdHis
+                $idTransaksi = 'TR-' . $transactionNumber . '-' . $timestamp; // Tambahkan tanda strip
+    
                 // Debugging: Tampilkan ID Transaksi
                 dump('ID Transaksi: ' . $idTransaksi);
-
+    
                 // Ambil obat berdasarkan no_bpom
                 $obat = Obat::where('no_bpom', $obatId)->first();
-                
-                // Cek apakah obat ada dan stok cukup
+    
                 if ($obat) {
-                    if ($obat->stok >= $jumlah) { // Pastikan stok cukup
-                        $obat->stok -= $jumlah; // Kurangi stok
-                        $obat->save(); // Simpan perubahan stok
+                    if ($obat->stok >= $jumlah) {
+                        $obat->stok -= $jumlah;
+                        $obat->save();
     
                         // Simpan data transaksi
-                        $transaksi = Transaksi::create([
+                        Transaksi::create([
                             'id_transaksi' => $idTransaksi,
-                            'id_pembelian' => $idPembelian, 
+                            'id_pembelian' => $idPembelian,
                             'nama_obat' => $namaObat,
                             'jumlah_obat' => $jumlah,
                             'harga_satuan' => $hargaSatuan,
                             'harga_total' => $jumlah * $hargaSatuan,
                         ]);
-                        
+    
+                        // Increment untuk transaksi berikutnya dalam loop
+                        $existingTransactionsCount++;
                     } else {
                         return redirect()->back()->with('error', 'Stok tidak cukup untuk ' . $namaObat);
                     }
@@ -65,5 +64,7 @@ class TransaksiController extends Controller
     
         return redirect()->back()->with('success', 'Transaksi berhasil disimpan.');
     }
+    
+    
     
 }

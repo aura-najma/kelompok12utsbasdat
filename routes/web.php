@@ -135,11 +135,3 @@ use App\Http\Controllers\TransaksiController;
 
 // Route untuk menyimpan transaksi
 Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
-
-use App\Http\Controllers\KeranjangController;
-
-// Rute untuk menampilkan halaman 'maubeliobat', dengan parameter 'id_pembelian'.
-Route::get('/maubeliobat/{id_pembelian}', [KeranjangController::class, 'tampilkanObat'])->name('maubeliobat');
-
-// Rute untuk menambahkan obat ke keranjang.
-Route::post('/tambah-ke-keranjang', [KeranjangController::class, 'tambahKeKeranjang'])->name('tambah-ke-keranjang');

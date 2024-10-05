@@ -56,7 +56,7 @@
                     <tr>
                         <td>{{ $obat->no_bpom }}</td>
                         <td>{{ $obat->nama }}</td>
-                        <td>{{ $obat->stok }}</td>
+                        <td id="stok-{{ $obat->no_bpom }}">{{ $obat->stok }}</td>
                         <td>{{ $obat->harga_satuan }}</td>
                         <td>
                             <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', false)">-</button>
@@ -70,7 +70,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <button type="submit">Beli Obat</button>
+            <button id="purchase-button" type="submit" class="disabled" disabled>Beli Obat</button>
         @else
             <p>Tidak ada obat yang tersedia saat ini.</p>
         @endif
@@ -80,13 +80,18 @@
         // Fungsi untuk menambah atau mengurangi jumlah obat yang ingin dibeli
         function changeQuantity(obatId, increment) {
             let qtyInput = document.getElementById('qty-' + obatId);
+            let stokElement = document.getElementById('stok-' + obatId);
             let currentQty = parseInt(qtyInput.value);
-            
-            if (increment) {
+            let currentStok = parseInt(stokElement.innerText);
+
+            if (increment && currentQty < currentStok) {
                 qtyInput.value = currentQty + 1;
-            } else {
-                if (currentQty > 0) qtyInput.value = currentQty - 1;
+                stokElement.innerText = currentStok - 1;
+            } else if (!increment && currentQty > 0) {
+                qtyInput.value = currentQty - 1;
+                stokElement.innerText = currentStok + 1;
             }
+
             checkQuantity();
         }
 

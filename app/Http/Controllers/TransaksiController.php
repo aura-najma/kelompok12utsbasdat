@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use App\Models\Obat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TransaksiController extends Controller
 {
@@ -15,12 +16,10 @@ class TransaksiController extends Controller
     
         // Ambil data obat yang dibeli
         $obats = $request->input('obats', []);
-        $idTransaksi = 'TR-' . substr($idPembelian, 3, 6) . '-' . now()->format('YmdHi');
-    
-        // Debugging: Tampilkan ID Pembelian dan ID Transaksi
-        dump('ID Pembelian: ' . $idPembelian);
-        dump('ID Transaksi: ' . $idTransaksi);
-    
+
+        // Ambil 16 karakter terakhir dari ID Pembelian (atau sesuai kebutuhan)
+        $idPembelianSlot = substr($idPembelian, -16);
+
         // Loop melalui setiap obat yang dibeli
         foreach ($obats as $obatId => $data) {
             $jumlah = $data['jumlah'];
@@ -29,6 +28,13 @@ class TransaksiController extends Controller
     
             // Cek apakah jumlah yang dibeli lebih dari 0
             if ($jumlah > 0) {
+                // Generate 2 digit UUID baru untuk setiap obat
+                $randomDigits = mt_rand(10, 99); // 2 digit angka acak (10-99)
+                $idTransaksi = 'TR' . $randomDigits . $idPembelianSlot; // Buat ID Transaksi unik untuk setiap item
+
+                // Debugging: Tampilkan ID Transaksi
+                dump('ID Transaksi: ' . $idTransaksi);
+
                 // Ambil obat berdasarkan no_bpom
                 $obat = Obat::where('no_bpom', $obatId)->first();
                 
@@ -41,16 +47,13 @@ class TransaksiController extends Controller
                         // Simpan data transaksi
                         $transaksi = Transaksi::create([
                             'id_transaksi' => $idTransaksi,
-                            'id_pembelian' => $idPembelian, // Tambahin ini
+                            'id_pembelian' => $idPembelian, 
                             'nama_obat' => $namaObat,
                             'jumlah_obat' => $jumlah,
                             'harga_satuan' => $hargaSatuan,
                             'harga_total' => $jumlah * $hargaSatuan,
                         ]);
                         
-    
-                        // Debugging: Tampilkan data transaksi yang baru saja disimpan
-                        dump($transaksi); // Pastikan data yang disimpan benar
                     } else {
                         return redirect()->back()->with('error', 'Stok tidak cukup untuk ' . $namaObat);
                     }
@@ -60,8 +63,7 @@ class TransaksiController extends Controller
             }
         }
     
-        return redirect()->back()->with('success', 'Transaksi berhasil disimpan dengan ID: ' . $idTransaksi);
+        return redirect()->back()->with('success', 'Transaksi berhasil disimpan.');
     }
-    
     
 }

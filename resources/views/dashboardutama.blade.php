@@ -56,8 +56,7 @@
     <div class="sidebar">
         <div class="profile">
             <img src="https://via.placeholder.com/100" alt="Foto Apoteker">
-            <h5>Selamat Datang, {{ Auth::user()->user }}</h5>
-            <p>No Registrasi: {{ Auth::user()->nip == 1 ? 'STR1234567890' : 'STR0987654321' }}</p>
+            <h5>Selamat Datang Apoteker, Layani Pasien Setulus Hati</h5>
         </div>
         <h4 class="text-center">Dashboard Apoteker</h4>
         <nav class="nav flex-column">

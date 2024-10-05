@@ -45,28 +45,24 @@ class PasienController extends Controller
             }
 
             // Generate `new_id`
-            $id_pembelian = 'PB-' . substr($request->no_telepon, -4) . '-' . now()->format('YmdHi');
+            $idPembelian = 'PB-' . substr($request->no_telepon, -4) . '-' . now()->format('YmdHi');
 
             // Simpan data pembelian
-            $pembelian = Pembelian::create([
-                'id_pembelian' => $id_pembelian, // Set new_id sesuai dengan kebutuhan
+            Pembelian::create([
+                'id_pembelian' => $idPembelian,
                 'no_telepon' => $request->no_telepon,
                 'keluhan' => $request->keluhan,
-                'resep' => $resepPath, // Nilai bisa `null` jika tidak ada resep
+                'resep' => $resepPath,
             ]);
-                    // Redirect berdasarkan apakah file `resep` ada atau tidak
-            if (!is_null($resepPath)) {
-                return redirect()->route('cekobatkeras', ['id_pembelian' => $idPembelian])
-                    ->with('success', 'Data pasien dan pembelian berhasil disimpan dengan resep.');
-            } else {
-                return redirect()->route('cekstokobat', ['id_pembelian' => $idPembelian])
-                    ->with('success', 'Data pasien dan pembelian berhasil disimpan tanpa resep.');
-                }
-                    
+
+            // Redirect ke halaman cek stok obat dengan membawa `id_pembelian`
+            return redirect()->route('cekstokobat', ['id_pembelian' => $idPembelian])
+                ->with('success', 'Data pasien dan pembelian berhasil disimpan' . (!is_null($resepPath) ? ' dengan resep.' : ' tanpa resep.'));
     
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi error: ' . $e->getMessage());
-        }
+        
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Terjadi error: ' . $e->getMessage());
+            }
     }
     
 

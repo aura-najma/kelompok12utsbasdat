@@ -80,7 +80,7 @@ class ObatController extends Controller
 
 
         // Fungsi untuk mengecek stok obat
-    public function cekStok(Request $request)
+        public function cekStok(Request $request)
         {
             // Ambil `id_pembelian` dari request
             $idPembelian = $request->query('id_pembelian');

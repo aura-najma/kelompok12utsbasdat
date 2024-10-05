@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
-use App\Models\Invoice; // Include the Invoice model
 use App\Models\Obat;
 use Illuminate\Http\Request;
 
@@ -52,27 +51,16 @@ class TransaksiController extends Controller
                         Transaksi::create([
                             'id_transaksi' => $idTransaksi,
                             'id_pembelian' => $idPembelian,
-                            'no_bpom' => $obat->no_bpom, 
+                            'no_bpom' => $obat->no_bpom, // Tambahkan ini
                             'nama_obat' => $namaObat,
                             'jumlah_obat' => $jumlah,
                             'harga_satuan' => $hargaSatuan,
                             'harga_total' => $hargaTotal,
                         ]);
-
-                        // Masukkan data ke tabel invoices
-                        Invoice::create([
-                            'id_pembelian' => $idPembelian,
-                            'id_transaksi' => $idTransaksi, // ID dari transaksi yang baru dibuat
-                            'nama_obat' => $namaObat,
-                            'jumlah' => $jumlah,
-                            'harga_satuan' => $hargaSatuan,
-                            'harga_total' => $hargaTotal,
-                            'dosis' => $obat->dosis,
-                            'aturan_pakai' => $obat->aturan_pakai,
-                        ]);
-
+                        
                         // Simpan data yang diperlukan untuk invoice
                         $transaksiData[] = [
+                            'no_bpom' => $obat->no_bpom, // Tambahkan ini
                             'nama_obat' => $namaObat,
                             'jumlah_obat' => $jumlah,
                             'harga_satuan' => $hargaSatuan,
@@ -80,7 +68,7 @@ class TransaksiController extends Controller
                             'dosis' => $obat->dosis,
                             'aturan_pakai' => $obat->aturan_pakai,
                         ];
-
+                        
                         // Tambahkan harga total obat ini ke total keseluruhan
                         $totalHarga += $hargaTotal;
 
@@ -106,19 +94,20 @@ class TransaksiController extends Controller
     /**
      * Show the invoice for a particular transaction.
      */
-    public function showInvoice($idInvoice)
+    public function showInvoice($idPembelian)
     {
-        // Ambil invoice berdasarkan ID Invoice
-        $invoiceData = Invoice::where('id_invoice', $idInvoice)->get();
+        // Ambil transaksi berdasarkan ID Pembelian
+        $transaksiData = Transaksi::where('id_pembelian', $idPembelian)->get();
 
         // Hitung total harga keseluruhan
-        $totalHarga = $invoiceData->sum('harga_total');
+        $totalHarga = $transaksiData->sum('harga_total');
 
         // Redirect ke halaman invoice dengan membawa data transaksi dan total harga
-        return view('invoicepage', [
-            'invoiceData' => $invoiceData,
-            'idInvoice' => $idInvoice,
+        return view('invoicetransaksi', [
+            'transaksiData' => $transaksiData,
+            'idPembelian' => $idPembelian,
             'totalHarga' => $totalHarga,
         ]);
     }
 }
+

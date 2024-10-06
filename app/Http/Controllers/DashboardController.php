@@ -18,17 +18,17 @@ class DashboardController extends Controller
             'nip' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
-    
+        
         // Verifikasi NIP dan Password
-        if (($credentials['nip'] == '1' && $credentials['password'] == 'katak') || 
-            ($credentials['nip'] == '2' && $credentials['password'] == 'kupu')) {
+        $apoteker = DB::table('apoteker')->where('NIP', $credentials['nip'])->first();
     
-            // Simpan informasi pengguna ke dalam session
-            if ($credentials['nip'] == '1') {
-                session(['user' => 'Dyah Ayu']);
-            } elseif ($credentials['nip'] == '2') {
-                session(['user' => 'Aura Najma']);
-            }
+        if ($apoteker && Hash::check($credentials['password'], $apoteker->password)) {
+            // Simpan NIP dan nama pengguna ke dalam session
+            session(['nip' => $apoteker->NIP]);
+            session(['user' => $apoteker->user]);
+    
+            // Debugging untuk memastikan data tersimpan
+            dd(session()->all()); // Ini akan menampilkan semua data di session
     
             return redirect()->route('dashboardutama');
         }
@@ -37,6 +37,7 @@ class DashboardController extends Controller
             'nip' => 'NIP atau password salah.',
         ])->onlyInput('nip');
     }
+    
     
 
     public function logout(Request $request)

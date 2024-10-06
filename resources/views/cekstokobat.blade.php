@@ -120,7 +120,7 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
                     </li>
                 </ul>
             </div>

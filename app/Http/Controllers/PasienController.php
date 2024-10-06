@@ -96,4 +96,26 @@ class PasienController extends Controller
         return view('daftarPasien', compact('pasienList'));
     }
 
+    public function edit($no_telepon)
+    {
+        $pasien = Pasien::where('no_telepon', $no_telepon)->firstOrFail();
+        return view('editPasien', compact('pasien'));
+    }
+
+    public function update(Request $request, $no_telepon)
+    {
+        $pasien = Pasien::where('no_telepon', $no_telepon)->firstOrFail();
+        $pasien->update($request->all());
+        return redirect()->route('daftarPasien')->with('success', 'Data pasien berhasil diubah.');
+    }
+
+    public function destroy($no_telepon)
+    {
+        $pasien = Pasien::where('no_telepon', $no_telepon)->firstOrFail();
+        $pasien->delete();
+        return redirect()->route('daftarPasien')->with('success', 'Data pasien berhasil dihapus.');
+    }
+
+
+
 }

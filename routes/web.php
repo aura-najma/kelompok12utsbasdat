@@ -93,7 +93,6 @@ Route::get('/validasidokter', [DokterController::class, 'index']);
 
 use App\Http\Controllers\InvoiceController;
 
-Route::get('/invoice/{id_invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
 
 
 // bagian aura
@@ -140,7 +139,6 @@ use App\Http\Controllers\TransaksiController;
 
 // Route untuk menyimpan transaksi
 Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
-Route::get('/invoice/{id_pembelian}', [TransaksiController::class, 'showInvoice'])->name('invoice.show');
 
 use App\Http\Controllers\ObatKerasController;
 
@@ -153,5 +151,9 @@ Route::post('/cekobatkeras/proses', [ObatKerasController::class, 'prosesCekObatK
 // Rute untuk validasi dokter
 Route::get('/validasidokter/{id_pembelian}', [DokterController::class, 'index'])->name('validasidokter');
 
+Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
+Route::get('/invoicetransaksi', [InvoiceController::class, 'show'])->name('invoice.show');
+
+// Route untuk menampilkan invoice dengan parameter id_pembelian sebagai query string
 
 

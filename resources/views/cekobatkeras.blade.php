@@ -1,171 +1,137 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Cek Obat Keras</title>
-    <style>
-        body {
-            background-color: rgba(34, 149, 180, 0.3);
-        }
-        .container {
-            max-width: 800px;
-            margin-top: 5rem;
-            background-color: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: row;
-        }
-        .left-side {
-            flex: 1;
-            text-align: center;
-            margin-right: 20px;
-        }
-        .right-side {
-            flex: 2;
-        }
-        .btn-add {
-            background-color: #a4c757;
-            color: white;
-        }
-        .btn-add:hover {
-            background-color: #8fb54b;
-        }
-        .hard-drug-warning {
-            color: red;
-        }
-        .apoteker-checkbox-container {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
-    <div class="container">
-        <div class="left-side">
-            <h3 class="text-center text-custom">Foto Resep</h3>
-            <img src="{{ asset('img/contohfotoresep.jpeg') }}" alt="Resep" style="max-width: 100%; border-radius: 10px;">
+
+<div class="container mt-5">
+    <h2>Cek Obat Keras</h2>
+
+    <!-- Form Input Obat -->
+    <form id="formCekObat" action="/cekobatkeras/proses" method="POST">
+        <!-- Token CSRF -->
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <!-- Input hidden untuk mengirimkan id_pembelian -->
+        <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}">
+
+        <div id="obat-container">
+            <!-- Mengulang input obat untuk empat kali -->
+            @for ($i = 0; $i < 4; $i++)
+                <div class="form-group obat-entry mb-3">
+                    <label for="nama_obat_{{ $i }}">Nama Obat {{ $i + 1 }}</label>
+                    <input type="text" id="nama_obat_{{ $i }}" name="nama_obat[]" class="form-control nama-obat" placeholder="Masukkan nama obat">
+                    <button type="button" class="btn btn-primary mt-2 cek-obat-btn" data-input-id="nama_obat_{{ $i }}">Cek Obat Keras</button>
+                    <div class="validasi-container mt-2" style="display: none;">
+                        <p>Obat ini termasuk kategori <strong>Obat Keras</strong>. Harap lanjut ke validasi dokter.</p>
+                        <input type="checkbox" class="validasi-dokter-checkbox" data-input-id="nama_obat_{{ $i }}"> Centang untuk validasi dokter
+                        <a href="/validasidokter/{{ $idPembelian }}" class="btn btn-warning mt-2">Validasi Resep ke Dokter</a>
+                    </div>
+                    <div class="non-obat-keras mt-2" style="display: none;">
+                        <p>Obat ini tidak termasuk kategori <strong>Obat Keras</strong>.</p>
+                    </div>
+                </div>
+            @endfor
         </div>
-        <div class="right-side">
-            <h3 class="text-center text-custom">Cek Obat Keras</h3>
-            <form id="medicationForm">
-                <div id="medicationInputs">
-                    <div class="mb-3">
-                        <label for="medication1" class="form-label">Nama Obat 1</label>
-                        <input type="text" class="form-control" id="medication1">
-                        <div class="hard-drug-warning" id="warning1"></div>
-                        <div class="apoteker-checkbox-container" id="checkboxContainer1">
-                            <input type="checkbox" id="apoteker1" class="apoteker-checkbox"> Telah Disetujui
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="medication2" class="form-label">Nama Obat 2</label>
-                        <input type="text" class="form-control" id="medication2">
-                        <div class="hard-drug-warning" id="warning2"></div>
-                        <div class="apoteker-checkbox-container" id="checkboxContainer2">
-                            <input type="checkbox" id="apoteker2" class="apoteker-checkbox"> Telah Disetujui
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="medication3" class="form-label">Nama Obat 3</label>
-                        <input type="text" class="form-control" id="medication3">
-                        <div class="hard-drug-warning" id="warning3"></div>
-                        <div class="apoteker-checkbox-container" id="checkboxContainer3">
-                            <input type="checkbox" id="apoteker3" class="apoteker-checkbox"> Telah Disetujui
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-add" id="addMedication">Tambah Obat</button>
-                <button type="submit" class="btn btn-custom w-100 mt-3" style="background-color: #2295B4; color: white;">Cek</button>
-                <div id="validationButton" class="mt-3" style="display: none;">
-                    <button type="button" class="btn btn-custom w-100" style="background-color: #a4c757; color: white;" onclick="window.location.href='{{ url('validasidokter') }}'">Ke Halaman Validasi Dokter</button>
-                </div>
-                <div id="stockButton" class="mt-3" style="display: none;">
-                    <button type="button" class="btn btn-custom w-100" style="background-color: #a4c757; color: white;" onclick="window.location.href='{{ url('cekstokobat') }}'">Ke Halaman Cek Stok Obat</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <script>
-        const hardDrugs = ['Tremenza', 'Salbutamol', 'Coltin Dry Sirup'];
-        let medicationCount = 3;
+        <!-- Tombol untuk melanjutkan ke halaman cek stok obat -->
+        <button type="button" id="btn-cek-stok-obat" class="btn btn-success mt-3" style="display: none;">Cek Stok Obat</button>
+    </form>
+</div>
 
-        document.getElementById('medicationForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            checkMedications();
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Array untuk menyimpan daftar obat dari database
+    let daftarObat = {!! json_encode($daftarObat) !!}; // Mengambil daftar obat dari controller
+    let obatKeras = {!! json_encode($obatKeras) !!};  // Mengambil daftar obat keras dari controller
+    let hasObatKeras = false; // Menandai apakah ada obat keras atau tidak
+    let idPembelian = "{{ $idPembelian }}"; // Mendapatkan id pembelian dari blade
+
+    // Implementasi autocomplete untuk semua input obat
+    $(".nama-obat").each(function() {
+        $(this).autocomplete({
+            source: daftarObat
         });
+    });
 
-        document.getElementById('addMedication').addEventListener('click', function () {
-            medicationCount++;
-            const newInput = document.createElement('div');
-            newInput.className = 'mb-3';
-            newInput.innerHTML = `
-                <label for="medication${medicationCount}" class="form-label">Nama Obat ${medicationCount}</label>
-                <input type="text" class="form-control" id="medication${medicationCount}">
-                <div class="hard-drug-warning" id="warning${medicationCount}"></div>
-                <div class="apoteker-checkbox-container" id="checkboxContainer${medicationCount}" style="display: none;">
-                    <input type="checkbox" id="apoteker${medicationCount}" class="apoteker-checkbox"> Apoteker
-                </div>
-            `;
-            document.getElementById('medicationInputs').appendChild(newInput);
-        });
+    // Event untuk tombol cek obat keras
+    $(".cek-obat-btn").on('click', function() {
+        // Mendapatkan ID input yang terkait dengan tombol ini
+        let inputId = $(this).data("input-id");
+        let obatTerpilih = $("#" + inputId).val().trim();
 
-        function checkMedications() {
-            let hasHardDrug = false;
-            let visibleCheckboxContainers = [];
+        // Periksa jika input tidak kosong
+        if (obatTerpilih === "") {
+            alert("Silakan masukkan nama obat terlebih dahulu.");
+            return;
+        }
 
-            for (let i = 1; i <= medicationCount; i++) {
-                const medicationInput = document.getElementById(`medication${i}`);
-                const warningDiv = document.getElementById(`warning${i}`);
-                const checkboxContainer = document.getElementById(`checkboxContainer${i}`);
-                const medicationName = medicationInput.value.trim();
+        // Memeriksa apakah obat ini adalah obat keras
+        let isObatKeras = obatKeras.includes(obatTerpilih);
 
-                if (medicationName && hardDrugs.includes(medicationName)) {
-                    warningDiv.textContent = `${medicationName} adalah obat keras.`;
-                    checkboxContainer.style.display = 'block';
-                    hasHardDrug = true;
-                    visibleCheckboxContainers.push(checkboxContainer);
-                } else {
-                    warningDiv.textContent = '';
-                    checkboxContainer.style.display = 'none';
+        if (isObatKeras) {
+            // Menandai bahwa ada obat keras
+            hasObatKeras = true;
+            // Menampilkan kontainer validasi jika obat adalah obat keras
+            $(this).siblings('.validasi-container').show();
+            $(this).siblings('.non-obat-keras').hide(); // Sembunyikan pesan non-obat keras
+        } else {
+            // Menampilkan pesan jika obat bukan obat keras
+            $(this).siblings('.validasi-container').hide(); // Sembunyikan pesan obat keras
+            $(this).siblings('.non-obat-keras').show(); // Tampilkan pesan non-obat keras
+        }
+
+        // Tampilkan tombol "Cek Stok Obat"
+        $("#btn-cek-stok-obat").show();
+
+        // Periksa validasi untuk menentukan apakah tombol cek stok obat dapat digunakan
+        updateCekStokObatButton();
+    });
+
+    // Event untuk kotak centang validasi dokter
+    $(".validasi-dokter-checkbox").on('change', function() {
+        // Periksa validasi untuk menentukan apakah tombol cek stok obat dapat digunakan
+        updateCekStokObatButton();
+    });
+
+    // Event untuk tombol "Cek Stok Obat"
+    $("#btn-cek-stok-obat").on('click', function() {
+        // Mengarahkan ke halaman cek stok obat dengan id_pembelian sebagai query parameter
+        window.location.href = "/cekstokobat?id_pembelian=" + idPembelian;
+    });
+
+    function updateCekStokObatButton() {
+        // Jika ada obat keras, periksa apakah semua kotak centang sudah dicentang
+        if (hasObatKeras) {
+            let semuaCentang = true;
+            $(".validasi-dokter-checkbox:visible").each(function() {
+                if (!$(this).is(":checked")) {
+                    semuaCentang = false;
+                    return false; // Break loop jika ada yang belum dicentang
                 }
-            }
-
-            if (hasHardDrug) {
-                document.getElementById('validationButton').style.display = 'block';
-                document.getElementById('stockButton').style.display = 'none';
-
-                checkAllCheckboxes(visibleCheckboxContainers);
-            } else {
-                document.getElementById('validationButton').style.display = 'none';
-                document.getElementById('stockButton').style.display = 'block';
-            }
-        }
-
-        function checkAllCheckboxes(visibleCheckboxContainers) {
-            let allChecked = visibleCheckboxContainers.every(container => {
-                const checkbox = container.querySelector('.apoteker-checkbox');
-                return checkbox.checked;
             });
 
-            if (allChecked) {
-                document.getElementById('validationButton').style.display = 'none';
-                document.getElementById('stockButton').style.display = 'block';
+            // Aktifkan atau nonaktifkan tombol "Cek Stok Obat" berdasarkan validasi
+            if (semuaCentang) {
+                $("#btn-cek-stok-obat").prop('disabled', false);
             } else {
-                document.getElementById('stockButton').style.display = 'none';
+                $("#btn-cek-stok-obat").prop('disabled', true);
             }
-
-            // Tambahkan event listener pada checkbox yang terlihat
-            visibleCheckboxContainers.forEach(container => {
-                const checkbox = container.querySelector('.apoteker-checkbox');
-                checkbox.addEventListener('change', function () {
-                    checkAllCheckboxes(visibleCheckboxContainers);
-                });
-            });
+        } else {
+            // Jika tidak ada obat keras, tombol "Cek Stok Obat" diaktifkan
+            $("#btn-cek-stok-obat").prop('disabled', false);
         }
-    </script>
+    }
+});
+</script>
+
 </body>
 </html>

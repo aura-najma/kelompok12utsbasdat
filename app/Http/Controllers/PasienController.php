@@ -59,7 +59,7 @@ class PasienController extends Controller
             if (!is_null($resepPath)) {
                 // Jika ada resep, redirect ke halaman cek obat keras
                 return redirect()->route('cekobatkeras', ['id_pembelian' => $idPembelian])
-                    ->with('success', 'Data pasien dan pembelian berhasil disimpan dengan resep.');
+                ->with('success', 'Data pasien dan pembelian berhasil disimpan dengan resep.');
             } else {
                 // Jika tidak ada resep, redirect ke halaman cek stok obat
                 return redirect()->route('cekstokobat', ['id_pembelian' => $idPembelian])

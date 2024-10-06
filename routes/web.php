@@ -17,6 +17,12 @@ Route::get('/login', function () {
     return view('login');
 });
 
+// Route for the pasien page
+Route::get('/pasien', function () {
+    return view('pasien');
+});
+
+
 
 // Route for validasi dokter (modif punya wanda)
 Route::get('/validasidokter', function () {
@@ -127,10 +133,23 @@ Route::post('/lihatstokobat/tambah-obat', [ObatController::class, 'tambahObat'])
 // Route untuk cek stok obat
 Route::get('/cekstokobat', [ObatController::class, 'cekStok'])->name('cekstokobat');
 // Route untuk cek obat keras
-Route::get('/cekobatkeras', [ObatController::class, 'cekObatKeras'])->name('cekobatkeras');
 
 use App\Http\Controllers\TransaksiController;
 
 // Route untuk menyimpan transaksi
 Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
 Route::get('/invoice/{id_pembelian}', [TransaksiController::class, 'showInvoice'])->name('invoice.show');
+
+use App\Http\Controllers\ObatKerasController;
+
+// Rute untuk halaman cek obat keras
+Route::get('/cekobatkeras', [ObatKerasController::class, 'cekObatKeras'])->name('cekobatkeras');
+
+// Rute untuk memproses cek obat keras (form POST)
+Route::post('/cekobatkeras/proses', [ObatKerasController::class, 'prosesCekObatKeras'])->name('prosesCekObatKeras');
+
+// Rute untuk validasi dokter
+Route::get('/validasidokter/{id_pembelian}', [DokterController::class, 'index'])->name('validasidokter');
+
+
+

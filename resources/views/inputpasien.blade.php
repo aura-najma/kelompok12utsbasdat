@@ -10,71 +10,103 @@
             background-color: rgba(34, 149, 180, 0.3);
         }
         .form-container {
-            background-color: white; /* Kontainer putih */
+            background-color: white; 
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: auto;
+            height: 100%; /* Memastikan tinggi container kolom sama */
         }
         .text-custom {
-            color: #2295B4; /* Teks berwarna biru */
+            color: black;
+            font-weight: 500;
+        }
+
+        .title {
+            color: #fff;
+        }
+
+        .btn-custom {
+            color: white;
+            width: 20%;
+            padding: 10px 20px; /* Tambahkan padding di sini */
+            border-radius:15px;
+            background: linear-gradient(-135deg, #204ae6, #36bef8);
+        }
+
+        h3 {
+            padding: 1rem; /* Menambahkan padding pada h3 */
+            font-size: 35px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 70px;
+            color: #fff;
+            user-select: none;
+            border-radius: 15px;
+            background: linear-gradient(-135deg, #204ae6, #36bef8);
+            margin-bottom:20px;
+            
         }
     </style>
 </head>
 <body>
-            <!-- BASE YANG DIPAKE CONTROLLER DAN MODEL PASIEN-->
-    <div class="form-container mt-5">
-        <h3 class="text-custom text-center">Input Data Diri Pembeli</h3>
-        <form action="{{ route('pasien.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf <!-- Token untuk melindungi dari CSRF -->
-            
+    <div class="container mt-5">
+        <h3 class="title">Input Data Diri Pembeli</h3>
+        <div class="row">
+            <!-- Kolom Kiri -->
+            <div class="col-md-6">
+                <div class="form-container">
+                    <form action="{{ route('pasien.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf <!-- Token untuk melindungi dari CSRF -->
+                        
+                        <!-- Nama Field -->
+                        <div class="mb-3">
+                            <label for="nama" class="form-label text-custom">Nama</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                        
+                        <!-- Tanggal Lahir Field -->
+                        <div class="mb-3">
+                            <label for="tanggal_lahir" class="form-label text-custom">Tanggal Lahir</label>
+                            <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
+                        </div>
+                        
+                        <!-- Alamat Field -->
+                        <div class="mb-3">
+                            <label for="alamat" class="form-label text-custom">Alamat</label>
+                            <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+                        </div>
+                        
+                        <!-- Nomor Telepon Field -->
+                        <div class="mb-3">
+                            <label for="no_telepon" class="form-label text-custom">Nomor Telepon</label>
+                            <input type="tel" class="form-control" id="no_telepon" name="no_telepon" pattern="[0-9]{10,15}" required>
+                        </div>
+                </div>
+            </div>
 
-            <!-- Nama Field -->
-            <div class="mb-3">
-                <label for="nama" class="form-label text-custom">Nama</label>
-                <input type="text" class="form-control" id="nama" name="nama" required>
+            <!-- Kolom Kanan (Digabungkan dalam 1 Container) -->
+            <div class="col-md-6">
+                <div class="form-container">
+                    <div class="mb-3">
+                        <label for="keluhan" class="form-label text-custom">Keluhan</label>
+                        <textarea class="form-control" id="keluhan" name="keluhan" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="alergi_obat" class="form-label text-custom">Alergi Obat</label>
+                        <textarea class="form-control" id="alergi_obat" name="alergi_obat" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="resep" class="form-label text-custom">Upload Resep</label>
+                        <input type="file" class="form-control" id="resep" name="resep" accept=".jpg,.jpeg,.png">
+                    </div>
+                </div>
             </div>
-            
-            <!-- Tanggal Lahir Field -->
-            <div class="mb-3">
-                <label for="tanggal_lahir" class="form-label text-custom">Tanggal Lahir</label>
-                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
-            </div>
-            
-            <!-- Alamat Field -->
-            <div class="mb-3">
-                <label for="alamat" class="form-label text-custom">Alamat</label>
-                <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
-            </div>
-            
-            <!-- Nomor Telepon Field -->
-            <div class="mb-3">
-                <label for="no_telepon" class="form-label text-custom">Nomor Telepon</label>
-                <input type="tel" class="form-control" id="no_telepon" name="no_telepon" pattern="[0-9]{10,15}" required>
-            </div>
-            
-            <!-- Keluhan Field -->
-            <div class="mb-3">
-                <label for="keluhan" class="form-label text-custom">Keluhan</label>
-                <textarea class="form-control" id="keluhan" name="keluhan" rows="3"></textarea>
-            </div>
-            
-            <!-- Alergi Obat Field -->
-            <div class="mb-3">
-                <label for="alergi_obat" class="form-label text-custom">Alergi Obat</label>
-                <textarea class="form-control" id="alergi_obat" name="alergi_obat" rows="3"></textarea>
-            </div>
-            
-            <!-- Upload Resep Field -->
-            <div class="mb-3">
-                <label for="resep" class="form-label text-custom">Upload Resep</label>
-                <input type="file" class="form-control" id="resep" name="resep" accept=".jpg,.jpeg,.png">
-            </div>
-            
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-custom w-100" style="background-color: #2295B4; color: white;">Submit</button>
-        </form>
+        </div>
+
+        <!-- Submit Button di Tengah -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-custom" style="background-color: #2295B4; color: white; width: 30%;">Submit</button>
+        </div>
     </div>
 
     <script>
@@ -104,11 +136,6 @@
                 .catch(error => console.error('Error:', error));
         }
     }
-
     </script>
-
-    
-                    <!-- BASE YANG DIPAKE CONTROLLER DAN MODEL PASIEN-->
-
 </body>
 </html>

@@ -17,12 +17,6 @@ Route::get('/login', function () {
     return view('login');
 });
 
-// Route for the pasien page
-Route::get('/pasien', function () {
-    return view('pasien');
-});
-
-
 
 // Route for validasi dokter (modif punya wanda)
 Route::get('/validasidokter', function () {

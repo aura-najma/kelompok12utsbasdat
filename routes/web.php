@@ -107,7 +107,10 @@ Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
 Route::post('/pasien', [PasienController::class, 'store'])->name('pasien.store');
 
 
-Route::get('/daftar-pasien', [PasienController::class, 'listPasien']);
+Route::get('/daftar-pasien/{no_telepon}/edit', [PasienController::class, 'edit'])->name('pasien.edit');
+Route::delete('/daftar-pasien/{no_telepon}', [PasienController::class, 'destroy'])->name('pasien.destroy');
+Route::put('/daftar-pasien/{no_telepon}', [PasienController::class, 'update'])->name('pasien.update');
+Route::get('/daftar-pasien', [PasienController::class, 'listPasien'])->name('daftarPasien');
 
 
 

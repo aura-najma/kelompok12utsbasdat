@@ -71,6 +71,7 @@
         object-fit: cover; /* Pastikan gambar menyesuaikan dengan ukuran tanpa melar */
     }
 
+    
 
   </style>
     
@@ -249,10 +250,8 @@
                           <div class="card-body">
                             <h5 class="card-title text-primary">Selamat Datang {{ $user }}! 🎉</h5>
                             <p class="mb-4">
-                               <span class="fw-bold">Lifespring Drugstore</span> Melayani dengan Sepenuh Hati
+                               <span class="fw-bold"> Melayani dengan Sepenuh Hati</span>
                             </p>
-  
-                           
                           </div>
                         </div>
                         <div class="col-sm-5 text-center text-sm-left">

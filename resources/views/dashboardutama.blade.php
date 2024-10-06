@@ -60,12 +60,11 @@
         </div>
         <h4 class="text-center">Dashboard Apoteker</h4>
         <nav class="nav flex-column">
-            <a class="nav-link" href="/cekstokobat">Cek Stok Obat</a>
-            <a class="nav-link" href="/validasidokter">Validasi Dokter</a>
-            <a class="nav-link" href="/inputpasien">Pembelian Obat</a>
-            <a class="nav-link" href="/analisispenjualan">Analisis Penjualan</a>
+            <a class="nav-link" href="/validasidokter">Daftar Dokter</a>
             <a class="nav-link" href="/daftar-pasien">Daftar Pasien</a>
-            <a class="nav-link" href="/lihatstokobat">Lihat Stok Obat</a>
+            <a class="nav-link" href="/lihatstokobat">Daftar Obat</a>
+            <a class="nav-link" href="/inputpasien">Pembelian</a>
+            <a class="nav-link" href="/analisispenjualan">Analisis Penjualan</a>
         </nav>
         <form action="{{ route('logout') }}" method="POST">
             @csrf

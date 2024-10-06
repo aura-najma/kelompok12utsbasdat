@@ -96,7 +96,6 @@ class ObatController extends Controller
         
             $idPembelian = $request->query('id_pembelian');
             $obatList = Obat::all();
-            dump($idPembelian); // Ini akan menampilkan nilai tetapi melanjutkan eksekusi
 
             return view('cekstokobat', compact('obatList', 'idPembelian'));
         }

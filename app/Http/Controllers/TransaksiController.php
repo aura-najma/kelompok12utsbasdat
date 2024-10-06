@@ -15,41 +15,16 @@ class TransaksiController extends Controller
     {
         // Ambil ID Pembelian dari query parameter
         $idPembelian = $request->input('id_pembelian');
-        
-        // Log untuk melihat nilai idPembelian
-        Log::info('Nilai idPembelian:', ['idPembelian' => $idPembelian]);
-    
-        // Ambil no_telepon dari tabel pembelians berdasarkan id_pembelian
-        $pembelian = Pembelian::where('id_pembelian', $idPembelian)->first();
-        $noTelepon = $pembelian ? $pembelian->no_telepon : null;
-    
-        // Log untuk melihat nilai noTelepon
-        Log::info('Nilai noTelepon:', ['noTelepon' => $noTelepon]);
-    
-        $alergiObat = null;
-        if ($noTelepon) {
-            $pasien = Pasien::where('no_telepon', $noTelepon)->first();
-            if ($pasien) {
-                $alergiObat = $pasien->alergi_obat;
-            }
-        }
-    
-        // Log untuk melihat nilai alergiObat
-        Log::info('Nilai alergiObat:', ['alergiObat' => $alergiObat]);
-    
-        // Ambil data obat yang ada di stok
-        $obatList = Obat::all();
-        
-        // Log untuk melihat data obat
-        Log::info('Data Obat:', ['obatList' => $obatList->toArray()]);
+      
+
     
         // Kirim data ke view
         return view('cekstokobat', [
             'obatList' => $obatList,
-            'idPembelian' => $idPembelian,
-            'alergiObat' => $alergiObat,
+            'idPembelian' => $idPembelian
         ]);
     }
+    
     
     
 

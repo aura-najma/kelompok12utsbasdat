@@ -42,7 +42,7 @@
             max-width: 800px;
         }
 
-        h1{
+        h1 {
             padding: 1rem;
             font-size: 35px;
             font-weight: 600;
@@ -52,11 +52,11 @@
             user-select: none;
             border-radius: 15px;
             background: linear-gradient(-135deg, #204ae6, #36bef8);
-            margin-bottom: 20px;
-            
+            margin-bottom: 10px;
         }
 
-        
+
+
         h3 {
             color: #204ae6;
             text-align: center;
@@ -73,15 +73,9 @@
             border-radius: 10px;
         }
 
-        td {
-            padding: 15px;
-            text-align: left;
-            
-        }
-
         th {
             background: linear-gradient(-180deg, #204ae6, #36bef8);
-            color: #ffffff; /* Teks tetap putih karena background sudah lebih gelap */
+            color: #ffffff;
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.9rem;
@@ -92,6 +86,8 @@
         td {
             background-color: rgba(54, 190, 248, 0.1);
             font-size: 0.9rem;
+            padding: 15px;
+            text-align: left;
         }
 
         .table-total {
@@ -106,21 +102,67 @@
             font-weight: 500;
         }
 
+        .btn-print {
+            display: block;
+            margin: 2rem auto 0;
+            padding: 10px 20px;
+            background: linear-gradient(-135deg, #204ae6, #36bef8);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+        }
+
         footer {
             background: linear-gradient(-180deg, #36bef8,#204ae6);
             text-align: center;
-            margin-top: 50px; /* Memastikan footer berada di bawah konten */
+            margin-top: 50px;
             padding: 10px;
             color: #fff;
             font-size: 15px;
             font-weight: 200;
             vertical-align: middle; 
         }
+
+        @media print {
+            body {
+                background: none !important;
+                color: black;
+            }
+
+            .navbar, footer, .btn-print {
+                display: none; /* Sembunyikan navbar, footer, dan tombol print saat mencetak */
+            }
+
+            .container {
+                border: none;
+                box-shadow: none;
+                max-width: 100%;
+                background: white !important;
+            }
+
+            h1, h3, p, th, td {
+                color: black !important; /* Pastikan semua teks berwarna hitam */
+                background: none !important; /* Hilangkan semua latar belakang berwarna */
+            }
+
+            table {
+                width: 100%;
+                border: 1px solid black;
+            }
+
+            th, td {
+                border: 1px solid black;
+                padding: 10px;
+                text-align: left;
+            }
+        }
+
     </style>
 </head>
 <body>
-     <!-- Navbar -->
-     <nav class="navbar navbar-expand-lg navbar-dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <!-- Logo di kiri -->
             <a class="navbar-brand" href="#">
@@ -131,7 +173,7 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
+                        <a class="nav-link" href="{{ route('dashboardutama') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/">Home</a>
@@ -140,8 +182,10 @@
             </div>
         </div>
     </nav>
+
     <div class="container">
         <h1>Invoice Pembelian Obat</h1>
+
         <div class="mb-4">
             <p><strong>ID Pembelian:</strong> {{ $idPembelian }}</p>
             <p><strong>Tanggal Pembuatan:</strong> {{ $created_at->format('d-m-Y H:i:s') }}</p> <!-- Mengambil created_at dari transaksi -->
@@ -174,14 +218,15 @@
 
         <h3 class="table-total">Total Harga Keseluruhan: Rp {{ number_format($totalHarga, 2, ',', '.') }}</h3>
 
-    <p class="text-center">Terima kasih telah melakukan pembelian.</p>
+        <p class="text-center">Terima kasih telah melakukan pembelian di <strong>Lifespring Drugstore</strong>.</p>
+
+        <!-- Tombol Print -->
+        <button onclick="window.print()" class="btn btn-primary btn-print">Cetak Invoice</button>
     </div>
 
-   <!-- Footer -->
-   <footer>
-       
+    <!-- Footer -->
+    <footer>
         <p>Semoga Sehat Selalu❤️</p>
     </footer>
-   
 </body>
 </html>

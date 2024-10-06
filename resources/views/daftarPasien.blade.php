@@ -61,7 +61,12 @@
         }
 
         table {
-            color: #000;
+            color: #fff;
+        }
+
+        th{
+            background: linear-gradient(-135deg, #204ae6, #36bef8);
+            color:#fff;
         }
     </style>
 </head>

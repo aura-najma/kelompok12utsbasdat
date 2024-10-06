@@ -71,6 +71,25 @@
         object-fit: cover; /* Pastikan gambar menyesuaikan dengan ukuran tanpa melar */
     }
 
+    .logout-btn {
+        background-color: #ff4d4d; /* Red background */
+        color: white; /* White text */
+        width: 100%; /* Full width */
+        border: none; /* Remove default border */
+        border-radius: 15px; /* Rounded corners */
+        padding: 10px; /* Padding for better click area */
+        cursor: pointer; /* Change cursor to pointer */
+        transition: background-color 0.3s ease; /* Smooth transition for background color */
+        margin-left:20px;
+    }
+
+    .logout-btn:hover {
+        background-color: #e60000; /* Darker red on hover */
+        color: white;
+        width: 110%;
+    }
+
+
     
 
   </style>
@@ -138,7 +157,13 @@
                   </a>
               </li>
   
-  
+              <div class="d-flex justify-content-center mt-3">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="btn logout-btn">Logout</button>
+                </form>
+            </div>
+
             </ul>
           </aside>
           <!-- / Menu -->

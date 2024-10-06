@@ -101,7 +101,7 @@
 
         td {
             padding: 10px;
-            border: 1px solid #fff;
+            
             text-align: center;
             border:none;
             

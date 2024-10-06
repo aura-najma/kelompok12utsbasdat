@@ -72,8 +72,8 @@
     }
 
     .logout-btn {
-        background-color: #ff4d4d; /* Red background */
-        color: white; /* White text */
+        background-color: white; /* Red background */
+        color: #ff4d4d; /* White text */
         width: 100%; /* Full width */
         border: none; /* Remove default border */
         border-radius: 15px; /* Rounded corners */
@@ -81,6 +81,7 @@
         cursor: pointer; /* Change cursor to pointer */
         transition: background-color 0.3s ease; /* Smooth transition for background color */
         margin-left:20px;
+        font-weight: 600;
     }
 
     .logout-btn:hover {

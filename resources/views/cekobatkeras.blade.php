@@ -231,68 +231,121 @@
 
 <script>
 $(document).ready(function() {
-    let daftarObat = {!! json_encode($daftarObat) !!};
-    let obatKeras = {!! json_encode($obatKeras) !!};  
-    let hasObatKeras = false; 
-    let idPembelian = "{{ $idPembelian }}"; 
-    let obatCounter = 1; 
+    // Array untuk menyimpan daftar obat dari database
+    let daftarObat = {!! json_encode($daftarObat) !!}; // Mengambil daftar obat dari controller
+    let obatKeras = {!! json_encode($obatKeras) !!};  // Mengambil daftar obat keras dari controller
+    let hasObatKeras = false; // Menandai apakah ada obat keras atau tidak
+    let idPembelian = "{{ $idPembelian }}"; // Mendapatkan id pembelian dari blade
+    let counter = 1; // Menambahkan counter untuk input obat
 
-    function initializeAutocomplete() {
-        $(".nama-obat").autocomplete({
+    // Implementasi autocomplete untuk semua input obat
+    function applyAutocomplete(input) {
+        $(input).autocomplete({
             source: daftarObat
         });
     }
 
-    function createObatEntry(index) {
-        return `
-            <div class="form-group obat-entry mb-3">
-                <label for="nama_obat_${index}">Nama Obat ${index + 1}</label>
-                <input type="text" id="nama_obat_${index}" name="nama_obat[]" class="form-control nama-obat" placeholder="Masukkan nama obat">
-                <button type="button" class="btn btn-primary mt-2 cek-obat-btn" data-input-id="nama_obat_${index}">Cek Obat Keras</button>
-                <div class="validasi-container mt-2" style="display: none;">
-                    <p>Obat ini termasuk kategori <strong>Obat Keras</strong>. Harap lanjut ke validasi dokter.</p>
-                    <input type="checkbox" class="validasi-dokter-checkbox" data-input-id="nama_obat_${index}"> Centang untuk validasi dokter
-                    <a href="/validasidokter/${idPembelian}" class="btn btn-warning mt-2">Validasi Resep ke Dokter</a>
-                </div>
-                <div class="non-obat-keras mt-2" style="display: none;">
-                    <p>Obat ini tidak termasuk kategori <strong>Obat Keras</strong>.</p>
-                </div>
-            </div>
-        `;
-    }
-
-    // Initialize autocomplete for existing input fields
-    initializeAutocomplete();
-
-    $('#btn-tambah-obat').click(function() {
-        $('#obat-container').append(createObatEntry(obatCounter));
-        obatCounter++;
-        initializeAutocomplete();
+    $(".nama-obat").each(function() {
+        applyAutocomplete(this);
     });
 
+    // Event untuk tombol cek obat keras
     $(document).on('click', '.cek-obat-btn', function() {
-        let obatTerpilih = $(this).siblings('.nama-obat').val().trim();
-        if (!obatTerpilih) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Oops...',
-                text: 'Nama obat tidak boleh kosong!'
-            });
+        // Mendapatkan ID input yang terkait dengan tombol ini
+        let inputId = $(this).data("input-id");
+        let obatTerpilih = $("#" + inputId).val().trim();
+
+        // Periksa jika input tidak kosong
+        if (obatTerpilih === "") {
+            alert("Silakan masukkan nama obat terlebih dahulu.");
             return;
         }
 
+        // Memeriksa apakah obat ini adalah obat keras
         let isObatKeras = obatKeras.includes(obatTerpilih);
-        $(this).siblings('.validasi-container').toggle(isObatKeras);
-        $(this).siblings('.non-obat-keras').toggle(!isObatKeras);
-        hasObatKeras = hasObatKeras || isObatKeras;
-        $("#btn-cek-stok-obat").toggle(hasObatKeras);
+
+        if (isObatKeras) {
+            // Menandai bahwa ada obat keras
+            hasObatKeras = true;
+            // Menampilkan kontainer validasi jika obat adalah obat keras
+            $(this).siblings('.validasi-container').show();
+            $(this).siblings('.non-obat-keras').hide(); // Sembunyikan pesan non-obat keras
+        } else {
+            // Menampilkan pesan jika obat bukan obat keras
+            $(this).siblings('.validasi-container').hide(); // Sembunyikan pesan obat keras
+            $(this).siblings('.non-obat-keras').show(); // Tampilkan pesan non-obat keras
+        }
+
+        // Tampilkan tombol "Cek Stok Obat"
+        $("#btn-cek-stok-obat").show();
+
+        // Periksa validasi untuk menentukan apakah tombol cek stok obat dapat digunakan
+        updateCekStokObatButton();
     });
 
-    // Event for validation checkbox
+    // Event untuk kotak centang validasi dokter
     $(document).on('change', '.validasi-dokter-checkbox', function() {
-        // Logic for enabling/disabling the stock check button based on validation
+        // Periksa validasi untuk menentukan apakah tombol cek stok obat dapat digunakan
+        updateCekStokObatButton();
+    });
+
+    // Event untuk tombol "Cek Stok Obat"
+    $("#btn-cek-stok-obat").on('click', function() {
+        // Mengarahkan ke halaman cek stok obat dengan id_pembelian sebagai query parameter
+        window.location.href = "/cekstokobat?id_pembelian=" + idPembelian;
+    });
+
+    function updateCekStokObatButton() {
+        // Jika ada obat keras, periksa apakah semua kotak centang sudah dicentang
+        if (hasObatKeras) {
+            let semuaCentang = true;
+            $(".validasi-dokter-checkbox:visible").each(function() {
+                if (!$(this).is(":checked")) {
+                    semuaCentang = false;
+                    return false; // Break loop jika ada yang belum dicentang
+                }
+            });
+
+            // Aktifkan atau nonaktifkan tombol "Cek Stok Obat" berdasarkan validasi
+            $("#btn-cek-stok-obat").prop('disabled', !semuaCentang);
+        } else {
+            // Jika tidak ada obat keras, tombol "Cek Stok Obat" diaktifkan
+            $("#btn-cek-stok-obat").prop('disabled', false);
+        }
+    }
+
+    // Event untuk tombol "Tambah Obat"
+    $("#btn-tambah-obat").on('click', function() {
+        // Increment counter for unique IDs
+        let obatEntryHtml = `
+            <div class="form-group obat-entry mb-3">
+                <label for="nama_obat_${counter}">Nama Obat ${counter + 1}</label>
+                <input type="text" id="nama_obat_${counter}" name="nama_obat[]" class="form-control nama-obat" placeholder="Masukkan nama obat">
+                <button type="button" class="btn btn-primary mt-2 cek-obat-btn" data-input-id="nama_obat_${counter}">Cek Obat Keras</button>
+                
+                <div class="validasi-container mt-2" style="display: none;">
+                    <p>Obat ini termasuk kategori <strong>Obat Keras</strong>. Harap lanjut ke validasi dokter.</p>
+                    <input type="checkbox" class="validasi-dokter-checkbox" data-input-id="nama_obat_${counter}"> Centang untuk validasi dokter
+                    <a href="/validasidokter/{{ $idPembelian }}" class="btn btn-warning mt-2">Validasi Resep ke Dokter</a>
+                </div>
+                
+                <div class="non-obat-keras mt-2" style="display: none;">
+                    <p>Obat ini tidak termasuk kategori <strong>Obat Keras</strong>.</p>
+                </div>
+            </div>`;
+
+        // Append the new input entry to the container
+        $("#obat-container").append(obatEntryHtml);
+        // Apply autocomplete to the new input
+        applyAutocomplete(`#nama_obat_${counter}`);
+
+        // Increment counter for the next input
+        counter++;
     });
 });
+
+
+
 
 </script>
 

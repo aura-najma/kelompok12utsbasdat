@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Evaluasi;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EvaluasiController extends Controller
 {
+    // Menyimpan evaluasi baru ke database
     public function store(Request $request)
     {
-        // Validasi data yang masuk
+        // Validasi input yang diperlukan
         $request->validate([
-            'id_pembeli' => 'required|string',
+            'id_pembeli' => 'required|exists:pembelians,id_pembelian',
             'tanggal_transaksi' => 'required|date',
             'evaluasi_apotek' => 'required|string',
             'evaluasi_pelayanan' => 'required|string',
@@ -20,18 +23,29 @@ class EvaluasiController extends Controller
             'komentar' => 'nullable|string',
         ]);
 
-        // Simpan data ke database
+        // Generate id_evaluasi
+        $tanggalHariIni = Carbon::today()->toDateString();
+        $jumlahEvaluasiHariIni = DB::table('evaluasi')
+            ->whereDate('created_at', $tanggalHariIni)
+            ->count();
+
+        $timestamp = Carbon::now()->format('YmdHis');
+        $idEvaluasi = 'EV' . ($jumlahEvaluasiHariIni + 1);
+
+        // Simpan data evaluasi
         Evaluasi::create([
-            'id_pembeli' => $request->id_pembeli,
-            'tanggal_transaksi' => $request->tanggal_transaksi,
-            'evaluasi_apotek' => $request->evaluasi_apotek,
-            'evaluasi_pelayanan' => $request->evaluasi_pelayanan,
-            'evaluasi_obat' => $request->evaluasi_obat,
-            'rating_apotek' => $request->rating_apotek,
-            'komentar' => $request->komentar,
+            'id_evaluasi' => $idEvaluasi,
+            'id_pembeli' => $request->input('id_pembeli'),
+            'tanggal_transaksi' => $request->input('tanggal_transaksi'),
+            'evaluasi_apotek' => $request->input('evaluasi_apotek'),
+            'evaluasi_pelayanan' => $request->input('evaluasi_pelayanan'),
+            'evaluasi_obat' => $request->input('evaluasi_obat'),
+            'rating_apotek' => $request->input('rating_apotek'),
+            'komentar' => $request->input('komentar'),
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Evaluasi berhasil dikirim!');
+        // Mengembalikan respons tanpa pengalihan halaman
+        return redirect()->back()->with('success', 'Evaluasi berhasil disimpan');
     }
 }
+

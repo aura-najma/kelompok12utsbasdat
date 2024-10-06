@@ -130,6 +130,7 @@ Route::get('/lihatstokobat/tambah-obat', function () {
 
 // Route untuk memproses penambahan obat baru
 Route::post('/lihatstokobat/tambah-obat', [ObatController::class, 'tambahObat']);
+Route::get('/lihatstokobat/tambah-stok', [ObatController::class, 'showTambahStok'])->name('tambahstok');
 
 // Route untuk cek stok obat
 Route::get('/cekstokobat', [ObatController::class, 'cekStok'])->name('cekstokobat');

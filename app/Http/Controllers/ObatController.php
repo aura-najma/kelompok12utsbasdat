@@ -45,10 +45,10 @@ class ObatController extends Controller
     {
         // Validasi data input
         $request->validate([
-            'no_bpom' => 'required|string|unique:obats,no_bpom',
-            'nama' => 'required|string',
-            'kategori' => 'required|string',
-            'jenis_obat' => 'required|string',
+            'no_bpom' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255',
+            'jenis_obat' => 'required|string|max:255',
             'stok' => 'required|integer|min:1',
             'tanggal_kadaluwarsa' => 'required|date',
             'harga_satuan' => 'required|integer|min:1',
@@ -57,27 +57,34 @@ class ObatController extends Controller
             'aturan_pakai' => 'required|string',
             'rute_obat' => 'required|string',
         ]);
-
-        // Simpan data obat baru
-        $obat = new Obat();
-        $obat->no_bpom = $request->no_bpom;
-        $obat->nama = $request->nama;
-        $obat->kategori = $request->kategori;
-        $obat->jenis_obat = $request->jenis_obat;
-        $obat->stok = $request->stok;
-        $obat->tanggal_kadaluwarsa = $request->tanggal_kadaluwarsa;
-        $obat->harga_satuan = $request->harga_satuan;
-        $obat->kategori_obat_keras = $request->kategori_obat_keras;
-        $obat->dosis = $request->dosis;
-        $obat->aturan_pakai = $request->aturan_pakai;
-        $obat->rute_obat = $request->rute_obat;
-
-        $obat->save();
-
-        // Redirect ke /lihatstokobat dengan pesan sukses
-        return redirect('/lihatstokobat')->with('message', 'Obat baru berhasil ditambahkan.');
+    
+        // Simpan data obat ke database
+        Obat::create([
+            'no_bpom' => $request->no_bpom,
+            'nama' => $request->nama,
+            'kategori' => $request->kategori,
+            'jenis_obat' => $request->jenis_obat,
+            'stok' => $request->stok,
+            'tanggal_kadaluwarsa' => $request->tanggal_kadaluwarsa,
+            'harga_satuan' => $request->harga_satuan,
+            'kategori_obat_keras' => $request->kategori_obat_keras,
+            'dosis' => $request->dosis,
+            'aturan_pakai' => $request->aturan_pakai,
+            'rute_obat' => $request->rute_obat,
+        ]);
+    
+        return redirect('/lihatstokobat')->with('message', 'Obat berhasil ditambahkan!');
     }
+    
 
+    public function showTambahStok()
+    {
+        // Mengambil data obat dengan stok kurang dari 5
+        $lowStockObatList = Obat::where('stok', '<', 5)->get();
+
+        // Mengirimkan data obat dengan stok rendah ke view
+        return view('tambahStok', compact('lowStockObatList'));
+    }
 
         // Fungsi untuk mengecek stok obat
         public function cekStok(Request $request)

@@ -22,6 +22,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border: 1px solid lightgrey;
             margin-bottom: 2rem;
+            height:100%;
         }
 
         .text-custom {
@@ -92,8 +93,9 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
                     </li>
+    
                 </ul>
             </div>
         </div>
@@ -122,9 +124,7 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-custom">Tambah Stok</button>
-                        </div>
+                        
                     </form>
 
                     <!-- Tampilkan pesan sukses atau error (jika ada) -->
@@ -166,6 +166,8 @@
             </div>
         </div>
     </div>
-
+    <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-custom">Tambah Stok</button>
+                        </div>
 </body>
 </html>

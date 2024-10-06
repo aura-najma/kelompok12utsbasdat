@@ -9,10 +9,27 @@
     <style>
         body {
             background-image: url('assets/images/bginputpasien.png');
-            background-size: cover;
-            background-position: center;
+            background-size: 100%;
+            background-position: bottom center;
             background-repeat: no-repeat;
             font-family: 'Poppins', sans-serif;
+            justify-content: flex-end;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(-180deg, #204ae6, #36bef8);
+        }
+
+        .navbar-brand img {
+            width: 300px;
+            height: auto;
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-weight: 600;
+            margin-right: 30px;
         }
 
         .container {
@@ -25,7 +42,22 @@
             max-width: 800px;
         }
 
-        h1, h3 {
+        h1{
+            padding: 1rem;
+            font-size: 35px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 70px;
+            color: #fff;
+            user-select: none;
+            border-radius: 15px;
+            background: linear-gradient(-135deg, #204ae6, #36bef8);
+            margin-bottom: 20px;
+            
+        }
+
+        
+        h3 {
             color: #204ae6;
             text-align: center;
             font-weight: 600;
@@ -41,18 +73,20 @@
             border-radius: 10px;
         }
 
-        th, td {
+        td {
             padding: 15px;
             text-align: left;
+            
         }
 
         th {
-            background-color: #204ae6; /* Warna latar belakang lebih gelap */
+            background: linear-gradient(-180deg, #204ae6, #36bef8);
             color: #ffffff; /* Teks tetap putih karena background sudah lebih gelap */
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.9rem;
             text-align: center;
+            vertical-align: middle; 
         }
 
         td {
@@ -71,9 +105,41 @@
             margin-top: 2rem;
             font-weight: 500;
         }
+
+        footer {
+            background: linear-gradient(-180deg, #36bef8,#204ae6);
+            text-align: center;
+            margin-top: 50px; /* Memastikan footer berada di bawah konten */
+            padding: 10px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 200;
+            vertical-align: middle; 
+        }
     </style>
 </head>
 <body>
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <!-- Logo di kiri -->
+            <a class="navbar-brand" href="#">
+                <img src="{{ asset('assets/images/logo2.png') }}" alt="Logo">
+            </a>
+
+            <!-- Tombol Home di kanan -->
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <h1>Invoice Pembelian Obat</h1>
         <div class="mb-4">
@@ -108,7 +174,14 @@
 
         <h3 class="table-total">Total Harga Keseluruhan: Rp {{ number_format($totalHarga, 2, ',', '.') }}</h3>
 
-        <p class="text-center">Terima kasih telah melakukan pembelian.</p>
+    <p class="text-center">Terima kasih telah melakukan pembelian.</p>
     </div>
+
+   <!-- Footer -->
+   <footer>
+       
+        <p>Semoga Sehat Selalu❤️</p>
+    </footer>
+   
 </body>
 </html>

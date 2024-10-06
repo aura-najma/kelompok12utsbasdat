@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            background-image: url('assets/images/bginputpasien.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -20,11 +19,11 @@
             background-color: rgba(255, 255, 255, 0.9);
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             border: 1px solid lightgrey;
         }
 
-        h1, h3 {
+        h1{
             padding: 1rem;
             font-size: 35px;
             font-weight: 600;
@@ -36,6 +35,7 @@
             background: linear-gradient(-135deg, #204ae6, #36bef8);
             margin-bottom: 20px;
             font-family: 'Poppins', sans-serif;
+            
         }
 
         .navbar {
@@ -55,7 +55,7 @@
         }
 
         .low-stock {
-            background-color: #36A9F8 !important; /* Warna biru terang untuk menandai stok rendah */
+            background-color: rgba(255, 182, 193, 0.9)!important; 
         }
 
         table.dataTable tbody tr {
@@ -80,7 +80,7 @@
         }
 
         .dataTables_wrapper {
-            width: 100%;
+            width: 110%;
             margin: 0 auto;
         }
 
@@ -92,15 +92,19 @@
 
         th {
             vertical-align: top;
-            background-color: #f1f1f1;
-            color: #333;
+            background-color: #2461e9!important;
+            color: #fff;
             text-align: center;
+            border:1px solid #fff;
+            vertical-align: middle; 
         }
 
-        td, th {
+        td {
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #fff;
             text-align: center;
+            border:none;
+            
         }
 
         .container {
@@ -118,8 +122,15 @@
         </a>
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
+        
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="{{ url('/lihatstokobat/tambah-stok') }}">Tambah Stok Obat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/lihatstokobat/tambah-obat') }}">Tambah Obat Baru</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
                 </li>
             </ul>
         </div>
@@ -153,19 +164,7 @@
                             <th>Aturan Pakai</th>
                             <th>Rute Obat</th>
                         </tr>
-                        <tr>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari No BPOM"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Nama Obat"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Kategori"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Jenis Obat"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Stok"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Tgl Kadaluwarsa"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Harga"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Kategori Obat Keras"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Dosis"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Aturan Pakai"></th>
-                            <th><input type="text" class="form-control form-control-sm" placeholder="Cari Rute Obat"></th>
-                        </tr>
+                        
                     </thead>
                     <tbody>
                         @foreach($obatList as $obat)
@@ -192,16 +191,12 @@
             </div>
         @endif
 
-        <div class="d-flex justify-content-around mt-4">
-            <a href="{{ url('/lihatstokobat/tambah-stok') }}" class="btn btn-custom" style="background: linear-gradient(-135deg, #2295B4, #36bef8); color: white;">Tambah Stok Obat</a>
-            <a href="{{ url('/lihatstokobat/tambah-obat') }}" class="btn btn-custom" style="background: linear-gradient(-135deg, #36bef8, #2295B4); color: white;">Tambah Obat Baru</a>
-        </div>
+    
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
 <script>
     $(document).ready(function() {
         let table = $('#obatTable').DataTable({

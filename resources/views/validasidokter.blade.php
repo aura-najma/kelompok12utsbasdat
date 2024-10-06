@@ -71,7 +71,7 @@
         <div class="container-fluid">
             <!-- Logo di kiri -->
             <a class="navbar-brand" href="#">
-                <img src="assets/images/logo2.png" alt="Logo">
+            <img src="{{ asset('assets/images/logo2.png') }}" alt="Logo">
             </a>
 
             <!-- Tombol Home di kanan -->

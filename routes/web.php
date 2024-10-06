@@ -113,6 +113,7 @@ Route::get('/daftar-pasien', [PasienController::class, 'listPasien']);
 
 
 Route::get('/lihatstokobat', [ObatController::class, 'index']);
+Route::post('/getPasienByNoTelepon', [PasienController::class, 'getPasienByNoTelepon'])->name('getPasienByNoTelepon');
 
 Route::get('/get-pasien', [PasienController::class, 'getPasien']);
 // Route untuk menampilkan form tambah stok

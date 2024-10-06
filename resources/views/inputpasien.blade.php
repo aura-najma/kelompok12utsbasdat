@@ -156,20 +156,29 @@
     </div>
 
     <script>
-    // Menggunakan SweetAlert2 untuk notifikasi setelah submit
     document.getElementById('dataForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Mencegah submit form default
+    event.preventDefault(); // Mencegah submit form default
 
-        // Ambil data dari form
-        const formData = new FormData(this);
+    const formData = new FormData(this);
 
-        // Kirim data menggunakan Fetch API
-        fetch('{{ route("pasien.store") }}', {
-            method: 'POST',
-            body: formData
-        })
-       
-        .then(data => {
+    fetch('{{ route("pasien.store") }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Menambahkan token CSRF untuk otentikasi
+        },
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Jika respons gagal, lemparkan error dengan informasi
+            return response.text().then(text => {
+                throw new Error(text);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
             // Tampilkan notifikasi jika data berhasil disimpan
             Swal.fire({
                 title: 'Data Berhasil Disimpan!',
@@ -181,25 +190,69 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Arahkan ke halaman cekobatkeras setelah notifikasi OK
-                    window.location.href = '/cekobatkeras'; // Sesuaikan dengan URL tujuan
+                    if (data.has_resep) {
+                        window.location.href = '/cekobatkeras?id_pembelian=' + data.id_pembelian;
+                    } else {
+                        window.location.href = '/cekstokobat?id_pembelian=' + data.id_pembelian;
+                    }
                 }
             });
-        })
-        .catch(error => {
-            Swal.fire({
-                title: 'Gagal Menyimpan Data',
-                text: 'Terjadi kesalahan, silakan coba lagi.',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                customClass: {
-                    confirmButton: 'btn btn-danger', // Kustomisasi tombol
-                }
-            });
-            console.error('Error:', error);
+        } else {
+            throw new Error(data.error || 'Terjadi kesalahan saat menyimpan data.');
+        }
+    })
+    .catch(error => {
+        // Menampilkan error yang lebih baik, mencetak kesalahan dari response text
+        Swal.fire({
+            title: 'Gagal Menyimpan Data',
+            text: error.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'btn btn-danger',
+            }
         });
+        console.error('Error:', error);
     });
-</script>
+});
+
+document.getElementById('no_telepon').addEventListener('blur', function() {
+        const noTelepon = this.value.trim();
+
+        if (noTelepon.length >= 10) {
+            // Mengirimkan permintaan untuk mendapatkan data pasien
+            fetch('{{ route("getPasienByNoTelepon") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ no_telepon: noTelepon })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Isi data otomatis jika pasien ditemukan
+                    document.getElementById('nama').value = data.pasien.nama;
+                    document.getElementById('tanggal_lahir').value = data.pasien.tanggal_lahir;
+                    document.getElementById('alamat').value = data.pasien.alamat;
+                    document.getElementById('alergi_obat').value = data.pasien.alergi_obat;
+                } else {
+                    // Kosongkan field jika pasien tidak ditemukan
+                    document.getElementById('nama').value = '';
+                    document.getElementById('tanggal_lahir').value = '';
+                    document.getElementById('alamat').value = '';
+                    document.getElementById('alergi_obat').value = '';
+                    console.warn(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+
+
 
     </script>
 </body>

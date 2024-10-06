@@ -68,23 +68,15 @@ Route::get('/evaluasiapotek', function () {
 // bagian dyah
 use App\Http\Controllers\DashboardController;
 
-// Route untuk menampilkan form login
-Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login.form');
 
-// Route untuk memproses login
-Route::post('/login', [DashboardController::class, 'login'])->name('login');
-
-// Route untuk logout
-Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
-
-// Route untuk dashboard, dilindungi oleh middleware auth
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
-Route::get('/dashboard', [DashboardController::class, 'dashboardutama'])->name('dashboard')->middleware('auth');
-
-
+Route::middleware(['web'])->group(function () {
+    Route::get('/login', [DashboardController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [DashboardController::class, 'login']);
+    Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
+    Route::get('/dashboardutama', [DashboardController::class, 'dashboard'])->name('dashboardutama');
+});
 use App\Http\Controllers\EvaluasiController;
 
-Route::get('/evaluasi', [EvaluasiController::class, 'create'])->name('evaluasi.create');
 Route::post('/evaluasi', [EvaluasiController::class, 'store'])->name('evaluasi.store');
 
 use App\Http\Controllers\DokterController;
@@ -92,8 +84,6 @@ use App\Http\Controllers\DokterController;
 Route::get('/validasidokter', [DokterController::class, 'index']);
 
 use App\Http\Controllers\InvoiceController;
-
-
 
 // bagian aura
 use App\Http\Controllers\PasienController;
@@ -107,7 +97,10 @@ Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
 Route::post('/pasien', [PasienController::class, 'store'])->name('pasien.store');
 
 
-Route::get('/daftar-pasien', [PasienController::class, 'listPasien']);
+Route::get('/daftar-pasien/{no_telepon}/edit', [PasienController::class, 'edit'])->name('pasien.edit');
+Route::delete('/daftar-pasien/{no_telepon}', [PasienController::class, 'destroy'])->name('pasien.destroy');
+Route::put('/daftar-pasien/{no_telepon}', [PasienController::class, 'update'])->name('pasien.update');
+Route::get('/daftar-pasien', [PasienController::class, 'listPasien'])->name('daftarPasien');
 
 
 

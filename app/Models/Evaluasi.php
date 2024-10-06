@@ -1,23 +1,23 @@
 <?php
 
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Evaluasi extends Model
 {
-    use HasFactory;
+    protected $table = 'evaluasi'; // Nama tabel yang benar
+    protected $primaryKey = 'id_evaluasi';
+    public $incrementing = false; // Non-auto-increment
+    protected $keyType = 'string';
 
-    protected $table = 'evaluasi';
-
+    // Kolom yang bisa diisi (mass assignable)
     protected $fillable = [
-        'id_pembeli',
-        'tanggal_transaksi',
-        'evaluasi_apotek',
-        'evaluasi_pelayanan',
-        'evaluasi_obat',
-        'rating_apotek',
-        'komentar',
+        'id_evaluasi', 'id_pembeli', 'tanggal_transaksi', 'evaluasi_apotek', 'evaluasi_pelayanan', 'evaluasi_obat', 'rating_apotek', 'komentar'
     ];
 }
+
+
+
+

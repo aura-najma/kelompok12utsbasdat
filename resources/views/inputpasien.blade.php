@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Tambahkan SweetAlert2 -->
     <title>Input Data Diri Pasien</title>
     <style>
         body {
-            background-color: rgba(34, 149, 180, 0.3);
+            background-image: url('assets/images/bginputpasien.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
+
         .form-container {
-            background-color: white; 
+            background-color: rgba(255, 255, 255, 0.8);
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            height: 100%; /* Memastikan tinggi container kolom sama */
+            height: 100%;
+            border: 1px solid lightgrey;
         }
         .text-custom {
             color: black;
@@ -25,16 +31,24 @@
             color: #fff;
         }
 
+        input.form-control, 
+        textarea.form-control {
+            background-color: rgba(32, 74, 230, 0.1);
+            border: 1px solid #204ae6;
+            color: #000;
+        }
+
         .btn-custom {
             color: white;
             width: 20%;
-            padding: 10px 20px; /* Tambahkan padding di sini */
+            padding: 10px 20px;
             border-radius:15px;
             background: linear-gradient(-135deg, #204ae6, #36bef8);
+            font-weight: 600;
         }
 
         h3 {
-            padding: 1rem; /* Menambahkan padding pada h3 */
+            padding: 1rem;
             font-size: 35px;
             font-weight: 600;
             text-align: center;
@@ -44,19 +58,51 @@
             border-radius: 15px;
             background: linear-gradient(-135deg, #204ae6, #36bef8);
             margin-bottom:20px;
-            
+        }
+
+        .navbar {
+            background: linear-gradient(-180deg,  #204ae6,#36bef8);
+        }
+        .navbar-brand img {
+            width: 300px;
+            height: auto;
+        }
+        .navbar-nav .nav-link {
+            color: white;
+            font-weight: 600;
+            margin-right:30px;
         }
     </style>
 </head>
 <body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <!-- Logo di kiri -->
+            <a class="navbar-brand" href="#">
+                <img src="assets/images/logo2.png" alt="Logo">
+            </a>
+
+            <!-- Tombol Home di kanan -->
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h3 class="title">Input Data Diri Pembeli</h3>
         <div class="row">
             <!-- Kolom Kiri -->
             <div class="col-md-6">
                 <div class="form-container">
-                    <form action="{{ route('pasien.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf <!-- Token untuk melindungi dari CSRF -->
+                    <form id="dataForm" action="{{ route('pasien.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         
                         <!-- Nama Field -->
                         <div class="mb-3">
@@ -84,7 +130,7 @@
                 </div>
             </div>
 
-            <!-- Kolom Kanan (Digabungkan dalam 1 Container) -->
+            <!-- Kolom Kanan -->
             <div class="col-md-6">
                 <div class="form-container">
                     <div class="mb-3">
@@ -103,39 +149,35 @@
             </div>
         </div>
 
-        <!-- Submit Button di Tengah -->
+        <!-- Submit Button -->
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-custom" style="background-color: #2295B4; color: white; width: 30%;">Submit</button>
         </div>
     </div>
 
     <script>
-    function fetchPasienData() {
-        const noTelepon = document.getElementById('no_telepon').value;
+    // Menggunakan SweetAlert2 untuk notifikasi setelah submit
+    document.getElementById('dataForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Mencegah submit form default
 
-        if (noTelepon) {
-            fetch(`/get-pasien?no_telepon=${noTelepon}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Data pasien:', data); // Cek data yang diterima
+        // Kode untuk menyimpan data atau melakukan ajax request bisa dimasukkan di sini
 
-                    if (data) {
-                        // Isi field form dengan data pasien lama
-                        document.getElementById('nama').value = data.nama || '';
-                        document.getElementById('tanggal_lahir').value = data.tanggal_lahir || '';
-                        document.getElementById('alamat').value = data.alamat || '';
-                        document.getElementById('alergi_obat').value = data.alergi_obat || '';
-                    } else {
-                        // Kosongkan field jika data pasien tidak ditemukan
-                        document.getElementById('nama').value = '';
-                        document.getElementById('tanggal_lahir').value = '';
-                        document.getElementById('alamat').value = '';
-                        document.getElementById('alergi_obat').value = '';
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    }
+        // Jika berhasil simpan data, tampilkan notifikasi
+        Swal.fire({
+            title: 'Data Berhasil Disimpan!',
+            text: 'Terima kasih telah mengisi data diri.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'btn btn-primary', // Kustomisasi tombol
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Arahkan ke halaman lain setelah notifikasi OK
+                window.location.href = '/cekobatkeras'; // Sesuaikan dengan URL tujuan
+            }
+        });
+    });
     </script>
 </body>
 </html>

@@ -8,10 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            background-image: url('assets/images/bginputpasien.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             font-family: 'Poppins', sans-serif;
         }
 
@@ -22,6 +18,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border: 1px solid lightgrey;
             margin-bottom: 2rem;
+            height:100%;
         }
 
         .text-custom {
@@ -92,8 +89,9 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
                     </li>
+                    
                 </ul>
             </div>
         </div>
@@ -215,10 +213,7 @@
                             </select>
                         </div>
 
-                        <!-- Submit Button -->
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-custom">Tambah Obat</button>
-                        </div>
+                       
 
                         <!-- Tampilkan pesan sukses atau error (jika ada) -->
                         @if (session('message'))
@@ -226,10 +221,17 @@
                                 {{ session('message') }}
                             </div>
                         @endif
+
+        
                     </div>
                 </div>
             </div>
+
         </form>
+         <!-- Submit Button -->
+         <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-custom">Tambah Obat</button>
+                        </div>
     </div>
 
 </body>

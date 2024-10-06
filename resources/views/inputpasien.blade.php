@@ -160,24 +160,47 @@
     document.getElementById('dataForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Mencegah submit form default
 
-        // Kode untuk menyimpan data atau melakukan ajax request bisa dimasukkan di sini
+        // Ambil data dari form
+        const formData = new FormData(this);
 
-        // Jika berhasil simpan data, tampilkan notifikasi
-        Swal.fire({
-            title: 'Data Berhasil Disimpan!',
-            text: 'Terima kasih telah mengisi data diri.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            customClass: {
-                confirmButton: 'btn btn-primary', // Kustomisasi tombol
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Arahkan ke halaman lain setelah notifikasi OK
-                window.location.href = '/cekobatkeras'; // Sesuaikan dengan URL tujuan
-            }
+        // Kirim data menggunakan Fetch API
+        fetch('{{ route("pasien.store") }}', {
+            method: 'POST',
+            body: formData
+        })
+       
+        .then(data => {
+            // Tampilkan notifikasi jika data berhasil disimpan
+            Swal.fire({
+                title: 'Data Berhasil Disimpan!',
+                text: 'Terima kasih telah mengisi data diri.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'btn btn-primary', // Kustomisasi tombol
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Arahkan ke halaman cekobatkeras setelah notifikasi OK
+                    window.location.href = '/cekobatkeras'; // Sesuaikan dengan URL tujuan
+                }
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                title: 'Gagal Menyimpan Data',
+                text: 'Terjadi kesalahan, silakan coba lagi.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'btn btn-danger', // Kustomisasi tombol
+                }
+            });
+            console.error('Error:', error);
         });
     });
+</script>
+
     </script>
 </body>
 </html>

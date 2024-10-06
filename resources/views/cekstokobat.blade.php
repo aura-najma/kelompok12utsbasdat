@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,29 +12,25 @@
             background-color: #fff;
         }
 
-
         h1 {
-            background: #fff; /* White background */
-            padding: 10px; 
-            font-size: 50px; 
-            font-weight: 600; 
-            text-align: center; 
-            border-radius: 15px; 
+            padding: 10px;
+            font-size: 50px;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 15px;
             margin-bottom: 20px;
             margin-top: 30px;
-            background-clip: text; /* Ensures gradient applies to text */
-            -webkit-background-clip: text; /* For Safari */
-            color: transparent; /* Hides the background color of the text */
-            background-image: linear-gradient(-135deg, #204ae6, #36bef8); /* Gradient for text */
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(-135deg, #204ae6, #36bef8);
         }
-
 
         table {
-            width: 98%; /* Set the width of the table */
-            border-collapse: collapse; /* Collapse borders */
-            margin: 0 auto 20px; /* Center the table and add bottom margin */
+            width: 98%;
+            border-collapse: collapse;
+            margin: 0 auto 20px;
         }
-
 
         td {
             border: 1px solid #36bef8;
@@ -78,8 +74,8 @@
 
         .btn-container {
             display: flex;
-            justify-content: center; /* Center the button horizontally */
-            margin-top: 20px; /* Optional: Adds some space above the button */
+            justify-content: center;
+            margin-top: 20px;
         }
 
         .quantity-control {
@@ -94,22 +90,29 @@
         }
 
         .navbar {
-            background: linear-gradient(-180deg,  #204ae6,#36bef8);
+            background: linear-gradient(-180deg, #204ae6, #36bef8);
         }
+
         .navbar-brand img {
             width: 200px;
             height: auto;
         }
+
         .navbar-nav .nav-link {
             color: white;
             font-weight: 600;
-            margin-right:30px;
+            margin-right: 30px;
+        }
+
+        .alert {
+            width: 90%;
+            margin: 20px auto;
         }
     </style>
 </head>
 <body>
-     <!-- Navbar -->
-     <nav class="navbar navbar-expand-lg navbar-dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <!-- Logo di kiri -->
             <a class="navbar-brand" href="#">
@@ -120,77 +123,81 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                    <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
+                        <a class="nav-link" href="{{ route('dashboardutama') }}">Dashboard</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    
+
+    <!-- Alert Alergi Obat -->
+    <div class="alert alert-warning" role="alert">
+        <strong>Perhatian!</strong> Pasien ini memiliki alergi terhadap: {{ $alergiObat }}
+    </div>
+
     <h1>Cek Stok Obat</h1>
 
-        <!-- Menampilkan ID Pembelian -->
-        <form action="{{ route('transaksi.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}">
+    <!-- Menampilkan ID Pembelian -->
+    <form action="{{ route('transaksi.store') }}" method="POST" onsubmit="return confirmAlergiObat()">
+        @csrf
+        <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}">
 
-            @if($obatList->isNotEmpty())
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No BPOM</th>
-                            <th>Nama</th>
-                            <th>Kategori</th>
-                            <th>Jenis Obat</th>
-                            <th>Stok</th>
-                            <th>Tanggal Kadaluwarsa</th>
-                            <th>Harga Satuan</th>
-                            <th>Kategori Obat Keras</th>
-                            <th>Dosis</th>
-                            <th>Aturan Pakai</th>
-                            <th>Rute Obat</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($obatList as $obat)
-                        <tr>
-                            <td>{{ $obat->no_bpom }}</td>
-                            <td>{{ $obat->nama }}</td>
-                            <td>{{ $obat->kategori }}</td>
-                            <td>{{ $obat->jenis_obat }}</td>
-                            <td id="stok-{{ $obat->no_bpom }}">{{ $obat->stok }}</td>
-                            <td>{{ $obat->tanggal_kadaluwarsa }}</td>
-                            <td>{{ $obat->harga_satuan }}</td>
-                            <td>{{ $obat->kategori_obat_keras }}</td>
-                            <td>{{ $obat->dosis }}</td>
-                            <td>{{ $obat->aturan_pakai }}</td>
-                            <td>{{ $obat->rute_obat }}</td>
-                            <td>
-                                <div class="quantity-control">
-                                    <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', false)">-</button>
-                                    <input type="number" id="qty-{{ $obat->no_bpom }}" name="obats[{{ $obat->no_bpom }}][jumlah]" value="0" min="0" oninput="checkQuantity()">
-                                    <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', true)">+</button>
-                                </div>
+        @if($obatList->isNotEmpty())
+            <table>
+                <thead>
+                    <tr>
+                        <th>No BPOM</th>
+                        <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Jenis Obat</th>
+                        <th>Stok</th>
+                        <th>Tanggal Kadaluwarsa</th>
+                        <th>Harga Satuan</th>
+                        <th>Kategori Obat Keras</th>
+                        <th>Dosis</th>
+                        <th>Aturan Pakai</th>
+                        <th>Rute Obat</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($obatList as $obat)
+                    <tr>
+                        <td>{{ $obat->no_bpom }}</td>
+                        <td>{{ $obat->nama }}</td>
+                        <td>{{ $obat->kategori }}</td>
+                        <td>{{ $obat->jenis_obat }}</td>
+                        <td id="stok-{{ $obat->no_bpom }}">{{ $obat->stok }}</td>
+                        <td>{{ $obat->tanggal_kadaluwarsa }}</td>
+                        <td>{{ $obat->harga_satuan }}</td>
+                        <td>{{ $obat->kategori_obat_keras }}</td>
+                        <td>{{ $obat->dosis }}</td>
+                        <td>{{ $obat->aturan_pakai }}</td>
+                        <td>{{ $obat->rute_obat }}</td>
+                        <td>
+                            <div class="quantity-control">
+                                <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', false)">-</button>
+                                <input type="number" id="qty-{{ $obat->no_bpom }}" name="obats[{{ $obat->no_bpom }}][jumlah]" value="0" min="0" oninput="checkQuantity()">
+                                <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', true)">+</button>
+                            </div>
 
-                                <!-- Data yang akan dikirim ke transaksi -->
-                                <input type="hidden" name="obats[{{ $obat->no_bpom }}][harga_satuan]" value="{{ $obat->harga_satuan }}">
-                                <input type="hidden" name="obats[{{ $obat->no_bpom }}][nama]" value="{{ $obat->nama }}">
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                
-                <div class="btn-container">
-                    <button id="purchase-button" type="submit" class="btn-custom disabled" disabled>Beli Obat</button>
-                </div>
+                            <!-- Data yang akan dikirim ke transaksi -->
+                            <input type="hidden" name="obats[{{ $obat->no_bpom }}][harga_satuan]" value="{{ $obat->harga_satuan }}">
+                            <input type="hidden" name="obats[{{ $obat->no_bpom }}][nama]" value="{{ $obat->nama }}">
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
-            @else
-                <p>Tidak ada obat yang tersedia saat ini.</p>
-            @endif
-        </form>
-    
+            <div class="btn-container">
+                <button id="purchase-button" type="submit" class="btn-custom disabled" disabled>Beli Obat</button>
+            </div>
+
+        @else
+            <p class="text-center">Tidak ada obat yang tersedia saat ini.</p>
+        @endif
+    </form>
 
     <script>
         // Fungsi untuk menambah atau mengurangi jumlah obat yang ingin dibeli
@@ -230,6 +237,16 @@
                 purchaseButton.classList.add('disabled');
                 purchaseButton.disabled = true;
             }
+        }
+
+        // Fungsi untuk konfirmasi alergi obat sebelum submit
+        function confirmAlergiObat() {
+            const alergiObat = document.getElementById('alergi_obat').value;
+
+            if (alergiObat) {
+                return confirm('Pembeli ini memiliki alergi obat: ' + alergiObat + '. Apakah yakin obat yang dibeli benar-benar bukan obat yang pembeli alergi?');
+            }
+            return true;
         }
     </script>
 </body>

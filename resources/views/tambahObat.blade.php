@@ -126,16 +126,10 @@
                                 <option value="" disabled selected>Pilih Kategori</option>
                                 <option value="Asma">Asma</option>
                                 <option value="Batuk & Pilek">Batuk & Pilek</option>
-                                <option value="Darah Tinggi">Darah Tinggi</option>
-                                <option value="Perawatan Kulit">Perawatan Kulit</option>
+                                <option value="Perawatan dan Gangguan Kulit">Perawatan dan Gangguan Kulit</option>
                                 <option value="Pusing & Demam">Pusing & Demam</option>
                                 <option value="Pencernaan">Pencernaan</option>
-                                <option value="Gangguan Kulit">Gangguan Kulit</option>
-                                <option value="Gangguan Nyeri dan Pereda Sakit">Gangguan Nyeri dan Pereda Sakit</option>
-                                <option value="Obat Minyak & Oles">Obat Minyak & Oles</option>
                                 <option value="Diabetes">Diabetes</option>
-                                <option value="Kolesterol">Kolesterol</option>
-                                <option value="Asam Urat">Asam Urat</option>
                                 <option value="Jantung">Jantung</option>
                                 <option value="THT">THT</option>
                                 <option value="Mata">Mata</option>
@@ -216,6 +210,7 @@
                                 <option value="Rektal">Rektal</option>
                                 <option value="Okular">Okular</option>
                                 <option value="Nasal">Nasal</option>
+                                <option value="Nebulisasi">Nebulisasi</option>
                                 <option value="Inhalasi">Inhalasi</option>
                             </select>
                         </div>

@@ -123,17 +123,20 @@
                                 <option value="" disabled selected>Pilih Kategori</option>
                                 <option value="Asma">Asma</option>
                                 <option value="Batuk & Pilek">Batuk & Pilek</option>
-                                <option value="Perawatan dan Gangguan Kulit">Perawatan dan Gangguan Kulit</option>
-                                <option value="Pusing & Demam">Pusing & Demam</option>
+                                <option value="Flu, Demam & Pusing">Flu, Demam & Pusing</option>
+                                <option value="Gangguan & Perawatan Kulit">Gangguan & Perawatan Kulit</option>
+                                <option value="Gangguan Nyeri dan Pereda Sakit">Gangguan Nyeri dan Pereda Sakit</option>
+                                <option value="Hormonal">Hormonal</option>
+                                <option value="Mata">Mata</option>
+                                <option value="Obat Minyak & Oles">Obat Minyak & Oles</option>
                                 <option value="Pencernaan">Pencernaan</option>
                                 <option value="Diabetes">Diabetes</option>
                                 <option value="Jantung">Jantung</option>
-                                <option value="THT">THT</option>
-                                <option value="Mata">Mata</option>
                                 <option value="Sistem Saluran Kemih">Sistem Saluran Kemih</option>
-                                <option value="Hormonal">Hormonal</option>
+                                <option value="THT">THT</option>
                             </select>
                         </div>
+
 
                         <!-- Jenis Obat Field -->
                         <div class="mb-3">

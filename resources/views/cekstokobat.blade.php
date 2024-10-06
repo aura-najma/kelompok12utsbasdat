@@ -130,10 +130,7 @@
         </div>
     </nav>
 
-    <!-- Alert Alergi Obat -->
-    <div class="alert alert-warning" role="alert">
-        <strong>Perhatian!</strong> Pasien ini memiliki alergi terhadap: {{ $alergiObat }}
-    </div>
+
 
     <h1>Cek Stok Obat</h1>
 

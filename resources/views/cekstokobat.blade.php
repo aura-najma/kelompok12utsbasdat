@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cek Stok Obat</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -130,8 +131,6 @@
         </div>
     </nav>
 
-
-
     <h1>Cek Stok Obat</h1>
 
     <!-- Menampilkan ID Pembelian -->
@@ -140,52 +139,54 @@
         <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}">
 
         @if($obatList->isNotEmpty())
-            <table>
-                <thead>
-                    <tr>
-                        <th>No BPOM</th>
-                        <th>Nama</th>
-                        <th>Kategori</th>
-                        <th>Jenis Obat</th>
-                        <th>Stok</th>
-                        <th>Tanggal Kadaluwarsa</th>
-                        <th>Harga Satuan</th>
-                        <th>Kategori Obat Keras</th>
-                        <th>Dosis</th>
-                        <th>Aturan Pakai</th>
-                        <th>Rute Obat</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($obatList as $obat)
-                    <tr>
-                        <td>{{ $obat->no_bpom }}</td>
-                        <td>{{ $obat->nama }}</td>
-                        <td>{{ $obat->kategori }}</td>
-                        <td>{{ $obat->jenis_obat }}</td>
-                        <td id="stok-{{ $obat->no_bpom }}">{{ $obat->stok }}</td>
-                        <td>{{ $obat->tanggal_kadaluwarsa }}</td>
-                        <td>{{ $obat->harga_satuan }}</td>
-                        <td>{{ $obat->kategori_obat_keras }}</td>
-                        <td>{{ $obat->dosis }}</td>
-                        <td>{{ $obat->aturan_pakai }}</td>
-                        <td>{{ $obat->rute_obat }}</td>
-                        <td>
-                            <div class="quantity-control">
-                                <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', false)">-</button>
-                                <input type="number" id="qty-{{ $obat->no_bpom }}" name="obats[{{ $obat->no_bpom }}][jumlah]" value="0" min="0" oninput="checkQuantity()">
-                                <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', true)">+</button>
-                            </div>
+            <div class="table-responsive">
+                <table id="obatTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No BPOM</th>
+                            <th>Nama</th>
+                            <th>Kategori</th>
+                            <th>Jenis Obat</th>
+                            <th>Stok</th>
+                            <th>Tanggal Kadaluwarsa</th>
+                            <th>Harga Satuan</th>
+                            <th>Kategori Obat Keras</th>
+                            <th>Dosis</th>
+                            <th>Aturan Pakai</th>
+                            <th>Rute Obat</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($obatList as $obat)
+                        <tr>
+                            <td>{{ $obat->no_bpom }}</td>
+                            <td>{{ $obat->nama }}</td>
+                            <td>{{ $obat->kategori }}</td>
+                            <td>{{ $obat->jenis_obat }}</td>
+                            <td id="stok-{{ $obat->no_bpom }}">{{ $obat->stok }}</td>
+                            <td>{{ $obat->tanggal_kadaluwarsa }}</td>
+                            <td>{{ $obat->harga_satuan }}</td>
+                            <td>{{ $obat->kategori_obat_keras }}</td>
+                            <td>{{ $obat->dosis }}</td>
+                            <td>{{ $obat->aturan_pakai }}</td>
+                            <td>{{ $obat->rute_obat }}</td>
+                            <td>
+                                <div class="quantity-control">
+                                    <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', false)">-</button>
+                                    <input type="number" id="qty-{{ $obat->no_bpom }}" name="obats[{{ $obat->no_bpom }}][jumlah]" value="0" min="0" oninput="checkQuantity()">
+                                    <button type="button" onclick="changeQuantity('{{ $obat->no_bpom }}', true)">+</button>
+                                </div>
 
-                            <!-- Data yang akan dikirim ke transaksi -->
-                            <input type="hidden" name="obats[{{ $obat->no_bpom }}][harga_satuan]" value="{{ $obat->harga_satuan }}">
-                            <input type="hidden" name="obats[{{ $obat->no_bpom }}][nama]" value="{{ $obat->nama }}">
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                <!-- Data yang akan dikirim ke transaksi -->
+                                <input type="hidden" name="obats[{{ $obat->no_bpom }}][harga_satuan]" value="{{ $obat->harga_satuan }}">
+                                <input type="hidden" name="obats[{{ $obat->no_bpom }}][nama]" value="{{ $obat->nama }}">
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
             <div class="btn-container">
                 <button id="purchase-button" type="submit" class="btn-custom disabled" disabled>Beli Obat</button>
@@ -196,7 +197,26 @@
         @endif
     </form>
 
+    <!-- Script Section -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
+       $(document).ready(function() {
+            $('#obatTable').DataTable({
+                "paging": false,
+                "ordering": false,
+                "info": false,
+                "searching": true, // Hanya menggunakan fitur search
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.3/i18n/id.json"
+                }
+            });
+        });
+
         // Fungsi untuk menambah atau mengurangi jumlah obat yang ingin dibeli
         function changeQuantity(obatId, increment) {
             let qtyInput = document.getElementById('qty-' + obatId);
@@ -234,16 +254,6 @@
                 purchaseButton.classList.add('disabled');
                 purchaseButton.disabled = true;
             }
-        }
-
-        // Fungsi untuk konfirmasi alergi obat sebelum submit
-        function confirmAlergiObat() {
-            const alergiObat = document.getElementById('alergi_obat').value;
-
-            if (alergiObat) {
-                return confirm('Pembeli ini memiliki alergi obat: ' + alergiObat + '. Apakah yakin obat yang dibeli benar-benar bukan obat yang pembeli alergi?');
-            }
-            return true;
         }
     </script>
 </body>

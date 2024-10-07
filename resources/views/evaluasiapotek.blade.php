@@ -107,9 +107,13 @@
         
         <form action="{{ route('evaluasi.store') }}" method="POST">
             @csrf
+            @error('id_pembeli')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
             <div class="mb-3">
-                <label for="id_pembelian" class="form-label">ID Pembelian *</label>
-                <input type="text" class="form-control" id="id_pembelian" name="id_pembelian" required>
+                <label for="id_pembeli" class="form-label">ID Pembelian *</label>
+                <input type="text" class="form-control" id="id_pembeli" name="id_pembeli" required>
                 <small class="note">ID Pembelian dapat dilihat di invoice</small> <!-- Added note -->
             </div>
             <div class="mb-3">

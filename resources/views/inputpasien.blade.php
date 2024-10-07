@@ -97,7 +97,7 @@
     </nav>
 
     <div class="container mt-5">
-        <h3 class="title">Input Data Diri Pembeli</h3>
+        <h3 class="title">Input Data Diri Pasien</h3>
         <div class="row">
             <!-- Kolom Kiri -->
             <div class="col-md-6">

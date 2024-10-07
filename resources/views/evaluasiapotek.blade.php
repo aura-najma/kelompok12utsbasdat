@@ -46,6 +46,12 @@
             font-family: 'Poppins', sans-serif; /* Apply Poppins font to labels */
         }
 
+        .note {
+            color: #204ae6; /* Same color as the label */
+            font-size: 0.9em; /* Smaller font size */
+            font-weight: bold; /* Bold font */
+        }
+
         .btn-primary {
             cursor: pointer;
             background: linear-gradient(-135deg, #204ae6, #36bef8);
@@ -102,8 +108,9 @@
         <form action="{{ route('evaluasi.store') }}" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="id_pembeli" class="form-label">ID Pembeli *</label>
-                <input type="text" class="form-control" id="id_pembeli" name="id_pembeli" required>
+                <label for="id_pembelian" class="form-label">ID Pembelian *</label>
+                <input type="text" class="form-control" id="id_pembelian" name="id_pembelian" required>
+                <small class="note">ID Pembelian dapat dilihat di invoice</small> <!-- Added note -->
             </div>
             <div class="mb-3">
                 <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi *</label>

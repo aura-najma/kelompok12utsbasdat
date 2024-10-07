@@ -29,8 +29,8 @@ class EvaluasiController extends Controller
             ->whereDate('created_at', $tanggalHariIni)
             ->count();
 
-        $timestamp = Carbon::now()->format('YmdHis');
-        $idEvaluasi = 'EV' . ($jumlahEvaluasiHariIni + 1);
+        // Menggunakan format EV-jumlahEvaluasiHariIni-idPembelian
+        $idEvaluasi = 'EV-' . ($jumlahEvaluasiHariIni + 1) . '-' . $request->input('id_pembeli');
 
         // Simpan data evaluasi
         Evaluasi::create([

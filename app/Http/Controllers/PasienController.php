@@ -62,17 +62,6 @@ class PasienController extends Controller
     
     
 
-    public function getPasien(Request $request)
-    {
-        // Ambil `no_telepon` dari request
-        $noTelepon = $request->query('no_telepon');
-
-        // Cari data pasien berdasarkan `no_telepon`
-        $pasien = Pasien::where('no_telepon', $noTelepon)->first();
-
-        // Kembalikan data pasien dalam format JSON
-        return response()->json($pasien);
-    }
 
     public function getPasienByNoTelepon(Request $request)
     {
@@ -109,28 +98,7 @@ class PasienController extends Controller
         return redirect()->route('daftarPasien')->with('success', 'Data pasien berhasil diubah.');
     }
 
-    public function destroy($no_telepon)
-{
-    // Find the patient by phone number
-    $pasien = Pasien::where('no_telepon', $no_telepon)->firstOrFail();
-    
-    // Check for associated 'Pembelian' records
-    $pembelianRecords = Pembelian::where('no_telepon', $no_telepon)->get();
-    
-    if ($pembelianRecords->isNotEmpty()) {
-        // Option 1: Delete associated Pembelian records
-        // Uncomment the following line if you want to delete related Pembelian records
-        // Pembelian::where('no_telepon', $no_telepon)->delete();
 
-        // Option 2: Return error response (you could also return a view with an error message)
-        return redirect()->route('daftarPasien')->with('error', 'Data pasien tidak dapat dihapus karena ada pembelian yang terkait.');
-    }
-
-    // If no associated records, proceed to delete the Pasien
-    $pasien->delete();
-    
-    return redirect()->route('daftarPasien')->with('success', 'Data pasien berhasil dihapus.');
-}
 
 
 

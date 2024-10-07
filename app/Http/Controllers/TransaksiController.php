@@ -11,20 +11,7 @@ use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    public function cekStok(Request $request)
-    {
-        // Ambil ID Pembelian dari query parameter
-        $idPembelian = $request->input('id_pembelian');
-      
 
-    
-        // Kirim data ke view
-        return view('cekstokobat', [
-            'obatList' => $obatList,
-            'idPembelian' => $idPembelian
-        ]);
-    }
-    
     
     
 

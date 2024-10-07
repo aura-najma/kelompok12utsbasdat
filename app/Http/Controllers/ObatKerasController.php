@@ -15,20 +15,15 @@ class ObatKerasController extends Controller
         // Mengambil id_pembelian dari query parameter
         $idPembelian = $request->input('id_pembelian');
         
-        // Debugging: Melihat id_pembelian yang diterima
-        //dump($idPembelian);
-    
+
         // Mengambil semua nama obat dari tabel obats
         $daftarObat = Obat::pluck('nama')->toArray();
     
-        // Debugging: Melihat daftar semua obat dari tabel obats
-        // dump($daftarObat);
+
     
         // Mengambil semua obat yang termasuk kategori 'Obat Keras'
         $obatKeras = Obat::where('jenis_obat', 'Keras')->pluck('nama')->toArray();
-    
-        // Debugging: Melihat daftar obat yang termasuk kategori 'Obat Keras'
-       // dump($obatKeras);
+
     
         // Mengirim data ke view cekobatkeras
         return view('cekobatkeras', [
@@ -49,9 +44,7 @@ class ObatKerasController extends Controller
         $namaObatList = $request->input('nama_obat', []); // Ambil semua nama obat dari input form (bisa kosong)
         $idPembelian = $request->input('id_pembelian');
 
-        // Debugging: Melihat input dari pengguna
-        dump($namaObatList);
-        dump($idPembelian);
+
 
         // Cek setiap obat dalam daftar input
         $obatKerasDitemukan = [];
@@ -71,9 +64,6 @@ class ObatKerasController extends Controller
                 $obatKerasDitemukan[] = $namaObat;
             }
         }
-
-        // Debugging: Melihat daftar obat keras yang ditemukan
-        dump($obatKerasDitemukan);
 
         // Jika ada obat keras yang ditemukan
         if (!empty($obatKerasDitemukan)) {

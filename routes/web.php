@@ -130,8 +130,6 @@ Route::get('/cekstokobat', [ObatController::class, 'cekStok'])->name('cekstokoba
 
 use App\Http\Controllers\TransaksiController;
 
-// Route untuk menyimpan transaksi
-Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
 
 use App\Http\Controllers\ObatKerasController;
 

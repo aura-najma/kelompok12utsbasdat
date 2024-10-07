@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Obat; // Pastikan model Obat terimport
+use App\Models\Obat;
+use App\Models\Pembelian;
+use App\Models\Pasien;
 
 class ObatController extends Controller
 {
@@ -96,19 +98,39 @@ class ObatController extends Controller
         return view('tambahStok', compact('lowStockObatList'));
     }
 
+
         // Fungsi untuk mengecek stok obat
-        public function cekStok(Request $request)
+    public function cekStok(Request $request)
         {
             // Validasi untuk memastikan id_pembelian ada
             $request->validate([
                 'id_pembelian' => 'required|string',
             ]);
-        
+    
+            // Ambil id_pembelian dari request
             $idPembelian = $request->query('id_pembelian');
+    
+            // Ambil data pembelian berdasarkan id_pembelian
+            $pembelian = Pembelian::where('id_pembelian', $idPembelian)->first();
+    
+            if ($pembelian) {
+                // Ambil no_telepon dari pembelian
+                $noTelepon = $pembelian->no_telepon;
+    
+                // Ambil data pasien berdasarkan no_telepon
+                $pasien = Pasien::where('no_telepon', $noTelepon)->first();
+    
+                // Ambil alergi_obat dari pasien
+                $alergiObat = $pasien ? $pasien->alergi_obat : null;
+            } else {
+                $alergiObat = null;
+            }
+    
+            // Ambil semua data obat
             $obatList = Obat::all();
-
-            return view('cekstokobat', compact('obatList', 'idPembelian'));
-        }
+    
+            return view('cekstokobat', compact('obatList', 'idPembelian', 'alergiObat'));
+    }
 
     
 

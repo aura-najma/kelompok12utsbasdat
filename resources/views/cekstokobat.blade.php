@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -142,7 +143,7 @@
     <h1>Cek Stok Obat</h1>
 
     <!-- Menampilkan ID Pembelian -->
-    <form action="{{ route('transaksi.store') }}" method="POST" onsubmit="return confirmAlergiObat()">
+    <form action="{{ route('transaksi.store') }}" method="POST" onsubmit="return confirmAlergiObat(event)">
         @csrf
         <input type="hidden" name="id_pembelian" value="{{ $idPembelian }}">
 
@@ -209,14 +210,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-       $(document).ready(function() {
+        const alergiObat = @json($alergiObat); // Mendapatkan data alergi obat dari controller
+
+        $(document).ready(function() {
             $('#obatTable').DataTable({
                 "paging": false,
                 "ordering": false,
                 "info": false,
-                "searching": true, // Hanya menggunakan fitur search
+                "searching": true,
                 "autoWidth": false,
                 "responsive": true,
                 "language": {
@@ -261,6 +265,29 @@
             } else {
                 purchaseButton.classList.add('disabled');
                 purchaseButton.disabled = true;
+            }
+        }
+
+        // Fungsi untuk konfirmasi alergi saat pembelian menggunakan SweetAlert
+        function confirmAlergiObat(event) {
+            if (alergiObat) {
+                event.preventDefault(); // Mencegah form langsung terkirim
+                Swal.fire({
+                    title: 'Perhatian!',
+                    text: "Pasien memiliki alergi terhadap: " + alergiObat + ". Apakah Anda yakin ingin melanjutkan?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, lanjutkan!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.submit(); // Submit form jika pengguna mengonfirmasi
+                    }
+                });
+            } else {
+                return true; // Jika tidak ada alergi, lanjutkan pembelian
             }
         }
     </script>

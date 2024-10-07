@@ -145,7 +145,11 @@
         #btn-cek-stok-obat:hover {
             background-color: #218838;
         }
-
+        /* Menghilangkan background dan padding pada judul SweetAlert */
+        .swal-no-title-bg {
+            background: none !important; /* Menghapus background */
+            padding: 0 !important; /* Menghapus padding */
+        }
         /* Media Queries for Responsiveness */
         @media (max-width: 768px) {
             .container {
@@ -257,7 +261,17 @@ $(document).ready(function() {
 
         // Periksa jika input tidak kosong
         if (obatTerpilih === "") {
-            alert("Silakan masukkan nama obat terlebih dahulu.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Silakan masukkan nama obat terlebih dahulu.',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'swal-no-padding',
+                    title: 'swal-no-title-bg' // Kelas khusus untuk mengubah gaya judul
+                },
+                confirmButtonColor: '#204ae6' // Warna tombol OK sesuai dengan tema biru
+            });
             return;
         }
 
@@ -343,10 +357,6 @@ $(document).ready(function() {
         counter++;
     });
 });
-
-
-
-
 </script>
 
 </body>

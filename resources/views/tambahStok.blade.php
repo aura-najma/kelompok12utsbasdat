@@ -92,9 +92,8 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                    <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
+                        <a class="nav-link" href="{{ route('dashboardutama') }}">Dasboard</a>
                     </li>
-    
                 </ul>
             </div>
         </div>
@@ -123,7 +122,9 @@
                         </div>
 
                         <!-- Submit Button -->
-                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-custom">Tambah Stok</button>
+                        </div>
                     </form>
 
                     <!-- Tampilkan pesan sukses atau error (jika ada) -->
@@ -165,8 +166,6 @@
             </div>
         </div>
     </div>
-    <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-custom">Tambah Stok</button>
-                        </div>
+
 </body>
 </html>

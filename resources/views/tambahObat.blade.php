@@ -127,7 +127,7 @@
                                 <option value="" disabled selected>Pilih Kategori</option>
                                 <option value="Asma">Asma</option>
                                 <option value="Batuk & Pilek">Batuk & Pilek</option>
-                                <option value="Flu, Demam & Pusing">Flu, Demam & Pusing</option>
+                                <option value="Flu, Pusing & Demam">Flu, Pusing & Demam</option>
                                 <option value="Gangguan & Perawatan Kulit">Gangguan & Perawatan Kulit</option>
                                 <option value="Gangguan Nyeri dan Pereda Sakit">Gangguan Nyeri dan Pereda Sakit</option>
                                 <option value="Hormonal">Hormonal</option>
@@ -140,7 +140,6 @@
                                 <option value="THT">THT</option>
                             </select>
                         </div>
-
 
                         <!-- Jenis Obat Field -->
                         <div class="mb-3">
@@ -219,8 +218,6 @@
                             </select>
                         </div>
 
-                       
-
                         <!-- Tampilkan pesan sukses atau error (jika ada) -->
                         @if (session('message'))
                             <div class="alert alert-success mt-3 text-center">
@@ -228,16 +225,14 @@
                             </div>
                         @endif
 
-        
+                        <!-- Submit Button -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-custom">Tambah Obat</button>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </form>
-         <!-- Submit Button -->
-         <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-custom">Tambah Obat</button>
-                        </div>
     </div>
 
 </body>

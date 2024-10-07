@@ -21,6 +21,9 @@ class EvaluasiController extends Controller
             'evaluasi_obat' => 'required|string',
             'rating_apotek' => 'required|integer|min:1|max:10',
             'komentar' => 'nullable|string',
+        ], [
+            // Custom error message untuk id_pembeli jika tidak ditemukan
+            'id_pembeli.exists' => 'ID Pembelian salah. Anda belum melakukan pembelian dengan kode tersebut. Cek lagi.'
         ]);
 
         // Generate id_evaluasi
@@ -29,8 +32,8 @@ class EvaluasiController extends Controller
             ->whereDate('created_at', $tanggalHariIni)
             ->count();
 
-        $timestamp = Carbon::now()->format('YmdHis');
-        $idEvaluasi = 'EV' . ($jumlahEvaluasiHariIni + 1);
+        // Menggunakan format EV-jumlahEvaluasiHariIni-idPembelian
+        $idEvaluasi = 'EV-' . ($jumlahEvaluasiHariIni + 1) . '-' . $request->input('id_pembeli');
 
         // Simpan data evaluasi
         Evaluasi::create([
@@ -44,8 +47,7 @@ class EvaluasiController extends Controller
             'komentar' => $request->input('komentar'),
         ]);
 
-        // Mengembalikan respons tanpa pengalihan halaman
+        // Mengembalikan respons ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Evaluasi berhasil disimpan');
     }
 }
-

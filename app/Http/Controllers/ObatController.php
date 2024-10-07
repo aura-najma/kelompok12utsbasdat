@@ -58,7 +58,15 @@ class ObatController extends Controller
             'rute_obat' => 'required|string',
         ]);
     
-        // Simpan data obat ke database
+        // Cek apakah no_bpom sudah ada di database
+        $existingObat = Obat::where('no_bpom', $request->no_bpom)->first();
+        if ($existingObat) {
+            // Jika no_bpom sudah ada, kembalikan ke halaman sebelumnya dengan notifikasi error
+            return redirect('/lihatstokobat')->with('error', 'No BPOM ' . $existingObat->no_bpom . ' sudah ada, silakan akses halaman Tambah Stok Obat.');
+        }
+
+            
+        // Simpan data obat ke database jika no_bpom belum ada
         Obat::create([
             'no_bpom' => $request->no_bpom,
             'nama' => $request->nama,
@@ -73,8 +81,10 @@ class ObatController extends Controller
             'rute_obat' => $request->rute_obat,
         ]);
     
+        // Kembali ke halaman lihat stok obat dengan pesan sukses
         return redirect('/lihatstokobat')->with('message', 'Obat berhasil ditambahkan!');
     }
+    
     
 
     public function showTambahStok()

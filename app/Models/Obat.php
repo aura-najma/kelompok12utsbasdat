@@ -16,19 +16,19 @@ class Obat extends Model
     protected $keyType = 'string'; // Tipe data primary key adalah string
 
     protected $fillable = [
-        'no_bpom', 
-        'nama', 
-        'kategori', 
-        'jenis_obat', 
-        'stok', 
-        'tanggal_produksi', 
-        'tanggal_kadaluwarsa', 
-        'harga_satuan', 
-        'kategori_obat_keras', 
-        'dosis', 
-        'aturan_pakai', 
-        'rute_obat'
+        'no_bpom',
+        'nama',
+        'kategori',
+        'jenis_obat',
+        'stok',
+        'tanggal_kadaluwarsa',
+        'harga_satuan',
+        'kategori_obat_keras',
+        'dosis',
+        'aturan_pakai',
+        'rute_obat',
     ];
+    
 
     public function transaksis()
     {

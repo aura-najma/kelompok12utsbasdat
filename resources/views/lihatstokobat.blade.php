@@ -146,6 +146,12 @@
         </div>
     @endif
 
+    @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+    
     <div class="form-container">
         @if($obatList->isNotEmpty())
             <div class="table-responsive">

@@ -28,13 +28,14 @@
         }
 
         table {
-            width: 98%;
+            width: 95%;
             border-collapse: collapse;
             margin: 0 auto 20px;
+            
         }
 
         td {
-            border: 1px solid #36bef8;
+            border: none;
             padding: 10px;
             text-align: left;
             background: rgba(255, 255, 255, 0.8);
@@ -46,6 +47,7 @@
             background: linear-gradient(-180deg, #204ae6, #36bef8);
             text-align: center;
             color: white;
+            vertical-align: middle; 
         }
 
         button {
@@ -109,6 +111,12 @@
             width: 90%;
             margin: 20px auto;
         }
+
+        .table-responsive {
+            width: 97%;
+            margin: 0 auto; /* Centers the table */
+        }
+
     </style>
 </head>
 <body>

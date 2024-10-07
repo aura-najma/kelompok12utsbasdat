@@ -34,6 +34,10 @@
     <!-- Page CSS -->
     <script src="../assets/js/config.js"></script>
     <style>
+
+      body{
+        font-family: 'Poppins', sans-serif;
+      }
         #layout-menu {
         background: linear-gradient(-180deg, #204ae6, #36bef8) !important; /* Mengubah warna sidebar menjadi hitam */
     
@@ -63,7 +67,11 @@
       margin-bottom: 20px;
       margin-top: 10px;
     }
-
+    .card-title {
+        font-size: 25px; /* Change the font size */
+        font-weight: bold; /* Make the text bold */
+        margin-bottom: 10px; /* Add space below the title */
+    }
     .avatar img {
         border-radius: 50%; /* Membuat gambar menjadi lingkaran */
         width: 40px; /* Anda dapat mengubah ukuran sesuai keinginan */
@@ -88,6 +96,11 @@
         background-color: #e60000; /* Darker red on hover */
         color: white;
         width: 110%;
+    }
+        .welcome-image {
+        width: 450px; /* Adjust the width */
+        height: auto; /* Maintain aspect ratio */
+        margin-left:300px;
     }
 
 
@@ -190,7 +203,7 @@
                   <li class="nav-item lh-1 me-3">
                     <a
                       class="github-button"
-                      href="https://github.com/themeselection/sneat-html-admin-template-free"
+                      href="https://github.com/aura-najma/kelompok12utsbasdat"
                       data-icon="octicon-star"
                       data-size="large"
                       aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
@@ -278,6 +291,7 @@
                             <p class="mb-4">
                                <span class="fw-bold"> Melayani dengan Sepenuh Hati</span>
                             </p>
+                            <img src="assets/images/halo.png" alt="Halo" class="welcome-image">
                           </div>
                         </div>
                         <div class="col-sm-5 text-center text-sm-left">

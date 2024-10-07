@@ -9,6 +9,9 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            background-image: url('../assets/images/bgtambahobat.png'); 
+            background-size: cover; /* Cover the entire viewport */
+            background-repeat: no-repeat; /* Prevent repeating */
         }
 
         .form-container {
@@ -44,6 +47,7 @@
             border-radius: 15px;
             background: linear-gradient(-135deg, #204ae6, #36bef8);
             font-weight: 600;
+            margin-bottom:30px;
         }
 
         h3 {

@@ -8,10 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            background-image: url('assets/images/bginputpasien.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-image: url('../assets/images/bgtambahobat.png'); 
+            background-size: cover; /* Cover the entire viewport */
+            background-repeat: no-repeat; /* Prevent repeating */
             font-family: 'Poppins', sans-serif;
         }
 

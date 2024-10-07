@@ -38,6 +38,14 @@
             max-width: 10000px;
             height: auto;
         }
+
+        .header-text {
+        margin-top: -60px; /* Geser h2 dan p ke atas */
+        }
+
+        .white-button {
+            margin-top: -30px; /* Geser tombol ke atas */
+        }
     </style>
 </head>
 
@@ -96,7 +104,7 @@
                                             menyediakan layanan ramah dan produk unggulan yang mendukung kesejahteraan Anda</p>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div class="white-button first-button scroll-to-section">
+                                        <div class="white-button first-button scroll-to-section" >
                                             <!-- Ubah href ke route login -->
                                             <a href="{{ route('login') }}">Login</a>
                                         </div>

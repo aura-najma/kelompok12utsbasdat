@@ -148,3 +148,5 @@ Route::get('/invoicetransaksi', [InvoiceController::class, 'show'])->name('invoi
 // Route untuk menampilkan invoice dengan parameter id_pembelian sebagai query string
 
 
+Route::delete('/dokter/{nomor_str}', [DokterController::class, 'destroy'])->name('dokter.destroy');
+

@@ -100,7 +100,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <h2>Lifespring Drugstore</h2>
-                                        <p>Lifespring Drugstore hadir sebagai solusi lengkap untuk kesehatan,
+                                        <p>Lifespring Drugstore hadir sebagai solusi lengkap untuk membantu memperkuat kesehatan,
                                             menyediakan layanan ramah dan produk unggulan yang mendukung kesejahteraan Anda</p>
                                     </div>
                                     <div class="col-lg-12">

@@ -18,6 +18,7 @@ class Transaksi extends Model
         'jumlah_obat',
         'harga_satuan',
         'harga_total',
+        'nip',
     ];
 
 
@@ -35,5 +36,11 @@ class Transaksi extends Model
     public function obat()
     {
         return $this->belongsTo(Obat::class, 'no_bpom', 'no_bpom');
+    }
+
+        // Relasi ke apoteker
+    public function apoteker()
+    {
+        return $this->belongsTo(Apoteker::class, 'nip', 'NIP');
     }
 }

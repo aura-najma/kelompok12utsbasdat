@@ -149,4 +149,3 @@ Route::get('/invoicetransaksi', [InvoiceController::class, 'show'])->name('invoi
 
 
 Route::delete('/dokter/{nomor_str}', [DokterController::class, 'destroy'])->name('dokter.destroy');
-

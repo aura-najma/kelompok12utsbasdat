@@ -14,7 +14,7 @@ class Evaluasi extends Model
 
     // Kolom yang bisa diisi (mass assignable)
     protected $fillable = [
-        'id_evaluasi', 'id_pembeli', 'tanggal_transaksi', 'evaluasi_apotek', 'evaluasi_pelayanan', 'evaluasi_obat', 'rating_apotek', 'komentar'
+        'id_evaluasi', 'id_invoice', 'tanggal_transaksi', 'evaluasi_apotek', 'evaluasi_pelayanan', 'evaluasi_obat', 'rating_apotek', 'komentar'
     ];
 }
 

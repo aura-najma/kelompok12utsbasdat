@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* Gaya dan layout */
         body {
             background-image: url('assets/images/bginputpasien.png');
             background-size: 100%;
@@ -54,8 +55,6 @@
             background: linear-gradient(-135deg, #204ae6, #36bef8);
             margin-bottom: 10px;
         }
-
-
 
         h3 {
             color: #204ae6;
@@ -114,7 +113,7 @@
         }
 
         footer {
-            background: linear-gradient(-180deg, #36bef8,#204ae6);
+            background: linear-gradient(-180deg, #36bef8, #204ae6);
             text-align: center;
             margin-top: 50px;
             padding: 10px;
@@ -157,7 +156,6 @@
                 text-align: left;
             }
         }
-
     </style>
 </head>
 <body>
@@ -187,8 +185,9 @@
         <h1>Invoice Pembelian Obat</h1>
 
         <div class="mb-4">
-            <p><strong>ID Pembelian:</strong> {{ $idPembelian }}</p>
-            <p><strong>Tanggal Pembuatan:</strong> {{ $created_at->format('d-m-Y H:i:s') }}</p> <!-- Mengambil created_at dari transaksi -->
+            <p><strong>ID Invoice:</strong> {{ $idInvoice }}</p>
+            <p><strong>Tanggal Transaksi:</strong> {{ $tanggalTransaksi->format('d-m-Y H:i:s') }}</p>
+            <p><strong>Nama Apoteker:</strong> {{ $namaApoteker }}</p>
         </div>
 
         <table class="table table-hover table-striped">

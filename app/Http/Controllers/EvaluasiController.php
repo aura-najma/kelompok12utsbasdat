@@ -14,7 +14,7 @@ class EvaluasiController extends Controller
     {
         // Validasi input yang diperlukan
         $request->validate([
-            'id_pembeli' => 'required|exists:pembelians,id_pembelian',
+            'id_invoice' => 'required|exists:transaksis,id_invoice',
             'tanggal_transaksi' => 'required|date',
             'evaluasi_apotek' => 'required|string',
             'evaluasi_pelayanan' => 'required|string',
@@ -23,7 +23,7 @@ class EvaluasiController extends Controller
             'komentar' => 'nullable|string',
         ], [
             // Custom error message untuk id_pembeli jika tidak ditemukan
-            'id_pembeli.exists' => 'ID Pembelian salah. Anda belum melakukan pembelian dengan kode tersebut. Cek lagi.'
+            'id_invoice.exists' => 'ID Invoice salah. Anda belum melakukan pembelian dengan kode tersebut. Cek lagi.'
         ]);
 
         // Generate id_evaluasi
@@ -33,12 +33,12 @@ class EvaluasiController extends Controller
             ->count();
 
         // Menggunakan format EV-jumlahEvaluasiHariIni-idPembelian
-        $idEvaluasi = 'EV-' . ($jumlahEvaluasiHariIni + 1) . '-' . $request->input('id_pembeli');
+        $idEvaluasi = 'EV-' . ($jumlahEvaluasiHariIni + 1) . '-' . $request->input('id_invoice');
 
         // Simpan data evaluasi
         Evaluasi::create([
             'id_evaluasi' => $idEvaluasi,
-            'id_pembeli' => $request->input('id_pembeli'),
+            'id_invoice' => $request->input('id_invoice'),
             'tanggal_transaksi' => $request->input('tanggal_transaksi'),
             'evaluasi_apotek' => $request->input('evaluasi_apotek'),
             'evaluasi_pelayanan' => $request->input('evaluasi_pelayanan'),
@@ -46,6 +46,7 @@ class EvaluasiController extends Controller
             'rating_apotek' => $request->input('rating_apotek'),
             'komentar' => $request->input('komentar'),
         ]);
+        dd($request->all());
 
         // Mengembalikan respons ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Evaluasi berhasil disimpan');

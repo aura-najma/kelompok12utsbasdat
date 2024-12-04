@@ -14,7 +14,7 @@ class EvaluasiController extends Controller
     {
         // Validasi input yang diperlukan
         $request->validate([
-            'id_invoice' => 'required|exists:transaksis,id_invoice',
+            'id_invoice' => 'required|exists:transaksis,id_invoice',  // Perubahan di sini
             'tanggal_transaksi' => 'required|date',
             'evaluasi_apotek' => 'required|string',
             'evaluasi_pelayanan' => 'required|string',
@@ -22,9 +22,8 @@ class EvaluasiController extends Controller
             'rating_apotek' => 'required|integer|min:1|max:10',
             'komentar' => 'nullable|string',
         ], [
-            // Custom error message untuk id_pembeli jika tidak ditemukan
-            'id_invoice.exists' => 'ID Invoice salah. Anda belum melakukan pembelian dengan kode tersebut. Cek lagi.'
-        ]);
+            'id_invoice.exists' => 'ID Invoice salah atau belum terdaftar di transaksi. Pastikan ID Pembelian sesuai.'
+        ]);        
 
         // Generate id_evaluasi
         $tanggalHariIni = Carbon::today()->toDateString();
@@ -46,7 +45,6 @@ class EvaluasiController extends Controller
             'rating_apotek' => $request->input('rating_apotek'),
             'komentar' => $request->input('komentar'),
         ]);
-        dd($request->all());
 
         // Mengembalikan respons ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Evaluasi berhasil disimpan');

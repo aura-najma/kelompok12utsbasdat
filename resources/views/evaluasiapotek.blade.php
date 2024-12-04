@@ -112,9 +112,9 @@
             @enderror
 
             <div class="mb-3">
-                <label for="id_pembeli" class="form-label">ID Pembelian *</label>
-                <input type="text" class="form-control" id="id_pembeli" name="id_pembeli" required>
-                <small class="note">ID Pembelian dapat dilihat di invoice</small> <!-- Added note -->
+                <label for="id_pembeli" class="form-label">ID Invoice *</label>
+                <input type="text" class="form-control" id="id_invoice" name="id_invoice" required>
+                <small class="note">ID Invoice dapat dilihat di invoice</small> <!-- Added note -->
             </div>
             <div class="mb-3">
                 <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi *</label>

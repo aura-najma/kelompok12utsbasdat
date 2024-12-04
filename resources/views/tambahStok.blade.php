@@ -121,6 +121,12 @@
                             <input type="number" class="form-control" id="stok" name="stok" min="1" required>
                         </div>
 
+                        <!-- Tanggal Kadaluarsa Field -->
+                        <div class="mb-3">
+                            <label for="tanggal_kadaluwarsa" class="form-label text-custom">Tanggal Kadaluarsa</label>
+                            <input type="date" class="form-control" id="tanggal_kadaluwarsa" name="tanggal_kadaluwarsa" required>
+                        </div>
+
                         <!-- Submit Button -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-custom">Tambah Stok</button>

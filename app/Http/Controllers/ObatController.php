@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Obat;
+use App\Models\RestockObat;
 use App\Models\Pembelian;
 use App\Models\Pasien;
 
 class ObatController extends Controller
 {
+    // Menampilkan daftar stok obat
     public function index()
     {
         // Ambil semua data obat dari database
@@ -18,12 +20,14 @@ class ObatController extends Controller
         return view('lihatstokobat', compact('obatList'));
     }
 
+    // Menambahkan stok obat
     public function tambahStok(Request $request)
     {
         // Validasi data input (pastikan no_bpom dan jumlah stok diberikan)
         $request->validate([
             'no_bpom' => 'required|string',
             'stok' => 'required|integer|min:1',
+            'tanggal_kadaluwarsa' => 'required|date',  // Pastikan tanggal kadaluarsa juga diberikan
         ]);
     
         // Temukan obat berdasarkan no_bpom
@@ -31,7 +35,18 @@ class ObatController extends Controller
     
         // Cek apakah obat ditemukan
         if ($obat) {
-            // Tambahkan stok obat
+            // Generate id_restock dengan format RS-YYYYMMDD-no_bpom
+            $idRestock = 'RS-' . date('Ymd') . '-' . $obat->no_bpom;
+
+            // Tambahkan data ke tabel restock_obat
+            RestockObat::create([
+                'id_restock' => $idRestock,  // id_restock dengan format yang telah ditentukan
+                'no_bpom' => $obat->no_bpom,
+                'jumlah' => $request->stok,
+                'tanggal_kadaluwarsa' => $request->tanggal_kadaluwarsa,
+            ]);
+    
+            // Tambahkan stok ke obat
             $obat->stok += $request->stok;
             $obat->save();
     
@@ -43,6 +58,13 @@ class ObatController extends Controller
         }
     }
 
+    // Menampilkan halaman untuk menambah obat
+    public function showTambahObat()
+    {
+        return view('tambahObat');
+    }
+
+    // Menambahkan obat baru
     public function tambahObat(Request $request)
     {
         // Validasi data input
@@ -67,7 +89,6 @@ class ObatController extends Controller
             return redirect('/lihatstokobat')->with('error', 'No BPOM ' . $existingObat->no_bpom . ' sudah ada, silakan akses halaman Tambah Stok Obat.');
         }
 
-            
         // Simpan data obat ke database jika no_bpom belum ada
         Obat::create([
             'no_bpom' => $request->no_bpom,
@@ -86,9 +107,8 @@ class ObatController extends Controller
         // Kembali ke halaman lihat stok obat dengan pesan sukses
         return redirect('/lihatstokobat')->with('message', 'Obat berhasil ditambahkan!');
     }
-    
-    
 
+    // Menampilkan halaman untuk menambah stok obat
     public function showTambahStok()
     {
         // Mengambil data obat dengan stok kurang dari 5
@@ -98,40 +118,36 @@ class ObatController extends Controller
         return view('tambahStok', compact('lowStockObatList'));
     }
 
-
-        // Fungsi untuk mengecek stok obat
+    // Fungsi untuk mengecek stok obat
     public function cekStok(Request $request)
-        {
-            // Validasi untuk memastikan id_pembelian ada
-            $request->validate([
-                'id_pembelian' => 'required|string',
-            ]);
+    {
+        // Validasi untuk memastikan id_pembelian ada
+        $request->validate([
+            'id_pembelian' => 'required|string',
+        ]);
     
-            // Ambil id_pembelian dari request
-            $idPembelian = $request->query('id_pembelian');
+        // Ambil id_pembelian dari request
+        $idPembelian = $request->query('id_pembelian');
     
-            // Ambil data pembelian berdasarkan id_pembelian
-            $pembelian = Pembelian::where('id_pembelian', $idPembelian)->first();
+        // Ambil data pembelian berdasarkan id_pembelian
+        $pembelian = Pembelian::where('id_pembelian', $idPembelian)->first();
     
-            if ($pembelian) {
-                // Ambil no_telepon dari pembelian
-                $noTelepon = $pembelian->no_telepon;
+        if ($pembelian) {
+            // Ambil no_telepon dari pembelian
+            $noTelepon = $pembelian->no_telepon;
     
-                // Ambil data pasien berdasarkan no_telepon
-                $pasien = Pasien::where('no_telepon', $noTelepon)->first();
+            // Ambil data pasien berdasarkan no_telepon
+            $pasien = Pasien::where('no_telepon', $noTelepon)->first();
     
-                // Ambil alergi_obat dari pasien
-                $alergiObat = $pasien ? $pasien->alergi_obat : null;
-            } else {
-                $alergiObat = null;
-            }
+            // Ambil alergi_obat dari pasien
+            $alergiObat = $pasien ? $pasien->alergi_obat : null;
+        } else {
+            $alergiObat = null;
+        }
     
-            // Ambil semua data obat
-            $obatList = Obat::all();
+        // Ambil semua data obat
+        $obatList = Obat::all();
     
-            return view('cekstokobat', compact('obatList', 'idPembelian', 'alergiObat'));
+        return view('cekstokobat', compact('obatList', 'idPembelian', 'alergiObat'));
     }
-
-    
-
 }

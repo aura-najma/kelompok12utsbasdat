@@ -21,18 +21,29 @@ class Obat extends Model
         'kategori',
         'jenis_obat',
         'stok',
-        'tanggal_kadaluwarsa',
         'harga_satuan',
         'kategori_obat_keras',
         'dosis',
         'aturan_pakai',
         'rute_obat',
     ];
-    
 
+    // Relasi ke tabel 'transaksis'
     public function transaksis()
     {
         return $this->hasMany(Transaksi::class, 'no_bpom', 'no_bpom');
     }
 
+    // Relasi ke tabel 'restock_obat' (untuk mendukung restocking dan tanggal kadaluwarsa)
+    public function restockObat()
+    {
+        return $this->hasMany(RestockObat::class, 'no_bpom', 'no_bpom');
+    }
+
+    // Menambahkan method untuk menghitung stok total berdasarkan restock
+    public function getTotalStokAttribute()
+    {
+        // Ambil total stok dari restock_obat dan obat
+        return $this->stok + $this->restockObat->sum('jumlah');
+    }
 }

@@ -163,7 +163,6 @@
                             <th>Kategori</th>
                             <th>Jenis Obat</th>
                             <th>Stok</th>
-                            <th>Tanggal Kadaluwarsa</th>
                             <th>Harga Satuan</th>
                             <th>Kategori Obat Keras</th>
                             <th>Dosis</th>
@@ -180,7 +179,6 @@
                             <td>{{ $obat->kategori }}</td>
                             <td>{{ $obat->jenis_obat }}</td>
                             <td>{{ $obat->stok }}</td>
-                            <td>{{ $obat->tanggal_kadaluwarsa }}</td>
                             <td>Rp{{ number_format($obat->harga_satuan, 0, ',', '.') }}</td>
                             <td>{{ $obat->kategori_obat_keras }}</td>
                             <td>{{ $obat->dosis }}</td>

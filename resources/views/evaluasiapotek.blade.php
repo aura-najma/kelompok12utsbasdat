@@ -67,7 +67,6 @@
         /* Add hover effect */
         .btn-primary:hover {
             background-color: #1a3f88; /* Darker shade on hover */
-    
             transform: scale(1.02); /* Slightly scale up the button */
         }
 
@@ -100,19 +99,27 @@
 <body>
     <div class="container">
         <h2 class="title">Evaluasi Pelanggan</h2>
-        
+
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
         
         <form action="{{ route('evaluasi.store') }}" method="POST">
             @csrf
-            @error('id_pembeli')
+            @error('id_invoice')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
+            @error('tanggal_transaksi')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
 
             <div class="mb-3">
-                <label for="id_pembeli" class="form-label">ID Invoice *</label>
+                <label for="id_invoice" class="form-label">ID Invoice *</label>
                 <input type="text" class="form-control" id="id_invoice" name="id_invoice" required>
                 <small class="note">ID Invoice dapat dilihat di invoice</small> <!-- Added note -->
             </div>

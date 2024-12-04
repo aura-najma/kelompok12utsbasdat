@@ -14,6 +14,8 @@ class Pembelian extends Model
         'no_telepon',
         'keluhan',
         'resep',
+        'custom_created_at', // Kolom untuk custom timestamp
+        'custom_updated_at'  // Kolom untuk custom timestamp
     ];
     // Relasi ke model Pasien
     public function pasien()

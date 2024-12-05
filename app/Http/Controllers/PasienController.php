@@ -117,11 +117,11 @@ class PasienController extends Controller
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',  // Validasi jenis kelamin
-            'nama_kecamatan' => 'required|string|exists:kecamatans,nama', // Validasi kecamatan berdasarkan nama
+            'nama_kecamatan' => 'required|string|exists:kecamatans,Kecamatan',
         ]);
 
         // Cari ID_Kecamatan berdasarkan nama kecamatan
-        $kecamatan = Kecamatan::where('nama', $request->nama_kecamatan)->firstOrFail();
+        $kecamatan = Kecamatan::where('Kecamatan', $request->nama_kecamatan)->firstOrFail();
         $idKecamatan = $kecamatan->ID_Kecamatan;
 
         $pasien = Pasien::where('no_telepon', $no_telepon)->firstOrFail();

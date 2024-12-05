@@ -10,7 +10,6 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-           
         }
 
         .table-container {
@@ -130,9 +129,11 @@
                         <tr>
                             <th>No Telepon</th>
                             <th>Nama</th>
+                            <th>Jenis Kelamin</th>
                             <th>Tanggal Lahir</th>
                             <th>Alamat</th>
                             <th>Alergi Obat</th>
+                            <th>Kecamatan</th> <!-- Menambahkan kolom Kecamatan -->
                             <th>Pembelian Pertama Kali</th>
                             <th>Aksi</th> <!-- Kolom untuk aksi edit -->
                         </tr>
@@ -142,9 +143,11 @@
                         <tr>
                             <td>{{ $pasien->no_telepon }}</td>
                             <td>{{ $pasien->nama }}</td>
+                            <td>{{ $pasien->jenis_kelamin }}</td> <!-- Menampilkan jenis kelamin -->
                             <td>{{ $pasien->tanggal_lahir }}</td>
                             <td>{{ $pasien->alamat }}</td>
                             <td>{{ $pasien->alergi_obat }}</td>
+                            <td>{{ $pasien->kecamatan ? $pasien->kecamatan->Kecamatan : 'Tidak Diketahui' }}</td> <!-- Menampilkan nama kecamatan -->
                             <td>{{ $pasien->created_at }}</td>
                             <td>
                                 <!-- Tombol Edit -->

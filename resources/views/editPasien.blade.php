@@ -101,7 +101,11 @@
                     <label for="nama" class="form-label">Nama:</label>
                     <input type="text" class="form-control" id="nama" name="nama" value="{{ $pasien->nama }}" readonly>
                 </div>
-
+                <!-- Jenis Kelamin Field (Read-only) -->
+                <div class="mb-3">
+                    <label for="jenis_kelamin" class="form-label">Jenis Kelamin:</label>
+                    <input type="text" class="form-control" id="jenis_kelamin" name="jenis_kelamin" value="{{ $pasien->jenis_kelamin }}" readonly>
+                </div>
                 <!-- Tanggal Lahir Field -->
                 <div class="mb-3">
                     <label for="tanggal_lahir" class="form-label">Tanggal Lahir:</label>
@@ -118,6 +122,45 @@
                 <div class="mb-3">
                     <label for="alergi_obat" class="form-label">Alergi Obat:</label>
                     <textarea class="form-control" id="alergi_obat" name="alergi_obat" rows="3">{{ $pasien->alergi_obat }}</textarea>
+                </div>
+
+                <!-- Kecamatan Dropdown -->
+                <div class="mb-3">
+                    <label for="nama_kecamatan" class="form-label">Kecamatan:</label>
+                    <select class="form-control" id="nama_kecamatan" name="nama_kecamatan" required>
+                        <option value="" disabled selected>Pilih Kecamatan</option>
+                        <option value="Asemrowo" {{ $pasien->kecamatan == 'Asemrowo' ? 'selected' : '' }}>Asemrowo</option>
+                        <option value="Jambangan" {{ $pasien->kecamatan == 'Jambangan' ? 'selected' : '' }}>Jambangan</option>
+                        <option value="Karang Pilang" {{ $pasien->kecamatan == 'Karang Pilang' ? 'selected' : '' }}>Karang Pilang</option>
+                        <option value="Kenjeran" {{ $pasien->kecamatan == 'Kenjeran' ? 'selected' : '' }}>Kenjeran</option>
+                        <option value="Krembangan" {{ $pasien->kecamatan == 'Krembangan' ? 'selected' : '' }}>Krembangan</option>
+                        <option value="Lakarsantri" {{ $pasien->kecamatan == 'Lakarsantri' ? 'selected' : '' }}>Lakarsantri</option>
+                        <option value="Mulyorejo" {{ $pasien->kecamatan == 'Mulyorejo' ? 'selected' : '' }}>Mulyorejo</option>
+                        <option value="Pabean Cantian" {{ $pasien->kecamatan == 'Pabean Cantian' ? 'selected' : '' }}>Pabean Cantian</option>
+                        <option value="Pakal" {{ $pasien->kecamatan == 'Pakal' ? 'selected' : '' }}>Pakal</option>
+                        <option value="Rungkut" {{ $pasien->kecamatan == 'Rungkut' ? 'selected' : '' }}>Rungkut</option>
+                        <option value="Sambikerep" {{ $pasien->kecamatan == 'Sambikerep' ? 'selected' : '' }}>Sambikerep</option>
+                        <option value="Benowo" {{ $pasien->kecamatan == 'Benowo' ? 'selected' : '' }}>Benowo</option>
+                        <option value="Sawahan" {{ $pasien->kecamatan == 'Sawahan' ? 'selected' : '' }}>Sawahan</option>
+                        <option value="Semampir" {{ $pasien->kecamatan == 'Semampir' ? 'selected' : '' }}>Semampir</option>
+                        <option value="Simokerto" {{ $pasien->kecamatan == 'Simokerto' ? 'selected' : '' }}>Simokerto</option>
+                        <option value="Sukolilo" {{ $pasien->kecamatan == 'Sukolilo' ? 'selected' : '' }}>Sukolilo</option>
+                        <option value="Sukomanunggal" {{ $pasien->kecamatan == 'Sukomanunggal' ? 'selected' : '' }}>Sukomanunggal</option>
+                        <option value="Tambaksari" {{ $pasien->kecamatan == 'Tambaksari' ? 'selected' : '' }}>Tambaksari</option>
+                        <option value="Tandes" {{ $pasien->kecamatan == 'Tandes' ? 'selected' : '' }}>Tandes</option>
+                        <option value="Tegalsari" {{ $pasien->kecamatan == 'Tegalsari' ? 'selected' : '' }}>Tegalsari</option>
+                        <option value="Tenggilis Mejoyo" {{ $pasien->kecamatan == 'Tenggilis Mejoyo' ? 'selected' : '' }}>Tenggilis Mejoyo</option>
+                        <option value="Wiyung" {{ $pasien->kecamatan == 'Wiyung' ? 'selected' : '' }}>Wiyung</option>
+                        <option value="Bubutan" {{ $pasien->kecamatan == 'Bubutan' ? 'selected' : '' }}>Bubutan</option>
+                        <option value="Wonocolo" {{ $pasien->kecamatan == 'Wonocolo' ? 'selected' : '' }}>Wonocolo</option>
+                        <option value="Wonokromo" {{ $pasien->kecamatan == 'Wonokromo' ? 'selected' : '' }}>Wonokromo</option>
+                        <option value="Bulak" {{ $pasien->kecamatan == 'Bulak' ? 'selected' : '' }}>Bulak</option>
+                        <option value="Dukuh Pakis" {{ $pasien->kecamatan == 'Dukuh Pakis' ? 'selected' : '' }}>Dukuh Pakis</option>
+                        <option value="Gayungan" {{ $pasien->kecamatan == 'Gayungan' ? 'selected' : '' }}>Gayungan</option>
+                        <option value="Genteng" {{ $pasien->kecamatan == 'Genteng' ? 'selected' : '' }}>Genteng</option>
+                        <option value="Gubeng" {{ $pasien->kecamatan == 'Gubeng' ? 'selected' : '' }}>Gubeng</option>
+                        <option value="Gunung Anyar" {{ $pasien->kecamatan == 'Gunung Anyar' ? 'selected' : '' }}>Gunung Anyar</option>
+                    </select>
                 </div>
 
                 <!-- Submit Button -->

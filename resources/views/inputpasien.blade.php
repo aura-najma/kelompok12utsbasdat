@@ -128,6 +128,59 @@
                             <label for="no_telepon" class="form-label text-custom">Nomor Telepon</label>
                             <input type="tel" class="form-control" id="no_telepon" name="no_telepon" pattern="[0-9]{10,15}" required>
                         </div>
+
+                        <!-- Jenis Kelamin Field -->
+                        <div class="mb-3">
+                            <label class="form-label text-custom">Jenis Kelamin</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki_laki" value="Laki-laki" required>
+                                <label class="form-check-label" for="laki_laki">Laki-laki</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="perempuan" value="Perempuan" required>
+                                <label class="form-check-label" for="perempuan">Perempuan</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nama_kecamatan" class="form-label text-custom">Kecamatan</label>
+                            <select class="form-control" id="nama_kecamatan" name="nama_kecamatan" required>
+                                <option value="" disabled selected>Pilih Kecamatan</option>
+                                <option value="Asemrowo">Asemrowo</option>
+                                <option value="Jambangan">Jambangan</option>
+                                <option value="Karang Pilang">Karang Pilang</option>
+                                <option value="Kenjeran">Kenjeran</option>
+                                <option value="Krembangan">Krembangan</option>
+                                <option value="Lakarsantri">Lakarsantri</option>
+                                <option value="Mulyorejo">Mulyorejo</option>
+                                <option value="Pabean Cantian">Pabean Cantian</option>
+                                <option value="Pakal">Pakal</option>
+                                <option value="Rungkut">Rungkut</option>
+                                <option value="Sambikerep">Sambikerep</option>
+                                <option value="Benowo">Benowo</option>
+                                <option value="Sawahan">Sawahan</option>
+                                <option value="Semampir">Semampir</option>
+                                <option value="Simokerto">Simokerto</option>
+                                <option value="Sukolilo">Sukolilo</option>
+                                <option value="Sukomanunggal">Sukomanunggal</option>
+                                <option value="Tambaksari">Tambaksari</option>
+                                <option value="Tandes">Tandes</option>
+                                <option value="Tegalsari">Tegalsari</option>
+                                <option value="Tenggilis Mejoyo">Tenggilis Mejoyo</option>
+                                <option value="Wiyung">Wiyung</option>
+                                <option value="Bubutan">Bubutan</option>
+                                <option value="Wonocolo">Wonocolo</option>
+                                <option value="Wonokromo">Wonokromo</option>
+                                <option value="Bulak">Bulak</option>
+                                <option value="Dukuh Pakis">Dukuh Pakis</option>
+                                <option value="Gayungan">Gayungan</option>
+                                <option value="Genteng">Genteng</option>
+                                <option value="Gubeng">Gubeng</option>
+                                <option value="Gunung Anyar">Gunung Anyar</option>
+                            </select>
+                        </div>
+
+
                 </div>
             </div>
 
@@ -157,67 +210,70 @@
     </div>
 
     <script>
+    // Mengirimkan data form menggunakan AJAX (fetch)
     document.getElementById('dataForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Mencegah submit form default
+        event.preventDefault(); // Mencegah submit form default
 
-    const formData = new FormData(this);
+        const formData = new FormData(this);
 
-    fetch('{{ route("pasien.store") }}', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Menambahkan token CSRF untuk otentikasi
-        },
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            // Jika respons gagal, lemparkan error dengan informasi
-            return response.text().then(text => {
-                throw new Error(text);
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            // Tampilkan notifikasi jika data berhasil disimpan
+        fetch('{{ route("pasien.store") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Menambahkan token CSRF untuk otentikasi
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                // Jika respons gagal, lemparkan error dengan informasi
+                return response.text().then(text => {
+                    throw new Error(text);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Tampilkan notifikasi jika data berhasil disimpan
+                Swal.fire({
+                    title: 'Data Berhasil Disimpan!',
+                    text: 'Terima kasih telah mengisi data diri.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'btn btn-primary', // Kustomisasi tombol
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect berdasarkan apakah ada resep atau tidak
+                        if (data.has_resep) {
+                            window.location.href = '/cekobatkeras?id_pembelian=' + data.id_pembelian;
+                        } else {
+                            window.location.href = '/cekstokobat?id_pembelian=' + data.id_pembelian;
+                        }
+                    }
+                });
+            } else {
+                throw new Error(data.error || 'Terjadi kesalahan saat menyimpan data.');
+            }
+        })
+        .catch(error => {
+            // Menampilkan error yang lebih baik, mencetak kesalahan dari response text
             Swal.fire({
-                title: 'Data Berhasil Disimpan!',
-                text: 'Terima kasih telah mengisi data diri.',
-                icon: 'success',
+                title: 'Gagal Menyimpan Data',
+                text: error.message,
+                icon: 'error',
                 confirmButtonText: 'OK',
                 customClass: {
-                    confirmButton: 'btn btn-primary', // Kustomisasi tombol
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    if (data.has_resep) {
-                        window.location.href = '/cekobatkeras?id_pembelian=' + data.id_pembelian;
-                    } else {
-                        window.location.href = '/cekstokobat?id_pembelian=' + data.id_pembelian;
-                    }
+                    confirmButton: 'btn btn-danger',
                 }
             });
-        } else {
-            throw new Error(data.error || 'Terjadi kesalahan saat menyimpan data.');
-        }
-    })
-    .catch(error => {
-        // Menampilkan error yang lebih baik, mencetak kesalahan dari response text
-        Swal.fire({
-            title: 'Gagal Menyimpan Data',
-            text: error.message,
-            icon: 'error',
-            confirmButtonText: 'OK',
-            customClass: {
-                confirmButton: 'btn btn-danger',
-            }
+            console.error('Error:', error);
         });
-        console.error('Error:', error);
     });
-});
 
-document.getElementById('no_telepon').addEventListener('blur', function() {
+    // Fungsi untuk mengecek nomor telepon dan mengisi otomatis data pasien
+    document.getElementById('no_telepon').addEventListener('blur', function() {
         const noTelepon = this.value.trim();
 
         if (noTelepon.length >= 10) {
@@ -253,8 +309,27 @@ document.getElementById('no_telepon').addEventListener('blur', function() {
         }
     });
 
+    // Fungsi untuk memuat daftar kecamatan dari database
+    fetch('{{ route("kecamatans.list") }}')
+        .then(response => response.json())
+        .then(data => {
+            const kecamatanSelect = document.getElementById('Kecamatan');
+            
+            // Menambahkan opsi kosong (default) jika belum ada pilihan
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "Pilih Kecamatan";
+            kecamatanSelect.appendChild(defaultOption);
+            
+            // Menambahkan setiap kecamatan ke dropdown
+            data.forEach(kecamatan => {
+                const option = document.createElement('option');
+                option.textContent = kecamatan.Kecamatan;  // Hanya menampilkan nama kecamatan
+                kecamatanSelect.appendChild(option);  // Menambahkan ke dalam dropdown
+            });
+        })
+        .catch(error => console.error('Error:', error));
+</script>
 
-
-    </script>
 </body>
 </html>

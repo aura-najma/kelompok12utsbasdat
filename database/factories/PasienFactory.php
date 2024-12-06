@@ -25,7 +25,7 @@ class PasienFactory extends Factory
         ];
 
         $namaBelakang = [
-            'Alam', 'Bakti', 'Cahya', 'Darma', 'Fajar', 'Gema', 'Hutama', 'Indra', 'Jaya', 'Kusuma', 'Mahardika', 'Nugraha', 'Pratama', 'Santosa', 'Sakti', 'Sutrisno', 'Wibowo', 'Putra', 'Arif', 'Hadi', 'Nusantara', 'Pramana', 'Wijaya', 'Sudirman', 'Amin', 'Rama', 'Budi', 'Jati', 'Kurnia', 'Wira', 'Mukti', 'Angkasa', 'Dwi', 'Samudra'
+            'Alam', 'Bakti', 'Cahya', 'Darma', 'Fajar', 'Gema', 'Hutama', 'Indra', 'Jaya', 'Kusuma', 'Mahardika', 'Nugraha', 'Pratama', 'Santosa', 'Sakti', 'Sutrisno', 'Wibowo', 'Kartawiharja', 'Yudistira', 'Tanadi', 'Pramana', 'Wijaya', 'Sudirman', 'Amin', 'Kurnia', 'Mukti', 'Angkasa', 'Samudra'
         ];
 
         // Alergi Obat yang relevan
@@ -44,15 +44,24 @@ class PasienFactory extends Factory
         // Membuat alamat sesuai dengan kecamatan
         $alamat = 'Jl. ' . $kecamatan[$idKecamatan] . ' No. ' . $faker->numberBetween(1, 100);
 
+        // Tentukan jenis kelamin terlebih dahulu
+        $jenisKelamin = $faker->randomElement(['Laki-laki', 'Perempuan']);
+
         return [
             // No telepon yang formatnya untuk Indonesia
             'no_telepon' => '08' . $faker->randomNumber(8, true),  // No telepon Indonesia
 
             // Nama pasien acak dari nama depan dan belakang
-            'nama' => $faker->randomElement($faker->randomElement(['male' => $namaDepanPria, 'female' => $namaDepanWanita])) . ' ' . $faker->randomElement($namaBelakang),  // Nama lengkap Indonesia
+            'nama' => function() use ($faker, $namaDepanPria, $namaDepanWanita, $namaBelakang, $jenisKelamin) {
+                // Tentukan nama depan berdasarkan jenis kelamin
+                $namaDepan = ($jenisKelamin === 'Laki-laki') ? $faker->randomElement($namaDepanPria) : $faker->randomElement($namaDepanWanita);
 
-            // Jenis kelamin acak
-            'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),  // Jenis kelamin
+                // Gabungkan nama depan dengan nama belakang
+                return $namaDepan . ' ' . $faker->randomElement($namaBelakang);
+            },
+
+            // Jenis kelamin sesuai dengan yang sudah ditentukan
+            'jenis_kelamin' => $jenisKelamin,  // Jenis kelamin
 
             // Tanggal lahir dengan umur antara 17 - 60 tahun
             'tanggal_lahir' => $faker->dateTimeBetween('-60 years', '-17 years')->format('Y-m-d'),

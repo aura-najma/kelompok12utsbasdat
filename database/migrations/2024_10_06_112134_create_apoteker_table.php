@@ -31,3 +31,4 @@ class CreateApotekerTable extends Migration
         Schema::dropIfExists('apoteker'); // Menghapus tabel apoteker jika dibatalkan
     }
 }
+

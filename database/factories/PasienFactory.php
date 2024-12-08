@@ -76,7 +76,7 @@ class PasienFactory extends Factory
             'alergi_obat' => $faker->boolean(50) ? $faker->randomElement($obatAlergi) : null,
 
             // Waktu created_at antara awal 2023 sampai 6 bulan pertama 2024
-            'created_at' => $faker->dateTimeBetween('2023-01-01', '2024-06-30')->format('Y-m-d H:i:s'),
+            'created_at' => $faker->dateTimeBetween('2023-10-01', '2024-09-30')->format('Y-m-d H:i:s'),
 
             // Waktu updated_at yang akan di-set sama dengan created_at
             'updated_at' => now(),

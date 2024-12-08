@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Pasien;
 use App\Models\Pembelian;
+use App\Models\Pasien;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Faker\Generator as Faker;
+use Carbon\Carbon;
 
 class PembelianFactory extends Factory
 {
@@ -12,24 +14,24 @@ class PembelianFactory extends Factory
 
     public function definition()
     {
-        // Rentang waktu untuk custom_created_at dan custom_updated_at (Januari - September 2024)
-        $createdAt = $this->faker->dateTimeBetween('2024-01-01', '2024-09-30')->format('Y-m-d H:i:s');
+        // Rentang tanggal custom_created_at dari Januari hingga September 2024
+        $customCreatedAt = $this->faker->dateTimeBetween('2024-01-01', '2024-09-30');
+        
+        // Mengambil semua pasien yang created_at-nya lebih kecil dari custom_created_at
+        $pasien = Pasien::where('created_at', '<', $customCreatedAt)->get();
 
-        // Ambil nomor telepon dari Pasien yang memiliki created_at lebih lama dari $createdAt di Pembelian
-        $pasien = Pasien::where('created_at', '<', $createdAt)->pluck('no_telepon')->toArray();
-
-        // Jika tidak ada pasien dengan created_at yang lebih lama, pilih nomor telepon acak
-        if (count($pasien) === 0) {
-            $noTeleponRandom = $this->faker->phoneNumber; // Jika tidak ada, gunakan nomor acak
-        } else {
-            $noTeleponRandom = $this->faker->randomElement($pasien); // Ambil nomor telepon yang valid
+        // Memastikan ada pasien yang ditemukan
+        if ($pasien->isEmpty()) {
+            throw new \Exception("Tidak ada pasien yang memenuhi kriteria.");
         }
-        $createdAtId = str_replace([':', ' '], '', $createdAt); // Menghapus tanda ":" dan spasi dari createdAt
 
-        // Buat ID Pembelian berdasarkan format yang diinginkan
-        $idPembelian = 'PB-' . substr($noTeleponRandom, -4) . '-' . str_replace(['-', ' '], '', $createdAtId); // Mengambil 4 digit terakhir dari nomor telepon dan menggabungkannya dengan tanggal created_at
+        // Memilih pasien secara acak dari hasil query yang telah diambil
+        $randomPasien = $pasien->random();
 
-        // Daftar keluhan berdasarkan kategori obat medis yang relevan
+        // Membuat id_pembelian dengan format PB-<4_digit_terakhir_no_telepon>-<custom_created_at_in_format_YmdHi>
+        $idPembelian = 'PB-' . substr($randomPasien->no_telepon, -4) . '-' . Carbon::parse($customCreatedAt)->format('YmdHi');
+
+        // Daftar keluhan yang telah diberikan
         $keluhanList = [
             // Batuk & Pilek
             'Batuk dan pilek', 
@@ -73,20 +75,25 @@ class PembelianFactory extends Factory
             'Hidung tersumbat dan sakit kepala',
             'Telinga sakit dan flu',
         ];
+
+        // Pilih keluhan secara acak dari list
+        $keluhan = $this->faker->randomElement($keluhanList);
+
         // Logika untuk menentukan apakah ada resep atau tidak
         $resepAda = $this->faker->boolean(50); // 50% kemungkinan untuk ada resep atau tidak
-            
-        // Jika ada resep, kita tetapkan 'Ada Resep' atau 'Tidak Ada Resep' untuk field resep
-        $resep = $resepAda ? 'Ada Resep' : 'Tidak Ada Resep';
+        $resep = $resepAda ? 'Ada Resep' : 'Tidak Ada Resep'; // Tentukan nilai untuk field resep
+
         return [
-            'no_telepon' => $noTeleponRandom, // Ambil nomor telepon dari tabel pasien
-            'keluhan' => $this->faker->randomElement($keluhanList), // Pilih keluhan acak dari daftar medis
-            'resep' => $resep, // Resep acak, bisa 'Ada Resep' atau 'Tidak Ada Resep'
-            'created_at' => $createdAt, // Waktu created_at yang acak
-            'updated_at' => $createdAt, // Sama dengan created_at
-            'id_pembelian' => $idPembelian, // ID Pembelian sesuai format
-            'custom_created_at' => $createdAt, // Custom created_at
-            'custom_updated_at' => $createdAt, // Custom updated_at
+            'id_pembelian' => $idPembelian, // ID pembelian sesuai format yang diinginkan
+            'no_telepon' => $randomPasien->no_telepon, // Nomor telepon dari pasien yang sesuai
+            'keluhan' => $keluhan, // Pilih keluhan secara acak dari list
+            'resep' => $resep, // Tentukan apakah ada resep atau tidak
+            'custom_created_at' => $customCreatedAt,
+            'custom_updated_at' => $customCreatedAt,
+
+            // Kosongkan created_at dan updated_at
+            'created_at' => null,
+            'updated_at' => null,
         ];
     }
 }

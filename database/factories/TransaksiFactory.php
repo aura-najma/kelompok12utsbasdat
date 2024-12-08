@@ -29,21 +29,21 @@ class TransaksiFactory extends Factory
         $hargaTotal = $hargaSatuan * $jumlahObat;
 
         // Jika resep = "Tidak Ada Resep", pastikan obat yang dipilih bukan obat keras
-        if ($pembelian->resep == 'Tidak Ada Resep') {
-            // Coba pilih obat yang bukan obat keras
-            $obat = Obat::where('jenis', '!=', 'Obat Keras')->inRandomOrder()->first();
-        
-            // Jika tidak ada obat non-keras yang tersedia
-            if (!$obat) {
-                throw new \Exception('Tidak ada obat non-keras yang tersedia untuk pembelian tanpa resep.');
-            }
-        
-            // Update detail obat yang dipilih
-            $noBpom = $obat->no_bpom;
-            $hargaSatuan = $obat->harga_satuan;
-            $hargaTotal = $hargaSatuan * $jumlahObat;
-        }
-         $hargaTotal = $hargaSatuan * $jumlahObat;
+       if ($pembelian->resep == 'Tidak Ada Resep') {
+    // Coba pilih obat yang bukan obat keras
+    $obat = Obat::where('jenis', '!=', 'Obat Keras')->inRandomOrder()->first();
+
+    // Jika tidak ada obat non-keras yang tersedia
+    if (!$obat) {
+        throw new \Exception('Tidak ada obat non-keras yang tersedia untuk pembelian tanpa resep.');
+    }
+
+    // Update detail obat yang dipilih
+    $noBpom = $obat->no_bpom;
+    $hargaSatuan = $obat->harga_satuan;
+    $hargaTotal = $hargaSatuan * $jumlahObat;
+}
+ $hargaTotal = $hargaSatuan * $jumlahObat;
         }
 
         // Gunakan created_at dari pembelian sebagai tanggal transaksi

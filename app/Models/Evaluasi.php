@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Evaluasi extends Model
 {
     use HasFactory;
+
     protected $table = 'evaluasi'; 
     protected $primaryKey = 'id_evaluasi';
     public $incrementing = false; 
@@ -25,4 +26,10 @@ class Evaluasi extends Model
     // Define custom timestamps manually
     const CREATED_AT = 'evaluasi_dibuat';
     const UPDATED_AT = 'evaluasi_diperbarui';
+
+    // Relasi ke model Transaksi
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class, 'id_invoice', 'id_invoice');
+    }
 }

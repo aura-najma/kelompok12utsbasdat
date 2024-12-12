@@ -12,20 +12,26 @@ class Transaksi extends Model
     // Kolom yang dapat diisi secara massal
     protected $fillable = [
         'id_transaksi',
-        'id_invoice', // Tambahkan kolom id_invoice
+        'id_invoice',
         'id_pembelian',
         'no_bpom',
         'nama_obat',
         'jumlah_obat',
         'harga_satuan',
         'harga_total',
+        'created_at',
+        'updated_at',
+        'confirmed_at',
     ];
 
-    // Disable auto-incrementing as `id_transaksi` is not an integer
+    // Non-auto-incrementing primary key
     public $incrementing = false;
 
-    // Set the key type to string
+    // Set key type to string
     protected $keyType = 'string';
+
+    // Table name (if different from class name)
+    protected $table = 'transaksis';
 
     // Relasi ke tabel pembelian
     public function pembelian()
@@ -45,9 +51,12 @@ class Transaksi extends Model
         return $this->belongsTo(Apoteker::class, 'nip', 'NIP');
     }
 
-    // Relasi ke invoice (opsional jika ada model invoice)
-    public function invoice()
+    // Relasi ke tabel evaluasi
+    public function evaluasi()
     {
-        return $this->belongsTo(Invoice::class, 'id_invoice', 'id_invoice');
+        return $this->hasOne(Evaluasi::class, 'id_invoice', 'id_invoice');
     }
+
+    // Relasi ke invoice jika memiliki model invoice
+
 }

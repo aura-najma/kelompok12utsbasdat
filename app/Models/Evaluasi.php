@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Evaluasi extends Model
 {
+    use HasFactory;
     protected $table = 'evaluasi'; 
     protected $primaryKey = 'id_evaluasi';
     public $incrementing = false; 

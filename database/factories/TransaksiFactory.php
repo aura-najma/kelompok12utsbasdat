@@ -43,8 +43,9 @@ class TransaksiFactory extends Factory
         $randomChars = Str::random(3);
         $idTransaksi = 'TR-' . $randomChars . '-' . $timestamp;
 
-        // Gunakan format ID Invoice dengan 3 karakter acak yang unik dan timestamp
-        $randomInvoiceChars = Str::random(3);
+        // Format ID Invoice dengan tiga karakter acak dan timestamp, dan gunakan ID Pembelian sebagai dasar
+        // Ambil sebagian dari id_pembelian untuk memastikan konsistensi
+        $randomInvoiceChars = substr(md5($pembelian->id_pembelian), 0, 3); // Ambil hash dari id_pembelian untuk mendapatkan bagian yang konsisten
         $idInvoice = 'INV-' . $randomInvoiceChars . '-' . $timestamp;
 
         return [

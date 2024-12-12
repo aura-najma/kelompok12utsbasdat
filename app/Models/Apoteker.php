@@ -14,7 +14,7 @@ class Apoteker extends Model
 
     // Kolom yang dapat diisi secara massal
     protected $fillable = [
-        'nip',
+        'NIP',
         'password',
         'nama',
         'no_hp',
@@ -32,4 +32,10 @@ class Apoteker extends Model
             $model->password = bcrypt($model->password);
         });
     }
+
+    public function pembelians()
+    {
+        return $this->hasMany(Pembelian::class, 'nip', 'NIP');
+    }
+    
 }

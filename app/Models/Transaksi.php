@@ -19,7 +19,6 @@ class Transaksi extends Model
         'jumlah_obat',
         'harga_satuan',
         'harga_total',
-        'nip',
     ];
 
     // Disable auto-incrementing as `id_transaksi` is not an integer

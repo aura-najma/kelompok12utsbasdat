@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Pembelian;
 use App\Models\Pasien;
+use App\Models\Apoteker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
 use Carbon\Carbon;
@@ -83,6 +84,16 @@ class PembelianFactory extends Factory
         $resepAda = $this->faker->boolean(50); // 50% kemungkinan untuk ada resep atau tidak
         $resep = $resepAda ? 'Ada Resep' : 'Tidak Ada Resep'; // Tentukan nilai untuk field resep
 
+        // Ambil NIP apoteker secara acak dari tabel apoteker
+        $apoteker = Apoteker::inRandomOrder()->first();
+
+        if ($apoteker) {
+            $nip = $apoteker->NIP;
+        } else {
+            // Menangani jika tidak ada apoteker
+            throw new \Exception("Tidak ada apoteker yang tersedia.");
+        }
+        
         return [
             'id_pembelian' => $idPembelian, // ID pembelian sesuai format yang diinginkan
             'no_telepon' => $randomPasien->no_telepon, // Nomor telepon dari pasien yang sesuai
@@ -90,6 +101,8 @@ class PembelianFactory extends Factory
             'resep' => $resep, // Tentukan apakah ada resep atau tidak
             'custom_created_at' => $customCreatedAt,
             'custom_updated_at' => $customCreatedAt,
+
+            'nip' => $nip, // Tambahkan NIP apoteker yang ditangani pembelian ini
 
             // Kosongkan created_at dan updated_at
             'created_at' => null,

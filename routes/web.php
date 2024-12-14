@@ -154,5 +154,17 @@ use App\Http\Controllers\KecamatanController;
 
 Route::get('/kecamatans', [PasienController::class, 'listKecamatan'])->name('kecamatans.list');
 
+#=====dashboard====
+
+Route::get('/skema_evaluasi', function () {
+    return view('/skema_evaluasi');
+})->name('/skema_evaluasi');
+
+Route::get('/skema_penjualan', function () {
+    return view('/skema_penjualan');
+})->name('/skema_penjualan');
 
 
+Route::get('/skema_pendapatan', function () {
+    return view('/skema_pendapatan');
+})->name('/skema_pendapatan');

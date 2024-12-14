@@ -153,3 +153,6 @@ Route::delete('/dokter/{nomor_str}', [DokterController::class, 'destroy'])->name
 use App\Http\Controllers\KecamatanController;
 
 Route::get('/kecamatans', [PasienController::class, 'listKecamatan'])->name('kecamatans.list');
+
+
+

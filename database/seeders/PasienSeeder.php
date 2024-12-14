@@ -10,6 +10,6 @@ class PasienSeeder extends Seeder
     public function run()
     {
         // Membuat 70 data pasien menggunakan factory
-        Pasien::factory(100)->create();
+        Pasien::factory(300)->create();
     }
 }

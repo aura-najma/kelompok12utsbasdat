@@ -174,3 +174,6 @@ Route::get('/skema_pendapatan', function () {
 use App\Http\Controllers\DW1Controller;
 
 Route::get('/dashboard_dw1', [DW1Controller::class, 'dashboard'])->name('dashboard.dw1');
+use App\Http\Controllers\DW2_3Controller;
+
+Route::get('/dashboard_dw2dw3', [DW2_3Controller::class, 'index'])->name('dashboard.dw2dw3');

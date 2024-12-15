@@ -168,3 +168,9 @@ Route::get('/skema_penjualan', function () {
 Route::get('/skema_pendapatan', function () {
     return view('/skema_pendapatan');
 })->name('/skema_pendapatan');
+
+#-aura coba dashboard
+
+use App\Http\Controllers\DW1Controller;
+
+Route::get('/dashboard_dw1', [DW1Controller::class, 'dashboard'])->name('dashboard.dw1');

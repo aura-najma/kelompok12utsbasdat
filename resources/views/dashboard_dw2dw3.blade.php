@@ -20,7 +20,6 @@
             <div class="col-md-4 mb-3">
                 <label for="kuartal" class="form-label fw-bold">Filter Kuartal:</label>
                 <select name="kuartal" id="kuartal" class="form-select">
-                    <option value="">Semua Kuartal</option>
                     <option value="1" {{ $kuartal == 1 ? 'selected' : '' }}>Kuartal 1</option>
                     <option value="2" {{ $kuartal == 2 ? 'selected' : '' }}>Kuartal 2</option>
                     <option value="3" {{ $kuartal == 3 ? 'selected' : '' }}>Kuartal 3</option>
@@ -32,22 +31,27 @@
         </form>
     </div>
 
-    <!-- Bar Chart -->
+    <!-- Charts Section -->
     <div class="container mb-5">
-        <div class="card shadow-lg p-4">
-            <h4 class="card-title text-center mb-4">Jumlah Pembelian Obat Berdasarkan Wilayah dan Kategori</h4>
-            <div class="card-body">
-                <canvas id="barChart" width="800" height="400"></canvas>
+        <div class="row">
+            <!-- Bar Chart -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg p-4">
+                    <h4 class="card-title text-center mb-4">Jumlah Pembelian Obat Berdasarkan Wilayah dan Kategori</h4>
+                    <div class="card-body">
+                        <canvas id="barChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Line Chart -->
-    <div class="container mb-5">
-        <div class="card shadow-lg p-4">
-            <h4 class="card-title text-center mb-4">Jumlah Penjualan Obat Per Bulan</h4>
-            <div class="card-body">
-                <canvas id="lineChart" width="800" height="400"></canvas>
+            <!-- Line Chart -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-lg p-4">
+                    <h4 class="card-title text-center mb-4">Jumlah Penjualan Obat Per Bulan</h4>
+                    <div class="card-body">
+                        <canvas id="lineChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -94,16 +98,22 @@
         });
 
         // Data untuk Line Chart
-        const lineChartData = @json($lineChartData);
-        const bulanLabels = [
-            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
-            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-        ];
+        const lineChartData = @json($lineChartData); // Data dari controller
+        const months = @json($months); // Bulan sesuai kuartal
+
+        const bulanLabels = {
+            1: 'Januari', 2: 'Februari', 3: 'Maret',
+            4: 'April', 5: 'Mei', 6: 'Juni',
+            7: 'Juli', 8: 'Agustus', 9: 'September',
+            10: 'Oktober', 11: 'November', 12: 'Desember'
+        };
+
+        const filteredLabels = months.map((bulan) => bulanLabels[bulan]); // Label sesuai kuartal
 
         const lineDatasets = Object.keys(lineChartData).map((category, index) => {
             return {
                 label: category,
-                data: Object.values(lineChartData[category]),
+                data: months.map((bulan) => lineChartData[category][bulan] || 0),
                 borderColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 1)`,
                 backgroundColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 0.2)`,
                 borderWidth: 2,
@@ -115,7 +125,7 @@
         new Chart(ctxLine, {
             type: 'line',
             data: {
-                labels: bulanLabels,
+                labels: filteredLabels, // Sumbu-X hanya untuk bulan kuartal
                 datasets: lineDatasets
             },
             options: {

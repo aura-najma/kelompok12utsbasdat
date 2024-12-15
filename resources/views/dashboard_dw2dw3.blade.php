@@ -31,25 +31,64 @@
         </form>
     </div>
 
+    <!-- Cards -->
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5>Jumlah Pengunjung</h5>
+                        <p>{{ $jumlahPengunjung }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5>Tanggal Transaksi Terbanyak</h5>
+                        <p>{{ $tanggalTransaksiTerbanyak ? $tanggalTransaksiTerbanyak->formatted_date : '-' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5>Kategori Obat Terbanyak</h5>
+                        <p>{{ $kategoriTerbanyak ? $kategoriTerbanyak->kategori : '-' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5>Obat Terbanyak</h5>
+                        <p>{{ $obatTerbanyak ? $obatTerbanyak->nama_obat : '-' }}</p>
+                        <p>Total Dibeli: <strong>{{ $obatTerbanyak ? $obatTerbanyak->total : 0 }}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Charts Section -->
     <div class="container mb-5">
         <div class="row">
             <!-- Bar Chart -->
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6">
                 <div class="card shadow-lg p-4">
-                    <h4 class="card-title text-center mb-4">Jumlah Pembelian Obat Berdasarkan Wilayah dan Kategori</h4>
+                    <h4 class="card-title text-center mb-4">Jumlah Pembelian Obat Berdasarkan Wilayah</h4>
                     <div class="card-body">
-                        <canvas id="barChart" width="400" height="300"></canvas>
+                        <canvas id="barChart"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- Line Chart -->
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6">
                 <div class="card shadow-lg p-4">
                     <h4 class="card-title text-center mb-4">Jumlah Penjualan Obat Per Bulan</h4>
                     <div class="card-body">
-                        <canvas id="lineChart" width="400" height="300"></canvas>
+                        <canvas id="lineChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -63,80 +102,49 @@
 
     <!-- Chart.js Scripts -->
     <script>
-        // Data untuk Bar Chart
+        // Bar Chart
         const barChartData = @json($chartData);
         const wilayahs = @json(array_keys($chartData));
         const categories = @json(array_keys($chartData[array_key_first($chartData)]));
 
-        const barDatasets = categories.map((category, index) => {
-            return {
-                label: category,
-                data: wilayahs.map(wilayah => barChartData[wilayah][category] || 0),
-                backgroundColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 0.7)`,
-                borderColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 1)`,
-                borderWidth: 1
-            };
-        });
+        const barDatasets = categories.map((category, index) => ({
+            label: category,
+            data: wilayahs.map(wilayah => barChartData[wilayah][category] || 0),
+            backgroundColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 0.7)`,
+            borderColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 1)`,
+            borderWidth: 1
+        }));
 
-        const ctxBar = document.getElementById('barChart').getContext('2d');
-        new Chart(ctxBar, {
+        new Chart(document.getElementById('barChart').getContext('2d'), {
             type: 'bar',
-            data: {
-                labels: wilayahs,
-                datasets: barDatasets
-            },
+            data: { labels: wilayahs, datasets: barDatasets },
             options: {
                 responsive: true,
-                plugins: {
-                    legend: { position: 'top' },
-                    title: { display: true, text: 'Jumlah Pembelian Obat Berdasarkan Wilayah dan Kategori' }
-                },
-                scales: {
-                    y: { beginAtZero: true }
-                }
+                plugins: { legend: { position: 'right' } },
+                scales: { y: { beginAtZero: true } }
             }
         });
 
-        // Data untuk Line Chart
-        const lineChartData = @json($lineChartData); // Data dari controller
-        const months = @json($months); // Bulan sesuai kuartal
+        // Line Chart
+        const lineChartData = @json($lineChartData);
+        const months = @json($months);
+        const monthLabels = months.map(bulan => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'][bulan - 1]);
 
-        const bulanLabels = {
-            1: 'Januari', 2: 'Februari', 3: 'Maret',
-            4: 'April', 5: 'Mei', 6: 'Juni',
-            7: 'Juli', 8: 'Agustus', 9: 'September',
-            10: 'Oktober', 11: 'November', 12: 'Desember'
-        };
+        const lineDatasets = Object.keys(lineChartData).map((category, index) => ({
+            label: category,
+            data: months.map(bulan => lineChartData[category][bulan] || 0),
+            borderColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 1)`,
+            backgroundColor: 'transparent',
+            borderWidth: 2
+        }));
 
-        const filteredLabels = months.map((bulan) => bulanLabels[bulan]); // Label sesuai kuartal
-
-        const lineDatasets = Object.keys(lineChartData).map((category, index) => {
-            return {
-                label: category,
-                data: months.map((bulan) => lineChartData[category][bulan] || 0),
-                borderColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 1)`,
-                backgroundColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 0.2)`,
-                borderWidth: 2,
-                fill: false
-            };
-        });
-
-        const ctxLine = document.getElementById('lineChart').getContext('2d');
-        new Chart(ctxLine, {
+        new Chart(document.getElementById('lineChart').getContext('2d'), {
             type: 'line',
-            data: {
-                labels: filteredLabels, // Sumbu-X hanya untuk bulan kuartal
-                datasets: lineDatasets
-            },
+            data: { labels: monthLabels, datasets: lineDatasets },
             options: {
                 responsive: true,
-                plugins: {
-                    legend: { position: 'top' },
-                    title: { display: true, text: 'Jumlah Penjualan Obat Per Bulan' }
-                },
-                scales: {
-                    y: { beginAtZero: true }
-                }
+                plugins: { legend: { position: 'right' } },
+                scales: { y: { beginAtZero: true } }
             }
         });
     </script>

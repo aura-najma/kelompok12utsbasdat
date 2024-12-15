@@ -5,28 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard OLAP</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud/1.1.0/wordcloud.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Poppins, sans-serif;
         }
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 1500px;
             padding: 20px;
+            margin-left: 40px;
         }
         .cards {
             display: flex;
             gap: 20px;
             margin-bottom: 20px;
+            
         }
+        .card h3 {
+        font-size: 22px; /* Ukuran font */
+        margin-bottom: 10px; /* Jarak bawah */
+        text-align: center; /* Rata tengah */
+        font-weight: bold; /* Ketebalan teks */
+        text-align: left;
+        color : white;
+    }
+
+    .card p {
+        font-size: 18px; /* Ukuran font */ /
+        text-align: center; /* Rata tengah */
+        font-weight: bold; /* Ketebalan teks */
+        text-align: left;
+        color : white;
+    }
         .card {
             border: 1px solid #ddd;
             padding: 20px;
             border-radius: 5px;
             width: 30%;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(-180deg,rgba(32, 75, 230, 0.84),rgba(54, 190, 248, 0.9));
+            margin-top:20px;
         }
         .charts {
             display: flex;
@@ -48,28 +68,72 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             background-color: #f9f9f9;
         }
-        .word-cloud {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-        .word-cloud span {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-        }
-                #wordCloudCanvas {
+       
+        
+        #wordCloudCanvas {
             width: 100%;
             height: 500px;
-            border: 1px solid #ddd;
             background-color: #f9f9f9;
         }
+
+    
+        .navbar {
+            background: linear-gradient(-180deg, #204ae6, #36bef8);
+        }
+
+        .navbar-brand img {
+            width: 300px;
+            height: auto;
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-weight: 600;
+            margin-right: 30px;
+        }
+
+        .navbar-brand .back-btn {
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+        }
+    
+        h1 {
+            text-align: left;
+            margin-top: 20px;
+            background-image: linear-gradient(-180deg, #204ae6, #36bef8);
+            -webkit-background-clip: text;
+            color: transparent;  /* Ensure the text is transparent so the background shows */
+            font-weight: bold;
+        }
+
+        .content-footer {
+        text-align: center; /* Rata tengah teks */
+    }
+    
+</style>
     </style>
 </head>
 <body>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="assets/images/logo2.png" alt="Logo">
+            </a>
+
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboardutama') }}">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
-        <h1>Dashboard OLAP</h1>
+        <h1>Dashboard Evaluasi </h1>
 
         <form method="GET" action="{{ url('/dashboard_dw1') }}">
         <label for="kuartal">Filter Kuartal:</label>
@@ -84,9 +148,9 @@
         <!-- Cards Section -->
         <div class="cards">
             <div class="card">
-                <h3>Top Apoteker Yang Paling Sering Mendapat Sangat Baik</h3>
+                <h3>Best Apoteker</h3>
                 @if($topApoteker)
-                    <p>Nama: {{ $topApoteker['apoteker'] }}</p>
+                    <p>{{ $topApoteker['apoteker'] }}</p>
                 @else
                     <p>Tidak ada data.</p>
                 @endif
@@ -96,9 +160,9 @@
                 <p>{{ $totalEvaluasiKuartal }}</p>
             </div>
             <div class="card">
-                <h3>Kata Terbanyak dari Word Cloud</h3>
+                <h3>Top Word</h3>
                 @if($mostFrequentWord)
-                    <p>Kata: "{{ $mostFrequentWord['word'] }}"</p>
+                    <p>{{ $mostFrequentWord['word'] }}</p>
                 @else
                     <p>Tidak ada data.</p>
                 @endif
@@ -113,19 +177,20 @@
         <!-- Charts Section -->
         <div class="charts">
             <div class="chart-container">
-                <h2>Bar Chart - Evaluasi Apotek</h2>
+                <h2>Evaluasi Apotek</h2>
                 <canvas id="barChartApotek"></canvas>
             </div>
             <div class="chart-container">
-                <h2>Bar Chart - Evaluasi Obat</h2>
+                <h2>Evaluasi Obat</h2>
                 <canvas id="barChartObat"></canvas>
             </div>
         </div>
 
+
         <!-- Bar Chart Evaluasi Pelayanan -->
         <div class="chart-container" style="width: 100%; margin-top: 20px;">
         <form method="GET" action="{{ url('/dashboard_dw1') }}">
-        <label for="apoteker">Filter Apoteker:</label>
+        <label for="apoteker">Pilih Apoteker:</label>
         <select name="apoteker" id="apoteker" onchange="this.form.submit()">
             <option value="12024" {{ $apotekerFilter == '12024' ? 'selected' : '' }}>Dyah Ayu</option>
             <option value="22024" {{ $apotekerFilter == '22024' ? 'selected' : '' }}>Aura Najma</option>
@@ -134,15 +199,17 @@
         </select>
         <input type="hidden" name="kuartal" value="{{ $kuartal }}">
     </form>
-            <h2>Bar Chart - Evaluasi Pelayanan</h2>
+            <h2>Evaluasi Pelayanan</h2>
             <canvas id="barChartPelayanan"></canvas>
         </div>
 
-
+        <div class="chart-container" style="width: 100%; margin-top: 20px;">
         <!-- Word Cloud Section -->
-        <h2>Word Cloud</h2>
+        <h2>Word Cloud Komentar</h2>
+        
         <div id="wordCloudCanvas"></div>
-    </div>
+        </div>
+    
 
     <script>
         // Bar Chart Evaluasi Apotek
@@ -227,24 +294,35 @@
             },
         });
 
-        // Ambil data Word Cloud dari controller
-        const wordCloudData = @json($wordCloudData);
 
-        // Format ulang data menjadi array dua dimensi
-        const wordList = wordCloudData.map(item => [item.word, item.count]);
+        //// Ambil data Word Cloud dari controller
+        const wordCloudCanvas = document.getElementById('wordCloudCanvas');
+        const wordCloudData = @json($komentarData);
 
-        console.log("Word List:", wordList); // Debug: cek output di konsol browser
-
-        // Inisialisasi Word Cloud
-        WordCloud(document.getElementById('wordCloudCanvas'), {
-            list: wordList, // Data yang diformat sebagai [word, count]
-            gridSize: 10, // Jarak antar kata
-            weightFactor: 10, // Ukuran kata proporsional terhadap count
-            fontFamily: 'Arial, sans-serif',
-            color: 'random-dark', // Warna acak
-            backgroundColor: '#f9f9f9', // Warna latar belakang
-            rotateRatio: 0.3, // Rotasi 30% untuk variasi tampilan
+        WordCloud(wordCloudCanvas, {
+            list: wordCloudData.map(comment => [comment, 10]), // Adjust size
+            gridSize: 8,
+            weightFactor: 5,
+            fontFamily: 'Poppins',
+            color: 'random-light',
+            backgroundColor: '#f9f9f9',
+            rotateRatio: 0.2
         });
+
     </script>
+
+     <!-- Footer -->
+     <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , Lifespring Drugstore ❤️ Apotek Aman dan Terpercaya
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
 </body>
 </html>

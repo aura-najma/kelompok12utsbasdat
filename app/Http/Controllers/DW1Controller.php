@@ -27,6 +27,7 @@ class DW1Controller extends Controller
         $evaluasiQuery = Evaluasi::query();
         $wordCloudData = $this->generateWordCloud($evaluasiQuery, $kuartal);
         $rataRataRating = $this->getAverageRating($kuartal);
+        $komentarData =  $evaluasiQuery->pluck('komentar')->toArray();
 
         // Data untuk Cards
         $topApoteker = $this->getTopApoteker($kuartal);
@@ -46,6 +47,7 @@ class DW1Controller extends Controller
             'mostFrequentWord' => $mostFrequentWord,
             'kuartal' => $kuartal,
             'apotekerFilter' => $apotekerFilter,
+            'komentarData' => $komentarData,
         ]);
     }
 

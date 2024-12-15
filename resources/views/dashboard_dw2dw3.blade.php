@@ -16,7 +16,6 @@
             <option value="1" {{ $kuartal == 1 ? 'selected' : '' }}>Kuartal 1</option>
             <option value="2" {{ $kuartal == 2 ? 'selected' : '' }}>Kuartal 2</option>
             <option value="3" {{ $kuartal == 3 ? 'selected' : '' }}>Kuartal 3</option>
-            <option value="4" {{ $kuartal == 4 ? 'selected' : '' }}>Kuartal 4</option>
         </select>
         <button type="submit">Filter</button>
     </form>

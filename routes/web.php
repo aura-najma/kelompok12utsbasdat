@@ -177,3 +177,6 @@ Route::get('/dashboard_dw1', [DW1Controller::class, 'dashboard'])->name('dashboa
 use App\Http\Controllers\DW2_3Controller;
 
 Route::get('/dashboard_dw2dw3', [DW2_3Controller::class, 'index'])->name('dashboard.dw2dw3');
+
+
+Route::get('/dashboard-olap', [DW1Controller::class, 'showDashboardOlap']);

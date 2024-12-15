@@ -295,19 +295,7 @@
         });
 
 
-        //// Ambil data Word Cloud dari controller
-        const wordCloudCanvas = document.getElementById('wordCloudCanvas');
-        const wordCloudData = @json($komentarData);
-
-        WordCloud(wordCloudCanvas, {
-            list: wordCloudData.map(comment => [comment, 10]), // Adjust size
-            gridSize: 8,
-            weightFactor: 5,
-            fontFamily: 'Poppins',
-            color: 'random-light',
-            backgroundColor: '#f9f9f9',
-            rotateRatio: 0.2
-        });
+        
 
     </script>
 

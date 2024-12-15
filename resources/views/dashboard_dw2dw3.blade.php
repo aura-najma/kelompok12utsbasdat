@@ -9,31 +9,222 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
 
+
+        /* Global Style */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa; /* Warna latar belakang yang lembut */
+    color: #333; /* Warna teks utama */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 5px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    background-image: linear-gradient(-180deg, #204ae6, #36bef8);
+    -webkit-background-clip: text;
+    color: transparent; 
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-size: 1.5rem;
+    color: #6c757d;
+    text-align: center;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(-180deg, #204ae6, #36bef8);
+    padding: 10px 20px;
+}
+
+.navbar-brand img {
+    width: 150px; /* Ukuran logo */
+}
+
+.navbar-nav .nav-link {
+    font-size: 16px;
+    color: white !important;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #d8f3ff !important;
+}
+
+/* Cards */
+.card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Efek hover */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Bayangan saat hover */
+}
+
+.card-body h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    background-image: linear-gradient(-180deg, #204ae6, #36bef8);
+    -webkit-background-clip: text;
+    color: transparent; 
+    margin-bottom: 10px;
+}
+
+.card-body p {
+    font-size: 1rem;
+    color: #555; /* Warna teks isi */
+}
+
+/* Charts */
+.card-title {
+    font-size: 1.5rem;
+    background-image: linear-gradient(-180deg, #204ae6, #36bef8);
+    -webkit-background-clip: text;
+    color: transparent;  /* Ensure the text is transparent so the background shows */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.card.shadow-lg {
+    background-color: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
+    padding: 20px;
+}
+
+canvas {
+    max-width: 100%;
+    height: 100px; /* Tinggi default untuk grafik */
+}
+
+/* Filter Form */
+form {
+    background-color: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.btn-primary {
+    background: linear-gradient(-180deg, #204ae6, #36bef8);
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #1a3eb5;
+}
+
+/* Footer */
+.container.text-center {
+    background-color: #ffffff;
+    padding: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container.text-center p {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin: 0;
+}
+.small-pie-chart {
+    width: 20px; /* Sesuaikan lebar */
+    height: 20px; /* Sesuaikan tinggi */
+    max-width: 100%; /* Opsional untuk responsif */
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+
+    canvas {
+        height: 200px; /* Tinggi grafik di layar kecil */
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h4 {
+        font-size: 1.25rem;
+    }
+    #pieChartPendapatan {
+    width: 5px; /* Lebar yang lebih kecil */
+    height: 5px; /* Tinggi yang lebih kecil */
+}
+}
+
 </style>
 </head>
 <body>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="assets/images/logo2.png" alt="Logo">
+            </a>
+
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboardutama') }}">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <!-- Header -->
     <div class="container my-4">
         <h1 class="text-center mb-4 fw-bold">Dashboard Jumlah Pembelian Obat</h1>
         <h4 class="text-center text-secondary">Berdasarkan Wilayah, Kategori, dan Bulan</h4>
     </div>
 
-    <!-- Filter Form -->
-    <div class="container mb-4">
-        <form method="GET" action="{{ url('dashboard_dw2dw3') }}" class="row justify-content-center">
-            <div class="col-md-4 mb-3">
-                <label for="kuartal" class="form-label fw-bold">Filter Kuartal:</label>
-                <select name="kuartal" id="kuartal" class="form-select">
-                    <option value="1" {{ $kuartal == 1 ? 'selected' : '' }}>Kuartal 1</option>
-                    <option value="2" {{ $kuartal == 2 ? 'selected' : '' }}>Kuartal 2</option>
-                    <option value="3" {{ $kuartal == 3 ? 'selected' : '' }}>Kuartal 3</option>
-                </select>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100">Filter</button>
-            </div>
-        </form>
-    </div>
+   <!-- Filter Form -->
+<div class="container mb-4">
+    <form method="GET" action="{{ url('dashboard_dw2dw3') }}" class="row align-items-center justify-content-center">
+        <!-- Filter Kuartal -->
+        <div class="col-md-4 mb-3">
+            <select name="kuartal" id="kuartal" class="form-select">
+                <option value="1" {{ $kuartal == 1 ? 'selected' : '' }}>Kuartal 1</option>
+                <option value="2" {{ $kuartal == 2 ? 'selected' : '' }}>Kuartal 2</option>
+                <option value="3" {{ $kuartal == 3 ? 'selected' : '' }}>Kuartal 3</option>
+            </select>
+        </div>
+        <!-- Tombol Filter -->
+        <div class="col-md-2 mb-3 d-flex align-items-center">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </form>
+</div>
+
 
     <!-- Cards -->
     <div class="container mb-4">
@@ -49,7 +240,7 @@
             <div class="col-md-3">
                 <div class="card shadow">
                     <div class="card-body">
-                        <h5>Tanggal Transaksi Terbanyak</h5>
+                        <h5>Top Tanggal Transaksi</h5>
                         <p>{{ $tanggalTransaksiTerbanyak ? $tanggalTransaksiTerbanyak->formatted_date : '-' }}</p>
                     </div>
                 </div>
@@ -67,7 +258,6 @@
                     <div class="card-body">
                         <h5>Obat Terbanyak</h5>
                         <p>{{ $obatTerbanyak ? $obatTerbanyak->nama_obat : '-' }}</p>
-                        <p>Total Dibeli: <strong>{{ $obatTerbanyak ? $obatTerbanyak->total : 0 }}</strong></p>
                     </div>
                 </div>
             </div>
@@ -119,7 +309,7 @@
             <div class="card shadow-lg p-4">
                 <h4 class="card-title text-center mb-4">Persentase Pendapatan Berdasarkan Jenis Obat</h4>
                 <div class="card-body">
-                    <canvas id="pieChartPendapatan"></canvas>
+                    <canvas id="pieChartPendapatan" width="100" height="100"></canvas>
                 </div>
             </div>
         </div>
@@ -230,6 +420,7 @@ const pieValues = Object.values(piePendapatanData);
 
 // Warna-warna untuk tiap segmen pie chart
 const pieColors = ['#4CAF50', '#FF9800', '#F44336', '#2196F3', '#9C27B0', '#E91E63'];
+
 
 // Inisialisasi Pie Chart
 new Chart(document.getElementById('pieChartPendapatan').getContext('2d'), {

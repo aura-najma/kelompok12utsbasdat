@@ -11,24 +11,21 @@ class DW1Controller extends Controller
 {
     public function dashboard(Request $request)
     {
-        // Ambil filter kuartal dari request
-        $kuartal = $request->input('kuartal');
+        // Ambil filter kuartal dan apoteker dari request
+        $kuartal = $request->input('kuartal', '1'); 
         $apotekerFilter = $request->input('apoteker', '12024'); // Default ke Dyah Ayu
 
-        // Bar Chart Data - Evaluasi Apotek
-        $barChartApotek = $this->getBarChartData('evaluasi_apotek', $kuartal);
+        // Bar Chart Data
+     // Ambil data Bar Chart menggunakan fungsi umum
+        $barChartApotek = $this->getBarChartDataGeneral('evaluasi_apotek', $kuartal);
+        $barChartObat = $this->getBarChartDataGeneral('evaluasi_obat', $kuartal);
 
-        // Bar Chart Data - Evaluasi Obat
-        $barChartObat = $this->getBarChartData('evaluasi_obat', $kuartal);
+        // Data khusus untuk Bar Chart Evaluasi Pelayanan (karena ada filter apoteker)
         $barChartPelayanan = $this->getBarChartEvaluasiPelayanan($kuartal, $apotekerFilter);
 
         // Data Word Cloud dan Rating dari tabel evaluasi
         $evaluasiQuery = Evaluasi::query();
-
-        // Word Cloud data
         $wordCloudData = $this->generateWordCloud($evaluasiQuery, $kuartal);
-
-        // Rata-rata rating
         $rataRataRating = $this->getAverageRating($kuartal);
 
         // Data untuk Cards
@@ -52,9 +49,6 @@ class DW1Controller extends Controller
         ]);
     }
 
-    /**
-     * Mengambil data untuk Bar Chart berdasarkan jenis evaluasi.
-     */
     private function getBarChartData($jenisEvaluasi, $kuartal)
     {
         $kategoriEvaluasi = ['Sangat Kurang', 'Kurang', 'Cukup', 'Baik', 'Sangat Baik'];
@@ -68,34 +62,45 @@ class DW1Controller extends Controller
             ->join('dim_tipe_evaluasi', 'fact_nilai_evaluasi.id_tipe_evaluasi', '=', 'dim_tipe_evaluasi.id_tipe_evaluasi')
             ->where('dim_tipe_evaluasi.nama_tipe_evaluasi', $jenisEvaluasi)
             ->when($kuartal, function ($query) use ($kuartal) {
-                $query->where('dim_waktu_evaluasi.kuartal', $kuartal);
+                $months = $this->getMonthsByQuarter($kuartal);
+                $query->whereIn('dim_waktu_evaluasi.bulan', $months);
             })
             ->groupBy('dim_waktu_evaluasi.bulan', 'nilai_evaluasi')
             ->orderBy('dim_waktu_evaluasi.bulan')
             ->orderBy('nilai_evaluasi')
             ->get();
 
-        $formattedData = [];
-
-        foreach ($data as $item) {
-            $bulan = $item->bulan;
-            $kategori = $this->mapNilaiToKategori($item->nilai_evaluasi);
-            $formattedData[$bulan][$kategori] = $item->jumlah;
-        }
-
-        // Pastikan semua kategori ada di setiap bulan
-        foreach ($formattedData as $bulan => &$bulanData) {
-            foreach ($kategoriEvaluasi as $kategori) {
-                $bulanData[$kategori] = $bulanData[$kategori] ?? 0;
-            }
-        }
-
-        return $formattedData;
+        return $this->formatBarChartData($data, $kategoriEvaluasi);
     }
 
-    /**
-     * Generate Word Cloud dari data evaluasi.
-     */
+    private function getBarChartEvaluasiPelayanan($kuartal, $apotekerFilter)
+    {
+        $kategoriEvaluasi = ['Sangat Kurang', 'Kurang', 'Cukup', 'Baik', 'Sangat Baik'];
+
+        $data = FactNilaiEvaluasi::selectRaw('
+            dim_waktu_evaluasi.bulan,
+            nilai_evaluasi,
+            COUNT(*) as jumlah
+        ')
+            ->join('dim_waktu_evaluasi', 'fact_nilai_evaluasi.id_waktu', '=', 'dim_waktu_evaluasi.id_waktu')
+            ->join('dim_apoteker', 'fact_nilai_evaluasi.id_apoteker', '=', 'dim_apoteker.id_apoteker')
+            ->join('dim_tipe_evaluasi', 'fact_nilai_evaluasi.id_tipe_evaluasi', '=', 'dim_tipe_evaluasi.id_tipe_evaluasi')
+            ->where('dim_tipe_evaluasi.nama_tipe_evaluasi', 'evaluasi_pelayanan')
+            ->when($kuartal, function ($query) use ($kuartal) {
+                $months = $this->getMonthsByQuarter($kuartal);
+                $query->whereIn('dim_waktu_evaluasi.bulan', $months);
+            })
+            ->when($apotekerFilter, function ($query) use ($apotekerFilter) {
+                $query->where('dim_apoteker.id_apoteker', $apotekerFilter);
+            })
+            ->groupBy('dim_waktu_evaluasi.bulan', 'nilai_evaluasi')
+            ->orderBy('dim_waktu_evaluasi.bulan')
+            ->orderBy('nilai_evaluasi')
+            ->get();
+
+        return $this->formatBarChartData($data, $kategoriEvaluasi);
+    }
+
     private function generateWordCloud($query, $kuartal = null)
     {
         if ($kuartal) {
@@ -122,9 +127,6 @@ class DW1Controller extends Controller
             ->toArray();
     }
 
-    /**
-     * Menghitung rata-rata rating berdasarkan kuartal.
-     */
     private function getAverageRating($kuartal = null)
     {
         $query = Evaluasi::query();
@@ -137,9 +139,6 @@ class DW1Controller extends Controller
         return $query->avg('rating_apotek') ?: 0; // Default ke 0 jika tidak ada data
     }
 
-    /**
-     * Mengambil data apoteker dengan evaluasi pelayanan 5 terbanyak.
-     */
     private function getTopApoteker($kuartal)
     {
         return FactNilaiEvaluasi::with(['apoteker', 'tipeEvaluasi'])
@@ -168,9 +167,6 @@ class DW1Controller extends Controller
             ->first();
     }
 
-    /**
-     * Mengambil total evaluasi berdasarkan kuartal.
-     */
     private function getTotalEvaluasi($kuartal)
     {
         $query = FactNilaiEvaluasi::query();
@@ -179,16 +175,11 @@ class DW1Controller extends Controller
             $query->whereHas('waktuEvaluasi', function ($subQuery) use ($kuartal) {
                 $subQuery->where('kuartal', $kuartal);
             });
-
-            return $query->count()/3;
         }
 
-        return $query->count()/3;
+        return $query->count() / 3;
     }
 
-    /**
-     * Dapatkan bulan berdasarkan kuartal.
-     */
     private function getMonthsByQuarter($kuartal)
     {
         $quarters = [
@@ -200,31 +191,9 @@ class DW1Controller extends Controller
 
         return $quarters[$kuartal] ?? [];
     }
-    private function getBarChartEvaluasiPelayanan($kuartal, $apotekerFilter)
+
+    private function formatBarChartData($data, $kategoriEvaluasi)
     {
-        $kategoriEvaluasi = ['Sangat Kurang', 'Kurang', 'Cukup', 'Baik', 'Sangat Baik'];
-
-        $data = FactNilaiEvaluasi::selectRaw('
-            dim_waktu_evaluasi.bulan,
-            nilai_evaluasi,
-            COUNT(*) as jumlah
-        ')
-            ->join('dim_waktu_evaluasi', 'fact_nilai_evaluasi.id_waktu', '=', 'dim_waktu_evaluasi.id_waktu')
-            ->join('dim_apoteker', 'fact_nilai_evaluasi.id_apoteker', '=', 'dim_apoteker.id_apoteker')
-            ->join('dim_tipe_evaluasi', 'fact_nilai_evaluasi.id_tipe_evaluasi', '=', 'dim_tipe_evaluasi.id_tipe_evaluasi')
-            ->where('dim_tipe_evaluasi.nama_tipe_evaluasi', 'evaluasi_pelayanan')
-            ->when($kuartal, function ($query) use ($kuartal) {
-                $query->where('dim_waktu_evaluasi.kuartal', $kuartal);
-            })
-            ->when($apotekerFilter, function ($query) use ($apotekerFilter) {
-                $query->where('dim_apoteker.id_apoteker', $apotekerFilter); // Ganti filter nama dengan NIP
-            })
-            
-            ->groupBy('dim_waktu_evaluasi.bulan', 'nilai_evaluasi')
-            ->orderBy('dim_waktu_evaluasi.bulan')
-            ->orderBy('nilai_evaluasi')
-            ->get();
-
         $formattedData = [];
 
         foreach ($data as $item) {
@@ -233,7 +202,6 @@ class DW1Controller extends Controller
             $formattedData[$bulan][$kategori] = $item->jumlah;
         }
 
-        // Pastikan semua kategori ada di setiap bulan
         foreach ($formattedData as $bulan => &$bulanData) {
             foreach ($kategoriEvaluasi as $kategori) {
                 $bulanData[$kategori] = $bulanData[$kategori] ?? 0;
@@ -242,9 +210,30 @@ class DW1Controller extends Controller
 
         return $formattedData;
     }
-    /**
-     * Pemetaan nilai evaluasi ke kategori.
-     */
+    private function getBarChartDataGeneral($jenisEvaluasi, $kuartal = null)
+    {
+        $kategoriEvaluasi = ['Sangat Kurang', 'Kurang', 'Cukup', 'Baik', 'Sangat Baik'];
+    
+        $data = FactNilaiEvaluasi::selectRaw('
+                dim_waktu_evaluasi.bulan,
+                nilai_evaluasi,
+                COUNT(*) as jumlah
+            ')
+            ->join('dim_waktu_evaluasi', 'fact_nilai_evaluasi.id_waktu', '=', 'dim_waktu_evaluasi.id_waktu')
+            ->join('dim_tipe_evaluasi', 'fact_nilai_evaluasi.id_tipe_evaluasi', '=', 'dim_tipe_evaluasi.id_tipe_evaluasi')
+            ->where('dim_tipe_evaluasi.nama_tipe_evaluasi', $jenisEvaluasi) // Jenis Evaluasi: Apotek atau Obat
+            ->when($kuartal, function ($query) use ($kuartal) {
+                $months = $this->getMonthsByQuarter($kuartal);
+                $query->whereIn('dim_waktu_evaluasi.bulan', $months);
+            })
+            ->groupBy('dim_waktu_evaluasi.bulan', 'nilai_evaluasi')
+            ->orderBy('dim_waktu_evaluasi.bulan')
+            ->orderBy('nilai_evaluasi')
+            ->get();
+    
+        return $this->formatBarChartData($data, $kategoriEvaluasi);
+    }
+    
     private function mapNilaiToKategori($nilai)
     {
         $map = [

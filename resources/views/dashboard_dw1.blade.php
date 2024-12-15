@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard OLAP</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,24 +59,27 @@
             font-weight: bold;
             color: #333;
         }
+                #wordCloudCanvas {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Dashboard OLAP</h1>
 
-        <!-- Filter Section -->
-        <form method="GET" action="/dashboard_dw1" style="margin-bottom: 20px;">
-            <label for="kuartal">Filter Kuartal:</label>
-            <select name="kuartal" id="kuartal">
-                <option value="1" {{ $kuartal == '1' ? 'selected' : '' }}>Kuartal 1</option>
-                <option value="2" {{ $kuartal == '2' ? 'selected' : '' }}>Kuartal 2</option>
-                <option value="3" {{ $kuartal == '3' ? 'selected' : '' }}>Kuartal 3</option>
-                <option value="4" {{ $kuartal == '4' ? 'selected' : '' }}>Kuartal 4</option>
-            </select>
-    
-            <button type="submit">Terapkan</button>
-        </form>
+        <form method="GET" action="{{ url('/dashboard_dw1') }}">
+        <label for="kuartal">Filter Kuartal:</label>
+        <select name="kuartal" id="kuartal" onchange="this.form.submit()">
+            <option value="1" {{ $kuartal == '1' ? 'selected' : '' }}>Kuartal 1</option>
+            <option value="2" {{ $kuartal == '2' ? 'selected' : '' }}>Kuartal 2</option>
+            <option value="3" {{ $kuartal == '3' ? 'selected' : '' }}>Kuartal 3</option>
+        </select>
+        <input type="hidden" name="apoteker" value="{{ $apotekerFilter }}">
+    </form>
 
         <!-- Cards Section -->
         <div class="cards">
@@ -119,15 +124,15 @@
 
         <!-- Bar Chart Evaluasi Pelayanan -->
         <div class="chart-container" style="width: 100%; margin-top: 20px;">
-            <form>
+        <form method="GET" action="{{ url('/dashboard_dw1') }}">
         <label for="apoteker">Filter Apoteker:</label>
-            <select name="apoteker" id="apoteker">
-                <option value="12024" {{ $apotekerFilter == '12024' ? 'selected' : '' }}>Dyah Ayu</option>
-                <option value="22024" {{ $apotekerFilter == '22024' ? 'selected' : '' }}>Aura Najma</option>
-                <option value="32024" {{ $apotekerFilter == '32024' ? 'selected' : '' }}>Wanda Desi</option>
-                <option value="42024" {{ $apotekerFilter == '42024' ? 'selected' : '' }}>Zulfikar</option>
-            </select>
-            <button type="submit">Terapkan</button>
+        <select name="apoteker" id="apoteker" onchange="this.form.submit()">
+            <option value="12024" {{ $apotekerFilter == '12024' ? 'selected' : '' }}>Dyah Ayu</option>
+            <option value="22024" {{ $apotekerFilter == '22024' ? 'selected' : '' }}>Aura Najma</option>
+            <option value="32024" {{ $apotekerFilter == '32024' ? 'selected' : '' }}>Wanda Desi</option>
+            <option value="42024" {{ $apotekerFilter == '42024' ? 'selected' : '' }}>Zulfikar</option>
+        </select>
+        <input type="hidden" name="kuartal" value="{{ $kuartal }}">
     </form>
             <h2>Bar Chart - Evaluasi Pelayanan</h2>
             <canvas id="barChartPelayanan"></canvas>
@@ -135,18 +140,8 @@
 
 
         <!-- Word Cloud Section -->
-        <div class="word-cloud-container">
-            <h2>Word Cloud</h2>
-            <div class="word-cloud">
-                @if(count($wordCloudData) > 0)
-                    @foreach($wordCloudData as $word)
-                        <span>{{ $word['word'] }}</span>
-                    @endforeach
-                @else
-                    <p>Tidak ada data Word Cloud untuk kuartal ini.</p>
-                @endif
-            </div>
-        </div>
+        <h2>Word Cloud</h2>
+        <div id="wordCloudCanvas"></div>
     </div>
 
     <script>
@@ -230,6 +225,25 @@
                     y: { title: { display: true, text: 'Jumlah Evaluasi' }, beginAtZero: true },
                 },
             },
+        });
+
+        // Ambil data Word Cloud dari controller
+        const wordCloudData = @json($wordCloudData);
+
+        // Format ulang data menjadi array dua dimensi
+        const wordList = wordCloudData.map(item => [item.word, item.count]);
+
+        console.log("Word List:", wordList); // Debug: cek output di konsol browser
+
+        // Inisialisasi Word Cloud
+        WordCloud(document.getElementById('wordCloudCanvas'), {
+            list: wordList, // Data yang diformat sebagai [word, count]
+            gridSize: 10, // Jarak antar kata
+            weightFactor: 10, // Ukuran kata proporsional terhadap count
+            fontFamily: 'Arial, sans-serif',
+            color: 'random-dark', // Warna acak
+            backgroundColor: '#f9f9f9', // Warna latar belakang
+            rotateRatio: 0.3, // Rotasi 30% untuk variasi tampilan
         });
     </script>
 </body>

@@ -6,6 +6,10 @@
     <title>Dashboard DW2-3</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <style>
+
+</style>
 </head>
 <body>
     <!-- Header -->
@@ -109,6 +113,18 @@
         </div>
     </div>
 
+    <!-- Pie Chart Pendapatan Berdasarkan Jenis Obat -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-lg p-4">
+                <h4 class="card-title text-center mb-4">Persentase Pendapatan Berdasarkan Jenis Obat</h4>
+                <div class="card-body">
+                    <canvas id="pieChartPendapatan"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <div class="container text-center mb-4">
         <p class="text-muted">&copy; {{ date('Y') }} Dashboard DW2-3 | Data Visualisasi Obat</p>
@@ -194,8 +210,51 @@
         }
     }
 });
+@php
+    $totalPendapatan = array_sum($piePendapatanChartData);
+    $pieChartWithPercentage = [];
+
+    foreach ($piePendapatanChartData as $jenisObat => $pendapatan) {
+        $persentase = number_format(($pendapatan / $totalPendapatan) * 100, 2); // Format 2 desimal
+        $pieChartWithPercentage["$jenisObat ({$persentase}%)"] = $pendapatan;
+    }
+@endphp
 
 
+     // Ambil data dari Blade
+     const piePendapatanData = @json($pieChartWithPercentage);
+
+// Ekstrak label (jenis obat + persentase) dan nilai pendapatan
+const pieLabels = Object.keys(piePendapatanData);
+const pieValues = Object.values(piePendapatanData);
+
+// Warna-warna untuk tiap segmen pie chart
+const pieColors = ['#4CAF50', '#FF9800', '#F44336', '#2196F3', '#9C27B0', '#E91E63'];
+
+// Inisialisasi Pie Chart
+new Chart(document.getElementById('pieChartPendapatan').getContext('2d'), {
+    type: 'pie',
+    data: {
+        labels: pieLabels, // Sudah termasuk jenis obat + persentase
+        datasets: [{
+            data: pieValues,
+            backgroundColor: pieColors.slice(0, pieLabels.length),
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top' // Letak legend
+            },
+            title: {
+                display: true,
+                text: 'Persentase Pendapatan Berdasarkan Jenis Obat'
+            }
+        }
+    }
+});
     </script>
 </body>
 </html>

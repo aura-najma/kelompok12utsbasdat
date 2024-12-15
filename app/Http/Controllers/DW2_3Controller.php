@@ -77,6 +77,22 @@ class DW2_3Controller extends Controller
         foreach ($pendapatanData as $data) {
             $linePendapatanData[$data->bulan] = $data->total_pendapatan;
         }
+
+        // Pie chart pendapatan berdasarkan jenis obat
+        $piePendapatanData = FactPenjualanPendapatan::join('dim_jenis_obat', 'fact_penjualan_pendapatan.id_jenis_obat', '=', 'dim_jenis_obat.id_jenis_obat')
+        ->join('dim_waktu_transaksi', 'fact_penjualan_pendapatan.id_waktu', '=', 'dim_waktu_transaksi.id_waktu')
+        ->where('dim_waktu_transaksi.kuartal', $kuartal) // Filter berdasarkan kuartal
+        ->select('dim_jenis_obat.jenis_obat', DB::raw('SUM(fact_penjualan_pendapatan.harga_total) as total_pendapatan'))
+        ->groupBy('dim_jenis_obat.jenis_obat')
+        ->get();
+
+
+
+        // Format data untuk pie chart
+        $piePendapatanChartData = [];
+        foreach ($piePendapatanData as $data) {
+        $piePendapatanChartData[$data->jenis_obat] = $data->total_pendapatan;
+        }
         /**
          * Jumlah Pengunjung: Distinct ID Pembelian
          */
@@ -123,6 +139,7 @@ class DW2_3Controller extends Controller
             ->orderByDesc('total')
             ->first();
 
+
         /**
          * Return View
          */
@@ -131,6 +148,7 @@ class DW2_3Controller extends Controller
             'lineChartData',
             'linePendapatanData',
             'months',
+            'piePendapatanChartData', // Data baru
             'wilayahs',
             'categories',
             'kuartal',

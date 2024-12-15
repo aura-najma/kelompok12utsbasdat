@@ -61,6 +61,22 @@ class DW2_3Controller extends Controller
             }
         }
 
+        // Line chart pendapatan per bulan
+        // Line chart pendapatan per bulan
+        $pendapatanData = FactPenjualanPendapatan::join('dim_waktu_transaksi', 'fact_penjualan_pendapatan.id_waktu', '=', 'dim_waktu_transaksi.id_waktu')
+            ->select('dim_waktu_transaksi.bulan', DB::raw('SUM(fact_penjualan_pendapatan.harga_total) as total_pendapatan'))
+            ->whereIn('dim_waktu_transaksi.bulan', $months) // Filter berdasarkan bulan kuartal
+            ->groupBy('dim_waktu_transaksi.bulan')
+            ->orderBy('dim_waktu_transaksi.bulan')
+            ->get();
+
+        // Inisialisasi array pendapatan dengan nilai 0 untuk semua bulan
+        $linePendapatanData = array_fill_keys($months, 0);
+
+        // Isi array pendapatan dengan data yang diambil dari query
+        foreach ($pendapatanData as $data) {
+            $linePendapatanData[$data->bulan] = $data->total_pendapatan;
+        }
         /**
          * Jumlah Pengunjung: Distinct ID Pembelian
          */
@@ -113,6 +129,7 @@ class DW2_3Controller extends Controller
         return view('dashboard_dw2dw3', compact(
             'chartData',
             'lineChartData',
+            'linePendapatanData',
             'months',
             'wilayahs',
             'categories',

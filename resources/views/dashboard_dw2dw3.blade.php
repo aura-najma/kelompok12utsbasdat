@@ -72,9 +72,9 @@
 
     <!-- Charts Section -->
     <div class="container mb-5">
-        <div class="row">
+        <div class="row mb-4">
             <!-- Bar Chart -->
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card shadow-lg p-4">
                     <h4 class="card-title text-center mb-4">Jumlah Pembelian Obat Berdasarkan Wilayah</h4>
                     <div class="card-body">
@@ -82,13 +82,27 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Line Chart -->
-            <div class="col-md-6">
+        <div class="row mb-4">
+            <!-- Line Chart Penjualan Obat -->
+            <div class="col-12">
                 <div class="card shadow-lg p-4">
                     <h4 class="card-title text-center mb-4">Jumlah Penjualan Obat Per Bulan</h4>
                     <div class="card-body">
                         <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <!-- Line Chart Pendapatan -->
+            <div class="col-12">
+                <div class="card shadow-lg p-4">
+                    <h4 class="card-title text-center mb-4">Pendapatan Per Bulan</h4>
+                    <div class="card-body">
+                        <canvas id="lineChartPendapatan"></canvas>
                     </div>
                 </div>
             </div>
@@ -106,50 +120,82 @@
         const barChartData = @json($chartData);
         const wilayahs = @json(array_keys($chartData));
         const categories = @json(array_keys($chartData[array_key_first($chartData)]));
-
         const barDatasets = categories.map((category, index) => ({
             label: category,
             data: wilayahs.map(wilayah => barChartData[wilayah][category] || 0),
             backgroundColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 0.7)`,
-            borderColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 1)`,
             borderWidth: 1
         }));
 
         new Chart(document.getElementById('barChart').getContext('2d'), {
             type: 'bar',
             data: { labels: wilayahs, datasets: barDatasets },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'right' } },
-                scales: { y: { beginAtZero: true } }
-            }
+            options: { responsive: true, plugins: { legend: { position: 'right' } } }
         });
 
-        // Line Chart
+        // Line Chart Penjualan
         const lineChartData = @json($lineChartData);
         const months = @json($months);
-        const monthLabels = months.map(bulan => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'][bulan - 1]);
+        const monthLabels = months.map(bulan => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September'][bulan - 1]);
 
         const lineDatasets = Object.keys(lineChartData).map((category, index) => ({
             label: category,
             data: months.map(bulan => lineChartData[category][bulan] || 0),
             borderColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 1)`,
-            backgroundColor: 'transparent',
-            borderWidth: 2
+            borderWidth: 2,
+            fill: false
         }));
 
         new Chart(document.getElementById('lineChart').getContext('2d'), {
             type: 'line',
             data: { labels: monthLabels, datasets: lineDatasets },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'right' } },
-                scales: { y: { beginAtZero: true } }
-            }
+            options: { responsive: true, plugins: { legend: { position: 'top' } } }
         });
-    </script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+        // Line Chart Pendapatan
+        const pendapatanData = @json($linePendapatanData);
+        const pendapatanValues = Object.values(pendapatanData);
+        new Chart(document.getElementById('lineChartPendapatan').getContext('2d'), {
+    type: 'line',
+    data: {
+        labels: monthLabels, // Label bulan akan tetap tampil
+        datasets: [{
+            label: 'Pendapatan',
+            data: pendapatanValues, // Gunakan nilai pendapatan
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderWidth: 2,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { 
+                display: true, 
+                text: 'Pendapatan Per Bulan' 
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true, // Menampilkan keterangan sumbu X
+                    text: 'Bulan' // Keterangan sumbu X
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Pendapatan' // Judul sumbu Y
+                }
+            }
+        }
+    }
+});
+
+
+    </script>
 </body>
 </html>

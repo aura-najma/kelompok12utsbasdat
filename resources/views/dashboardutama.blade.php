@@ -134,12 +134,7 @@
               </a>
             </li>
 
-            <li class="menu-item">
-              <a href="/analisispenjualan" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-line-chart"></i>
-                <div data-i18n="analisis">Analisis Penjualan</div>
-              </a>
-            </li>
+
 
             <div class="d-flex justify-content-center mt-3">
               <form action="{{ route('logout') }}" method="POST">

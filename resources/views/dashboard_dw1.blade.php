@@ -204,11 +204,7 @@
         </div>
 
         <div class="chart-container" style="width: 100%; margin-top: 20px;">
-        <!-- Word Cloud Section -->
-        <h2>Word Cloud Komentar</h2>
-        
-        <div id="wordCloudCanvas"></div>
-        </div>
+    
     
 
     <script>

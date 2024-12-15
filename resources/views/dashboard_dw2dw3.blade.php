@@ -8,190 +8,122 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
-
-
         /* Global Style */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f5f7fa; /* Warna latar belakang yang lembut */
-    color: #333; /* Warna teks utama */
-    margin: 0;
-    padding: 0;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
-.container {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 5px;
-}
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 5px;
+        }
 
-h1 {
-    font-size: 2.5rem;
-    background-image: linear-gradient(-180deg, #204ae6, #36bef8);
-    -webkit-background-clip: text;
-    color: transparent; 
-    text-align: center;
-    margin-bottom: 10px;
-}
+        h1 {
+            font-size: 2.5rem;
+            background-image: linear-gradient(-180deg, #204ae6, #36bef8);
+            -webkit-background-clip: text;
+            color: transparent; 
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
-h4 {
-    font-size: 1.5rem;
-    color: #6c757d;
-    text-align: center;
-}
+        h4 {
+            font-size: 1.5rem;
+            color: #6c757d;
+            text-align: center;
+        }
 
-/* Navbar */
-.navbar {
-    background: linear-gradient(-180deg, #204ae6, #36bef8);
-    padding: 10px 20px;
-}
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(-180deg, #204ae6, #36bef8);
+            padding: 10px 20px;
+        }
 
-.navbar-brand img {
-    width: 150px; /* Ukuran logo */
-}
+        .navbar-brand img {
+            width: 150px;
+        }
 
-.navbar-nav .nav-link {
-    font-size: 16px;
-    color: white !important;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
+        .navbar-nav .nav-link {
+            font-size: 16px;
+            color: white !important;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
 
-.navbar-nav .nav-link:hover {
-    color: #d8f3ff !important;
-}
+        .navbar-nav .nav-link:hover {
+            color: #d8f3ff !important;
+        }
 
-/* Cards */
-.card {
-    background-color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
-    transition: transform 0.3s, box-shadow 0.3s;
-}
+        /* Cards */
+        .card {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-.card:hover {
-    transform: translateY(-5px); /* Efek hover */
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Bayangan saat hover */
-}
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+        }
 
-.card-body h5 {
-    font-size: 1.25rem;
-    font-weight: bold;
-    background-image: linear-gradient(-180deg, #204ae6, #36bef8);
-    -webkit-background-clip: text;
-    color: transparent; 
-    margin-bottom: 10px;
-}
+        .card-body h5 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            background-image: linear-gradient(-180deg, #204ae6, #36bef8);
+            -webkit-background-clip: text;
+            color: transparent; 
+            margin-bottom: 5px;
+        }
 
-.card-body p {
-    font-size: 1rem;
-    color: #555; /* Warna teks isi */
-}
+        /* Charts */
+        .card-title {
+            font-size: 1.5rem;
+            background-image: linear-gradient(-180deg, #204ae6, #36bef8);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-/* Charts */
-.card-title {
-    font-size: 1.5rem;
-    background-image: linear-gradient(-180deg, #204ae6, #36bef8);
-    -webkit-background-clip: text;
-    color: transparent;  /* Ensure the text is transparent so the background shows */
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-}
+        .custom-pie-chart {
+            width: 600px;
+            height: 500px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
 
-.card.shadow-lg {
-    background-color: #ffffff;
-    border: 1px solid #e6e6e6;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
-    padding: 20px;
-}
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
 
-canvas {
-    max-width: 100%;
-    height: 100px; /* Tinggi default untuk grafik */
-}
+            h4 {
+                font-size: 1.25rem;
+            }
 
-/* Filter Form */
-form {
-    background-color: #ffffff;
-    border: 1px solid #e6e6e6;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
-
-.form-label {
-    font-weight: bold;
-    color: #555;
-}
-
-.btn-primary {
-    background: linear-gradient(-180deg, #204ae6, #36bef8);
-    border: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-    background: #1a3eb5;
-}
-
-/* Footer */
-.container.text-center {
-    background-color: #ffffff;
-    padding: 20px 0;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.container.text-center p {
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin: 0;
-}
-.small-pie-chart {
-    width: 20px; /* Sesuaikan lebar */
-    height: 20px; /* Sesuaikan tinggi */
-    max-width: 100%; /* Opsional untuk responsif */
-}
-
-
-/* Responsive */
-@media (max-width: 768px) {
-    .card {
-        margin-bottom: 20px;
-    }
-
-    canvas {
-        height: 200px; /* Tinggi grafik di layar kecil */
-    }
-
-    h1 {
-        font-size: 2rem;
-    }
-
-    h4 {
-        font-size: 1.25rem;
-    }
-    #pieChartPendapatan {
-    width: 5px; /* Lebar yang lebih kecil */
-    height: 5px; /* Tinggi yang lebih kecil */
-}
-}
-
-</style>
+            .custom-pie-chart {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
 </head>
 <body>
-    
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="assets/images/logo2.png" alt="Logo">
             </a>
-
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -201,30 +133,27 @@ form {
             </div>
         </div>
     </nav>
+
     <!-- Header -->
     <div class="container my-4">
-        <h1 class="text-center mb-4 fw-bold">Dashboard Jumlah Pembelian Obat</h1>
-        <h4 class="text-center text-secondary">Berdasarkan Wilayah, Kategori, dan Bulan</h4>
+        <h1 class="text-center mb-4 fw-bold">Dashboard Penjualan</h1>
     </div>
 
-   <!-- Filter Form -->
-<div class="container mb-4">
-    <form method="GET" action="{{ url('dashboard_dw2dw3') }}" class="row align-items-center justify-content-center">
-        <!-- Filter Kuartal -->
-        <div class="col-md-4 mb-3">
-            <select name="kuartal" id="kuartal" class="form-select">
-                <option value="1" {{ $kuartal == 1 ? 'selected' : '' }}>Kuartal 1</option>
-                <option value="2" {{ $kuartal == 2 ? 'selected' : '' }}>Kuartal 2</option>
-                <option value="3" {{ $kuartal == 3 ? 'selected' : '' }}>Kuartal 3</option>
-            </select>
-        </div>
-        <!-- Tombol Filter -->
-        <div class="col-md-2 mb-3 d-flex align-items-center">
-            <button type="submit" class="btn btn-primary w-100">Filter</button>
-        </div>
-    </form>
-</div>
-
+    <!-- Filter Form -->
+    <div class="container mb-4">
+        <form method="GET" action="{{ url('dashboard_dw2dw3') }}" class="row align-items-center justify-content-center">
+            <div class="col-md-4 mb-3">
+                <select name="kuartal" id="kuartal" class="form-select">
+                    <option value="1" {{ $kuartal == 1 ? 'selected' : '' }}>Kuartal 1</option>
+                    <option value="2" {{ $kuartal == 2 ? 'selected' : '' }}>Kuartal 2</option>
+                    <option value="3" {{ $kuartal == 3 ? 'selected' : '' }}>Kuartal 3</option>
+                </select>
+            </div>
+            <div class="col-md-2 mb-3 d-flex align-items-center">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
 
     <!-- Cards -->
     <div class="container mb-4">
@@ -301,38 +230,55 @@ form {
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Pie Chart Pendapatan Berdasarkan Jenis Obat -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-lg p-4">
-                <h4 class="card-title text-center mb-4">Persentase Pendapatan Berdasarkan Jenis Obat</h4>
-                <div class="card-body">
-                    <canvas id="pieChartPendapatan" width="100" height="100"></canvas>
+        <!-- Pie Chart Pendapatan Berdasarkan Jenis Obat -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-lg p-4">
+                    <h4 class="card-title text-center mb-4">Persentase Pendapatan Berdasarkan Jenis Obat</h4>
+                    <div class="card-body d-flex justify-content-center">
+                        <canvas id="pieChartPendapatan" class="custom-pie-chart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <div class="container text-center mb-4">
-        <p class="text-muted">&copy; {{ date('Y') }} Dashboard DW2-3 | Data Visualisasi Obat</p>
-    </div>
+     <!-- Footer -->
+     <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , Lifespring Drugstore ❤️ Apotek Aman dan Terpercaya
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
 
     <!-- Chart.js Scripts -->
     <script>
-        // Bar Chart
+    const pastelColors = [
+        'rgba(247, 119, 131, 0.9)', // Lebih terang Pink pastel
+        'rgba(225, 159, 73, 0.9)', // Lebih terang Orange pastel
+        'rgba(69, 144, 243, 0.9)', // Lebih terang Yellow pastel
+        'rgba(100, 218, 133, 0.9)', // Lebih terang Green pastel
+        'rgba(252, 227, 87, 0.9)', // Lebih terang Blue pastel
+        'rgba(210, 160, 235, 0.9)', // Lebih terang Purple pastel
+        'rgba(139, 253, 253, 0.9)'  // Lebih terang Light Gray pastel
+    ];
+
+        // Bar Chart Data
         const barChartData = @json($chartData);
         const wilayahs = @json(array_keys($chartData));
         const categories = @json(array_keys($chartData[array_key_first($chartData)]));
         const barDatasets = categories.map((category, index) => ({
             label: category,
             data: wilayahs.map(wilayah => barChartData[wilayah][category] || 0),
-            backgroundColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 0.7)`,
+            backgroundColor: pastelColors[index % pastelColors.length], // Warna pastel
             borderWidth: 1
         }));
-
         new Chart(document.getElementById('barChart').getContext('2d'), {
             type: 'bar',
             data: { labels: wilayahs, datasets: barDatasets },
@@ -343,15 +289,13 @@ form {
         const lineChartData = @json($lineChartData);
         const months = @json($months);
         const monthLabels = months.map(bulan => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September'][bulan - 1]);
-
         const lineDatasets = Object.keys(lineChartData).map((category, index) => ({
             label: category,
             data: months.map(bulan => lineChartData[category][bulan] || 0),
-            borderColor: `rgba(${75 + index * 20}, ${192 - index * 20}, ${192 - index * 10}, 1)`,
+            borderColor: pastelColors[index % pastelColors.length],    // Garis warna pastel
             borderWidth: 2,
             fill: false
         }));
-
         new Chart(document.getElementById('lineChart').getContext('2d'), {
             type: 'line',
             data: { labels: monthLabels, datasets: lineDatasets },
@@ -362,90 +306,61 @@ form {
         const pendapatanData = @json($linePendapatanData);
         const pendapatanValues = Object.values(pendapatanData);
         new Chart(document.getElementById('lineChartPendapatan').getContext('2d'), {
-    type: 'line',
-    data: {
-        labels: monthLabels, // Label bulan akan tetap tampil
-        datasets: [{
-            label: 'Pendapatan',
-            data: pendapatanValues, // Gunakan nilai pendapatan
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderWidth: 2,
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { position: 'top' },
-            title: { 
-                display: true, 
-                text: 'Pendapatan Per Bulan' 
-            }
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true, // Menampilkan keterangan sumbu X
-                    text: 'Bulan' // Keterangan sumbu X
-                }
+            type: 'line',
+            data: {
+                labels: monthLabels,
+                datasets: [{
+                    label: 'Pendapatan',
+                    data: pendapatanValues,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true
+                }]
             },
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Pendapatan' // Judul sumbu Y
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Bulan' } },
+                    y: { beginAtZero: true, title: { display: true, text: 'Pendapatan' } }
                 }
             }
-        }
-    }
-});
-@php
-    $totalPendapatan = array_sum($piePendapatanChartData);
-    $pieChartWithPercentage = [];
+        });
+        @php
+            $totalPendapatan = array_sum($piePendapatanChartData);
+            $pieChartWithPercentage = [];
 
-    foreach ($piePendapatanChartData as $jenisObat => $pendapatan) {
-        $persentase = number_format(($pendapatan / $totalPendapatan) * 100, 2); // Format 2 desimal
-        $pieChartWithPercentage["$jenisObat ({$persentase}%)"] = $pendapatan;
-    }
-@endphp
-
-
-     // Ambil data dari Blade
-     const piePendapatanData = @json($pieChartWithPercentage);
-
-// Ekstrak label (jenis obat + persentase) dan nilai pendapatan
-const pieLabels = Object.keys(piePendapatanData);
-const pieValues = Object.values(piePendapatanData);
-
-// Warna-warna untuk tiap segmen pie chart
-const pieColors = ['#4CAF50', '#FF9800', '#F44336', '#2196F3', '#9C27B0', '#E91E63'];
-
-
-// Inisialisasi Pie Chart
-new Chart(document.getElementById('pieChartPendapatan').getContext('2d'), {
-    type: 'pie',
-    data: {
-        labels: pieLabels, // Sudah termasuk jenis obat + persentase
-        datasets: [{
-            data: pieValues,
-            backgroundColor: pieColors.slice(0, pieLabels.length),
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top' // Letak legend
-            },
-            title: {
-                display: true,
-                text: 'Persentase Pendapatan Berdasarkan Jenis Obat'
+            foreach ($piePendapatanChartData as $jenisObat => $pendapatan) {
+                $persentase = number_format(($pendapatan / $totalPendapatan) * 100, 2); // Format 2 desimal
+                $pieChartWithPercentage["$jenisObat ({$persentase}%)"] = $pendapatan;
             }
-        }
-    }
-});
+        @endphp
+
+
+        // Pie Chart Pendapatan
+        const piePendapatanData = @json($pieChartWithPercentage);
+        const pieLabels = Object.keys(piePendapatanData);
+        const pieValues = Object.values(piePendapatanData);
+        new Chart(document.getElementById('pieChartPendapatan').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: pieLabels,
+                datasets: [{
+                    data: pieValues,
+                    backgroundColor: pastelColors.slice(0, pieLabels.length),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'right' }
+                }
+            }
+        });
     </script>
 </body>
 </html>

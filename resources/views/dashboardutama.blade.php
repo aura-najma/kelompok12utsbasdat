@@ -263,9 +263,9 @@
                   </div>
                   <div class="modal-body">
                     <div class="list-group">
-                      <a href="/skema_evaluasi" class="list-group-item list-group-item-action">Lihat Evaluasi</a>
-                      <a href="/skema_pendapatan" class="list-group-item list-group-item-action">Lihat Pendapatan</a>
-                      <a href="/skema_penjualan" class="list-group-item list-group-item-action">Lihat Jumlah Penjualan</a>
+                      <a href="/dashboard_dw1" class="list-group-item list-group-item-action">Lihat Evaluasi</a>
+                      <a href="/dashboard_dw2dw3" class="list-group-item list-group-item-action">Lihat Penjualan</a>
+                      
                     </div>
                   </div>
                   <div class="modal-footer">

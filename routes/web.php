@@ -156,18 +156,6 @@ Route::get('/kecamatans', [PasienController::class, 'listKecamatan'])->name('kec
 
 #=====dashboard====
 
-Route::get('/skema_evaluasi', function () {
-    return view('/skema_evaluasi');
-})->name('/skema_evaluasi');
-
-Route::get('/skema_penjualan', function () {
-    return view('/skema_penjualan');
-})->name('/skema_penjualan');
-
-
-Route::get('/skema_pendapatan', function () {
-    return view('/skema_pendapatan');
-})->name('/skema_pendapatan');
 
 #-aura coba dashboard
 
@@ -178,5 +166,3 @@ use App\Http\Controllers\DW2_3Controller;
 
 Route::get('/dashboard_dw2dw3', [DW2_3Controller::class, 'index'])->name('dashboard.dw2dw3');
 
-
-Route::get('/dashboard-olap', [DW1Controller::class, 'showDashboardOlap']);

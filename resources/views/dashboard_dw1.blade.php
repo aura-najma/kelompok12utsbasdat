@@ -28,6 +28,7 @@
         }
         .charts {
             display: flex;
+            flex-wrap: wrap;
             gap: 20px;
         }
         .chart-container {
@@ -37,10 +38,24 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        canvas {
-            display: block;
-            max-width: 100%;
-            height: auto;
+        .word-cloud-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+        .word-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .word-cloud span {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
         }
     </style>
 </head>
@@ -48,153 +63,171 @@
     <div class="container">
         <h1>Dashboard OLAP</h1>
 
-        <!-- Cards -->
+        <!-- Filter Section -->
+        <form method="GET" action="/dashboard_dw1" style="margin-bottom: 20px;">
+            <label for="kuartal">Filter Kuartal:</label>
+            <select name="kuartal" id="kuartal">
+                <option value="1" {{ $kuartal == '1' ? 'selected' : '' }}>Kuartal 1</option>
+                <option value="2" {{ $kuartal == '2' ? 'selected' : '' }}>Kuartal 2</option>
+                <option value="3" {{ $kuartal == '3' ? 'selected' : '' }}>Kuartal 3</option>
+                <option value="4" {{ $kuartal == '4' ? 'selected' : '' }}>Kuartal 4</option>
+            </select>
+    
+            <button type="submit">Terapkan</button>
+        </form>
+
+        <!-- Cards Section -->
         <div class="cards">
-            <!-- Card 1 -->
             <div class="card">
-                <h3>Top Apoteker dengan Evaluasi Pelayanan 5</h3>
+                <h3>Top Apoteker Yang Paling Sering Mendapat Sangat Baik</h3>
                 @if($topApoteker)
                     <p>Nama: {{ $topApoteker['apoteker'] }}</p>
-                    <p>Evaluasi 5: {{ $topApoteker['count'] }} dari {{ $topApoteker['total'] }} evaluasi</p>
                 @else
                     <p>Tidak ada data.</p>
                 @endif
             </div>
-
-            <!-- Card 2 -->
             <div class="card">
-                <h3>Total Evaluasi di Kuartal 3</h3>
-                <p>{{ $totalEvaluasiKuartal3 }}</p>
+                <h3>Total Evaluasi</h3>
+                <p>{{ $totalEvaluasiKuartal }}</p>
             </div>
-
-            <!-- Card 3 -->
             <div class="card">
-                <h3>Persentase Perubahan Evaluasi Apotek</h3>
-                @if($persentasePerubahan !== null)
-                    <p>{{ number_format($persentasePerubahan, 2) }}%</p>
+                <h3>Kata Terbanyak dari Word Cloud</h3>
+                @if($mostFrequentWord)
+                    <p>Kata: "{{ $mostFrequentWord['word'] }}"</p>
                 @else
-                    <p>Data tidak tersedia.</p>
+                    <p>Tidak ada data.</p>
                 @endif
+            </div>
+            <div class="card">
+                <h3>Rata-rata Rating</h3>
+                <p>{{ number_format($rataRataRating, 2) }}</p>
             </div>
         </div>
 
-        <!-- Filter Kuartal -->
-        <form method="GET" action="/dashboard_dw1">
-            <label for="kuartal">Filter Kuartal:</label>
-            <select name="kuartal" id="kuartal">
-                <option value="" {{ $kuartal == '' ? 'selected' : '' }}>Semua Kuartal</option>
-                <option value="1" {{ $kuartal == '1' ? 'selected' : '' }}>Kuartal 1</option>
-                <option value="2" {{ $kuartal == '2' ? 'selected' : '' }}>Kuartal 2</option>
-                <option value="3" {{ $kuartal == '3' ? 'selected' : '' }}>Kuartal 3</option>
-            </select>
-            <button type="submit">Terapkan</button>
-        </form>
-
+            <!-- Charts Section -->
         <!-- Charts Section -->
         <div class="charts">
-            <!-- Line Chart -->
             <div class="chart-container">
-                <h2>Line Chart - Rata-rata Nilai Evaluasi per Bulan</h2>
-                <canvas id="lineChart"></canvas>
+                <h2>Bar Chart - Evaluasi Apotek</h2>
+                <canvas id="barChartApotek"></canvas>
             </div>
-
-            <!-- Bar Chart -->
             <div class="chart-container">
-                <h2>Bar Chart - Rata-rata Nilai Evaluasi per Tipe Evaluasi</h2>
-                <canvas id="barChart"></canvas>
+                <h2>Bar Chart - Evaluasi Obat</h2>
+                <canvas id="barChartObat"></canvas>
+            </div>
+        </div>
+
+        <!-- Bar Chart Evaluasi Pelayanan -->
+        <div class="chart-container" style="width: 100%; margin-top: 20px;">
+            <form>
+        <label for="apoteker">Filter Apoteker:</label>
+            <select name="apoteker" id="apoteker">
+                <option value="12024" {{ $apotekerFilter == '12024' ? 'selected' : '' }}>Dyah Ayu</option>
+                <option value="22024" {{ $apotekerFilter == '22024' ? 'selected' : '' }}>Aura Najma</option>
+                <option value="32024" {{ $apotekerFilter == '32024' ? 'selected' : '' }}>Wanda Desi</option>
+                <option value="42024" {{ $apotekerFilter == '42024' ? 'selected' : '' }}>Zulfikar</option>
+            </select>
+            <button type="submit">Terapkan</button>
+    </form>
+            <h2>Bar Chart - Evaluasi Pelayanan</h2>
+            <canvas id="barChartPelayanan"></canvas>
+        </div>
+
+
+        <!-- Word Cloud Section -->
+        <div class="word-cloud-container">
+            <h2>Word Cloud</h2>
+            <div class="word-cloud">
+                @if(count($wordCloudData) > 0)
+                    @foreach($wordCloudData as $word)
+                        <span>{{ $word['word'] }}</span>
+                    @endforeach
+                @else
+                    <p>Tidak ada data Word Cloud untuk kuartal ini.</p>
+                @endif
             </div>
         </div>
     </div>
 
     <script>
-        // Data dari server untuk Line Chart
-        const lineChartData = @json($lineChart);
-        const lineLabels = [...new Set(Object.values(lineChartData).flatMap(obj => Object.keys(obj)))].sort();
-        const lineDatasets = Object.keys(lineChartData).map(apoteker => ({
-            label: apoteker,
-            data: lineLabels.map(bulan => lineChartData[apoteker][bulan] || 0),
-            fill: false,
-            borderWidth: 2,
-            tension: 0.1,
+        // Bar Chart Evaluasi Apotek
+        const barChartApotek = @json($barChartApotek);
+        const barChartLabels = Object.keys(barChartApotek);
+        const barChartDatasetsApotek = [
+            'Sangat Kurang', 'Kurang', 'Cukup', 'Baik', 'Sangat Baik'
+        ].map((kategori) => ({
+            label: kategori,
+            data: barChartLabels.map((bulan) => barChartApotek[bulan][kategori] || 0),
+            borderWidth: 1,
         }));
 
-        // Render Line Chart
-        const lineCtx = document.getElementById('lineChart').getContext('2d');
-        new Chart(lineCtx, {
-            type: 'line',
+        const ctxApotek = document.getElementById('barChartApotek').getContext('2d');
+        new Chart(ctxApotek, {
+            type: 'bar',
             data: {
-                labels: lineLabels.map(label => `Bulan ${label}`),
-                datasets: lineDatasets,
+                labels: barChartLabels.map((bulan) => `Bulan ${bulan}`),
+                datasets: barChartDatasetsApotek,
             },
             options: {
                 responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                    },
-                },
+                plugins: { legend: { display: true } },
                 scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Bulan',
-                        },
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Rata-rata Evaluasi',
-                        },
-                    },
+                    x: { title: { display: true, text: 'Bulan' } },
+                    y: { title: { display: true, text: 'Jumlah Evaluasi' }, beginAtZero: true },
                 },
             },
         });
 
-        // Data dari server untuk Bar Chart
-        const barChartData = @json($barChart);
-
-        // Ambil bulan (key utama array) sebagai labels
-        const barLabels = Object.keys(barChartData).sort();
-
-        // Definisikan kategori evaluasi
-        const categories = ['evaluasi_apotek', 'evaluasi_obat', 'evaluasi_pelayanan'];
-
-        // Buat dataset untuk setiap kategori evaluasi
-        const barDatasets = categories.map(category => ({
-            label: category.replace('evaluasi_', 'Evaluasi ').toUpperCase(),
-            data: barLabels.map(bulan => barChartData[bulan]?.[category] || 0), // Isi 0 jika data tidak ada
+        // Bar Chart Evaluasi Obat
+        const barChartObat = @json($barChartObat);
+        const barChartDatasetsObat = [
+            'Sangat Kurang', 'Kurang', 'Cukup', 'Baik', 'Sangat Baik'
+        ].map((kategori) => ({
+            label: kategori,
+            data: barChartLabels.map((bulan) => barChartObat[bulan][kategori] || 0),
             borderWidth: 1,
         }));
 
-        // Render Bar Chart
-        const barCtx = document.getElementById('barChart').getContext('2d');
-        new Chart(barCtx, {
+        const ctxObat = document.getElementById('barChartObat').getContext('2d');
+        new Chart(ctxObat, {
             type: 'bar',
             data: {
-                labels: barLabels.map(label => `Bulan ${label}`), // Format label bulan
-                datasets: barDatasets,
+                labels: barChartLabels.map((bulan) => `Bulan ${bulan}`),
+                datasets: barChartDatasetsObat,
             },
             options: {
                 responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                    },
-                },
+                plugins: { legend: { display: true } },
                 scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Bulan',
-                        },
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Rata-rata Nilai Evaluasi',
-                        },
-                        beginAtZero: true,
-                    },
+                    x: { title: { display: true, text: 'Bulan' } },
+                    y: { title: { display: true, text: 'Jumlah Evaluasi' }, beginAtZero: true },
+                },
+            },
+        });
+
+        // Bar Chart Evaluasi Pelayanan
+        const barChartPelayanan = @json($barChartPelayanan);
+        const barChartDatasetsPelayanan = [
+            'Sangat Kurang', 'Kurang', 'Cukup', 'Baik', 'Sangat Baik'
+        ].map((kategori) => ({
+            label: kategori,
+            data: barChartLabels.map((bulan) => barChartPelayanan[bulan][kategori] || 0),
+            borderWidth: 1,
+        }));
+
+        const ctxPelayanan = document.getElementById('barChartPelayanan').getContext('2d');
+        new Chart(ctxPelayanan, {
+            type: 'bar',
+            data: {
+                labels: barChartLabels.map((bulan) => `Bulan ${bulan}`),
+                datasets: barChartDatasetsPelayanan,
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } },
+                scales: {
+                    x: { title: { display: true, text: 'Bulan' } },
+                    y: { title: { display: true, text: 'Jumlah Evaluasi' }, beginAtZero: true },
                 },
             },
         });

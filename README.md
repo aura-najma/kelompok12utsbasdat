@@ -2,15 +2,15 @@
 
 ## Gambaran Proyek
 
-**Lifespring Drugstore** merupakan sistem informasi apotek berbasis web yang dikembangkan menggunakan **PHP (Laravel) dan MySQL**, lalu diintegrasikan dengan **data warehouse** menggunakan **Pentaho Data Integration**.
-
-Sistem ini dirancang untuk mensimulasikan pengelolaan operasional apotek, mulai dari pencatatan pasien, pengelolaan obat dan persediaan, pemeriksaan resep, pemrosesan transaksi, hingga evaluasi pelayanan dan analisis penjualan.
+**Lifespring Drugstore** merupakan sistem informasi apotek berbasis web yang dikembangkan menggunakan **PHP (Laravel) dan MySQL**, lalu diintegrasikan dengan **data warehouse** menggunakan **Pentaho Data Integration**. Sistem ini dirancang untuk mensimulasikan pengelolaan operasional apotek, mulai dari pencatatan pasien, pengelolaan obat dan persediaan, pemeriksaan resep, pemrosesan transaksi, hingga evaluasi pelayanan dan analisis penjualan.
 
 Pengembangan sistem mencakup:
 - aplikasi operasional berbasis Laravel,
 - perancangan database relasional,
 - proses **Extract, Transform, Load (ETL)**,
 - serta dashboard analitik untuk mendukung evaluasi pelayanan, penjualan, dan pendapatan.
+
+Projek ini dikembangkan oleh Ahmad Zulfikar Al Ghiffari, Aura Najma Kustiananda, Dyah Ayu Retnoningsih, dan Wanda Desi Rahmawati.
 
 ## Tampilan Dashboard Operasional
 

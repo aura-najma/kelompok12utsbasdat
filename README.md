@@ -2,226 +2,168 @@
 
 ## Gambaran Proyek
 
-**Lifespring Drugstore** merupakan sistem informasi apotek berbasis web yang dikembangkan menggunakan **PHP (Laravel) dan MySQL**, lalu diintegrasikan dengan **data warehouse** menggunakan **Pentaho Data Integration**. Sistem ini dirancang untuk mensimulasikan pengelolaan operasional apotek, mulai dari pencatatan pasien, pengelolaan obat dan persediaan, pemeriksaan resep, pemrosesan transaksi, hingga evaluasi pelayanan dan analisis penjualan.
+**Lifespring Drugstore** merupakan sistem informasi apotek berbasis web yang mengintegrasikan pengelolaan operasional apotek dengan data warehouse untuk mendukung analisis penjualan, pendapatan, dan kualitas pelayanan. Sistem dikembangkan menggunakan **PHP (Laravel), MySQL, dan Pentaho Data Integration**, dengan pendekatan Model–View–Controller (MVC) untuk aplikasi web serta *star schema* untuk kebutuhan analitik.
 
-Pengembangan sistem mencakup:
-- aplikasi operasional berbasis Laravel,
-- perancangan database relasional,
-- proses **Extract, Transform, Load (ETL)**,
-- serta dashboard analitik untuk mendukung evaluasi pelayanan, penjualan, dan pendapatan.
+Proyek ini dikembangkan oleh Kelompok 12 SD-A1, Program Studi S1 Teknologi Sains Data, Universitas Airlangga, sebagai *team-based project* mata kuliah **Basis Data pada tahun 2024**. Pada Ujian Tengah Semester (UTS), pengembangan berfokus pada sistem operasional apotek menggunakan Laravel dan MySQL, kemudian dilanjutkan pada Ujian Akhir Semester (UAS) dengan penyempurnaan database, pembangunan data warehouse, implementasi ETL melalui Pentaho, dan pengembangan dashboard analitik.
 
-Projek ini dikembangkan oleh Ahmad Zulfikar Al Ghiffari, Aura Najma Kustiananda, Dyah Ayu Retnoningsih, dan Wanda Desi Rahmawati.
+Secara keseluruhan, Lifespring menghubungkan proses pencatatan transaksi dengan pengolahan data untuk evaluasi kinerja apotek. Data yang tersimpan dalam sistem operasional ditransformasikan menjadi struktur dimensional, sehingga dapat digunakan untuk memantau pelayanan, pola pembelian, dan tren pendapatan.
 
-## Tampilan Dashboard Operasional
+**Teknologi utama:** PHP, Laravel, Eloquent ORM, MySQL, Laravel Blade, Pentaho Data Integration
 
-Berikut adalah tampilan dashboard utama pada aplikasi operasional Lifespring Drugstore.
+**[Dokumentasi Portofolio](https://aura-najma.github.io/projects/lifespring-data-warehouse/)**
+
+## Tampilan Aplikasi
+
+Aplikasi menyediakan dashboard utama yang dapat diakses setelah apoteker melakukan autentikasi. Dashboard berfungsi sebagai pusat navigasi untuk pengelolaan pasien, daftar dokter, persediaan obat, proses transaksi, serta fitur operasional lainnya.
 
 ![Dashboard Operasional](docs/images/Lifespring%20Drugstore_dashboard.png)
 
----
-
 ## Fitur Utama
 
-Sistem Lifespring Drugstore memiliki beberapa fitur utama sebagai berikut:
+### Pengelolaan Pasien, Obat, dan Persediaan
 
-- **Autentikasi Apoteker**  
-  Login menggunakan NIP dan password, disertai pengelolaan sesi pengguna.
+Aplikasi menyediakan fitur CRUD untuk mengelola informasi pasien dan obat dalam database MySQL. Data pasien mencakup identitas, informasi kontak, keluhan, serta riwayat alergi yang digunakan selama proses pembelian.
 
-- **Manajemen Pasien**  
-  Pencatatan dan pembaruan data pasien, termasuk identitas, keluhan, riwayat pembelian, dan informasi alergi obat.
+Pengelolaan obat mencakup informasi nomor BPOM, kategori, harga, stok, tanggal kedaluwarsa, dosis, dan aturan penggunaan. Apoteker dapat menambahkan obat baru, memperbarui data obat, serta melakukan penambahan stok. Jumlah persediaan juga diperbarui berdasarkan transaksi yang telah diproses.
 
-- **Manajemen Obat**  
-  Pengelolaan data obat, kategori, harga, dosis, tanggal kedaluwarsa, dan stok.
+### Pemeriksaan Obat Keras dan Alur Pembelian
 
-- **Manajemen Persediaan**  
-  Penambahan obat baru, restock, serta pembaruan stok berdasarkan transaksi penjualan.
+Sistem menerapkan pemeriksaan kategori obat sebelum transaksi dilanjutkan. Jika obat yang dipilih termasuk obat keras, aplikasi mengarahkan apoteker untuk memperoleh konfirmasi dari dokter mitra sebelum pembelian diproses.
 
-- **Pemeriksaan Obat Keras**  
-  Identifikasi kategori obat dan dukungan alur konfirmasi dokter sebelum pembelian obat keras dilanjutkan.
-
-- **Transaksi Penjualan**  
-  Pencatatan pembelian, perhitungan harga, pengurangan stok, dan pembuatan invoice.
-
-- **Evaluasi Pelayanan**  
-  Pencatatan rating dan komentar pelanggan berdasarkan ID pembelian.
-
-- **Dashboard Analitik**  
-  Visualisasi evaluasi pelayanan, penjualan, dan pendapatan berdasarkan data warehouse.
-
-## Pemeriksaan Obat Keras
-
-Sistem melakukan pengecekan apakah obat yang dipilih termasuk kategori obat keras. Jika ya, maka pembelian perlu melalui alur konfirmasi dokter terlebih dahulu.
+Selain itu, sistem menampilkan informasi ketersediaan stok dan peringatan apabila terdapat riwayat alergi pasien yang perlu diperhatikan. Pemeriksaan tersebut membantu apoteker melakukan verifikasi sebelum menyelesaikan transaksi.
 
 ![Pemeriksaan Obat Keras](docs/images/Lifespring%20Drugstore_cek%20obat%20keras.png)
 
----
+### Transaksi dan Invoice
+
+Proses pembelian dimulai dengan pencatatan data pasien, keluhan, serta informasi resep apabila tersedia. Selanjutnya, apoteker memilih obat sesuai kebutuhan dan melakukan pemeriksaan terhadap stok yang tersedia.
+
+Saat transaksi diproses, sistem menyimpan informasi pembelian beserta rincian obat, menghitung total harga, dan memperbarui persediaan. Setelah transaksi berhasil dicatat, aplikasi menghasilkan invoice yang memuat informasi pembelian dan dapat dicetak.
+
+### Evaluasi Pelayanan
+
+Pelanggan dapat memberikan penilaian terhadap pelayanan apotek melalui formulir evaluasi. Setiap evaluasi dihubungkan dengan ID pembelian yang tercatat dalam sistem, sehingga penilaian dapat dikaitkan dengan transaksi terkait.
+
+Data evaluasi mencakup penilaian terhadap apotek, pelayanan apoteker, kualitas obat, rating, dan komentar. Informasi ini selanjutnya digunakan sebagai salah satu sumber data dalam pengembangan data warehouse.
 
 ## Arsitektur Backend dan Database
 
-Aplikasi dikembangkan menggunakan arsitektur **Model–View–Controller (MVC)** pada Laravel.
+### Implementasi Laravel MVC
 
-Backend menangani:
-- autentikasi pengguna,
-- pengelolaan data pasien dan obat,
-- pemeriksaan stok,
-- pemrosesan transaksi,
-- serta pembuatan invoice.
+Backend Lifespring dikembangkan menggunakan arsitektur **Model–View–Controller (MVC)** dari Laravel, dengan pembagian tanggung jawab antara pengelolaan data, logika aplikasi, dan antarmuka pengguna.
 
-**Eloquent ORM** digunakan untuk menghubungkan model aplikasi dengan database MySQL dan mempermudah pengelolaan relasi antartabel serta operasi CRUD.
+Controller menangani proses autentikasi apoteker, pengelolaan data pasien, pemeriksaan obat keras, penambahan serta pembaruan stok, pemrosesan transaksi, dan pembuatan invoice.
 
-Database operasional dirancang menggunakan **Entity Relationship Diagram (ERD)** dan **Physical Data Model (PDM)** untuk mendefinisikan entitas, atribut, primary key, foreign key, dan relasi data.
+Pada sisi model, **Eloquent ORM** digunakan untuk berinteraksi dengan database MySQL. Relasi antarmodel menghubungkan data pasien dengan pembelian, obat dengan transaksi, serta berbagai entitas lain yang digunakan dalam proses operasional apotek.
 
-Entitas utama dalam sistem meliputi:
-- Apoteker
-- Dokter
-- Pasien
-- Obat
-- Pembelian
-- Transaksi
-- Evaluasi
+### Perancangan Database
 
-## Struktur Database Operasional
+Database dirancang melalui **Entity Relationship Diagram (ERD)** dan Physical Data Model (PDM) untuk mendefinisikan struktur tabel dan hubungan antarentitas.
 
-Berikut adalah struktur database operasional yang digunakan dalam sistem.
+Entitas utamanya meliputi Apoteker, Dokter, Pasien, Obat, Pembelian, Transaksi, dan Evaluasi. Struktur tersebut mendukung pengelolaan data operasional sekaligus menyediakan sumber data bagi proses ETL.
 
-![Struktur Database Operasional](docs/images/Lifespring%20Drugstore_Database%20SQL.png)
-
----
-
-## Alur Transaksi Pembelian Obat
-
-Alur transaksi pembelian obat pada sistem secara umum adalah sebagai berikut:
-
-1. Apoteker login ke dalam aplikasi.
-2. Apoteker memasukkan atau memperbarui data pasien.
-3. Sistem memeriksa data obat yang dipilih, termasuk kategori obat keras dan ketersediaan stok.
-4. Jika obat termasuk obat keras, sistem mendukung proses konfirmasi dokter.
-5. Apoteker memproses pembelian dan sistem menghitung total harga.
-6. Data transaksi disimpan ke database.
-7. Stok obat diperbarui sesuai jumlah pembelian.
-8. Sistem menghasilkan invoice.
-9. Pelanggan dapat memberikan evaluasi pelayanan berdasarkan ID pembelian.
-
----
+![Database Operasional](docs/images/Lifespring%20Drugstore_Database%20SQL.png)
 
 ## ETL dan Data Warehouse
 
-Untuk mendukung kebutuhan analitik, data operasional diolah menjadi **data warehouse** menggunakan **Pentaho Data Integration**.
+Data warehouse dibangun untuk mengolah data yang berasal dari transaksi dan aktivitas operasional apotek menjadi informasi yang dapat dianalisis berdasarkan waktu, wilayah, produk, dan pelayanan.
 
-Proses **ETL (Extract, Transform, Load)** dilakukan melalui tahapan berikut:
+Proses **Extract, Transform, Load (ETL)** dilakukan menggunakan Pentaho Data Integration dengan mengambil data dari database operasional MySQL, menerapkan transformasi sesuai kebutuhan analitik, lalu memuat hasilnya ke tabel fakta dan dimensi.
 
-### 1. Extract
-Mengambil data dari tabel-tabel operasional MySQL, termasuk data:
-- pasien,
-- obat,
-- apoteker,
-- transaksi,
-- pembelian,
-- dan evaluasi.
+Transformasi yang diterapkan mencakup penggabungan data dari beberapa tabel, penyesuaian tipe data, penghapusan duplikasi, pengodean kategori evaluasi menjadi nilai numerik, serta pembentukan dimensi waktu. Proses tersebut menghasilkan data yang lebih terstruktur untuk digunakan dalam analisis multidimensi.
 
-### 2. Transform
-Melakukan proses seperti:
-- penggabungan data antartabel,
-- konversi tipe data,
-- penghapusan duplikasi,
-- pengodean nilai kategoris,
-- pembentukan atribut dimensi,
-- serta pembentukan struktur untuk kebutuhan analisis.
+### 1. Data Warehouse Evaluasi Pelayanan
 
-### 3. Load
-Memuat data hasil transformasi ke dalam tabel fakta dan tabel dimensi pada data warehouse.
+Skema `fact_nilai_evaluasi` dirancang untuk mengintegrasikan data evaluasi pelanggan, informasi apoteker, dan dimensi waktu.
 
-Contoh transformasi yang dilakukan:
-- mengubah kategori evaluasi menjadi nilai numerik,
-- membentuk dimensi waktu berdasarkan bulan, kuartal, dan tahun,
-- menghubungkan transaksi dengan data obat dan wilayah,
-- serta menyiapkan data penjualan dan pendapatan untuk analisis.
+Melalui skema ini, penilaian pelayanan dapat dianalisis berdasarkan periode tertentu, termasuk perbandingan hasil evaluasi apoteker dari bulan ke bulan atau antar-kuartal.
 
----
+![Star Schema Evaluasi Pelayanan](docs/images/Lifespring%20Drugstore_fact%20nilai%20evaluasi.png)
 
-## Skema Data Warehouse
+### 2. Data Warehouse Penjualan Berdasarkan Wilayah
 
-Data warehouse pada Lifespring Drugstore menggunakan tiga *star schema* utama.
+Skema `fact_penjualan_obat_wilayah` menghubungkan informasi transaksi pembelian dengan kategori obat, lokasi pelanggan, dan dimensi waktu.
 
-### 1. Evaluasi Pelayanan Apoteker
+Struktur tersebut memungkinkan analisis distribusi penjualan obat menurut wilayah Surabaya, sehingga pola pembelian dapat dibandingkan antarwilayah maupun berdasarkan kategori obat.
 
-Skema `fact_nilai_evaluasi` digunakan untuk menganalisis evaluasi pelayanan berdasarkan apoteker dan waktu.
+![Star Schema Penjualan Wilayah](docs/images/Lifespring%20Drugstore_fact%20penjualan%20obat%20wilayah.png)
 
-![Fact Nilai Evaluasi](docs/images/Lifespring%20Drugstore_fact%20nilai%20evaluasi.png)
+### 3. Data Warehouse Pendapatan
 
-### 2. Penjualan Obat Berdasarkan Wilayah
+Skema `fact_penjualan_pendapatan` digunakan untuk mengintegrasikan informasi transaksi dengan atribut produk yang relevan untuk analisis pendapatan.
 
-Skema `fact_penjualan_obat_wilayah` digunakan untuk menganalisis distribusi penjualan obat berdasarkan wilayah pelanggan.
+Melalui skema ini, data penjualan dapat diringkas berdasarkan periode, kategori, dan jenis obat untuk mengidentifikasi pola pendapatan serta kontribusi masing-masing kelompok produk.
 
-![Fact Penjualan Obat Wilayah](docs/images/Lifespring%20Drugstore_fact%20penjualan%20obat%20wilayah.png)
-
-### 3. Pendapatan Penjualan
-
-Skema `fact_penjualan_pendapatan` digunakan untuk menganalisis pendapatan berdasarkan transaksi, kategori, dan jenis obat.
-
-![Fact Penjualan Pendapatan](docs/images/Lifespring%20Drugstore_fact%20penjualan%20pendapatan.png)
-
----
+![Star Schema Pendapatan](docs/images/Lifespring%20Drugstore_fact%20penjualan%20pendapatan.png)
 
 ## Dashboard Analitik
 
-Data warehouse yang telah dibangun digunakan sebagai dasar untuk menghasilkan dashboard analitik.
+Hasil pengolahan data warehouse dimanfaatkan untuk membangun dashboard analitik menggunakan Laravel. Dashboard dirancang untuk menyajikan informasi operasional dalam bentuk visualisasi yang memudahkan pemantauan penjualan dan evaluasi pelayanan.
 
-Dashboard mendukung analisis seperti:
-- evaluasi kinerja apoteker,
-- distribusi penjualan berdasarkan wilayah,
-- jumlah penjualan obat berdasarkan kategori,
-- tren pendapatan,
-- serta ringkasan evaluasi pelanggan.
+### Dashboard Evaluasi Pelayanan
 
-### Dashboard Evaluasi
+Dashboard evaluasi menampilkan ringkasan penilaian pelanggan terhadap apotek dan pelayanan apoteker. Visualisasi mencakup evaluasi berdasarkan bulan atau kuartal, rata-rata rating, distribusi penilaian, serta ringkasan komentar pelanggan.
 
-Berikut adalah contoh tampilan dashboard evaluasi pelayanan.
+Informasi tersebut digunakan untuk membandingkan kualitas pelayanan antarperiode dan mengidentifikasi aspek pelayanan yang perlu diperhatikan.
 
 ![Dashboard Evaluasi](docs/images/Lifespring%20Drugstore_dashboard%20evaluasi.png)
 
-### Dashboard Penjualan
+### Dashboard Penjualan dan Pendapatan
 
-Berikut adalah contoh tampilan dashboard penjualan.
+Dashboard penjualan mengintegrasikan informasi transaksi, kategori obat, wilayah pembelian, dan pendapatan untuk memberikan gambaran kinerja penjualan apotek.
+
+Analisis yang tersedia mencakup distribusi pembelian obat berdasarkan wilayah Surabaya, jumlah penjualan berdasarkan kategori atau jenis obat, tren penjualan dari waktu ke waktu, serta kontribusi pendapatan menurut kelompok produk.
 
 ![Dashboard Penjualan](docs/images/Lifespring%20Drugstore_dashboard%20penjualan.png)
-
----
 
 ## Teknologi yang Digunakan
 
 | Teknologi | Penggunaan |
 |---|---|
-| PHP & Laravel | Pengembangan aplikasi web dan logika backend |
+| PHP & Laravel | Pengembangan aplikasi web, controller, dan logika bisnis |
 | Eloquent ORM | Pengelolaan model, relasi, dan operasi database |
-| MySQL | Database operasional dan data warehouse |
-| Laravel Blade | Pengembangan tampilan aplikasi |
-| Pentaho Data Integration | Proses ETL dan integrasi data |
+| MySQL | Penyimpanan data operasional dan data warehouse |
+| Laravel Blade | Pengembangan antarmuka web dan dashboard |
+| Pentaho Data Integration | Ekstraksi, transformasi, dan pemuatan data |
 | Star Schema | Pemodelan dimensional data warehouse |
-| Git & GitHub | Version control dan kolaborasi pengembangan |
+| Git & GitHub | Pengelolaan kode dan kolaborasi pengembangan |
 
----
+## Menjalankan Aplikasi Secara Lokal
 
-## Sumber Data dan Pengembangan
+Repository ini berisi aplikasi Laravel yang menggunakan database MySQL. Untuk menjalankannya secara lokal, diperlukan PHP, Composer, MySQL, serta konfigurasi database yang sesuai dengan proyek.
 
-Data dalam Lifespring Drugstore diperoleh melalui kombinasi **web scraping, data simulasi, dan informasi referensi** untuk merepresentasikan operasional apotek.
+### Langkah Dasar
 
-- **Data obat:** Dikumpulkan melalui web scraping dari salah satu situs apotek daring, lalu digunakan sebagai referensi informasi produk obat dalam sistem.
-- **Data apoteker:** Menggunakan identitas anggota kelompok sebagai data simulasi tenaga apoteker.
-- **Data dokter:** Menggunakan data dummy untuk merepresentasikan dokter mitra dalam alur pemeriksaan resep obat keras.
-- **Data pasien, pembelian, transaksi, dan evaluasi:** Dihasilkan secara sintetis menggunakan Laravel Factory dan Faker untuk mensimulasikan aktivitas operasional apotek.
-- **Data wilayah:** Menggunakan informasi administratif resmi mengenai kecamatan dan kelurahan di Kota Surabaya sebagai referensi geografis pelanggan.
+1. Clone repository menggunakan perintah `git clone https://github.com/aura-najma/kelompok12utsbasdat.git`.
+2. Masuk ke direktori `kelompok12utsbasdat`.
+3. Jalankan `composer install` untuk memasang dependensi PHP.
+4. Salin `.env.example` menjadi `.env`, kemudian sesuaikan konfigurasi koneksi MySQL.
+5. Jalankan `php artisan key:generate` untuk membuat application key.
+6. Siapkan database dan impor struktur serta data proyek yang diperlukan.
+7. Jalankan `php artisan serve` untuk mengaktifkan server pengembangan Laravel.
+8. Buka `http://127.0.0.1:8000` melalui browser.
 
-Data dimasukkan ke database MySQL melalui mekanisme seperti **Seeder, Factory, Faker, dan file CSV** sesuai kebutuhan masing-masing komponen data.
+**Catatan:** Aplikasi memerlukan skema dan data MySQL yang sesuai dengan konfigurasi proyek. Langkah instalasi ini merupakan panduan dasar dan belum diverifikasi sebagai proses instalasi penuh dari repository yang baru di-clone. Workflow Pentaho memerlukan konfigurasi koneksi tersendiri.
 
-Selanjutnya, data operasional digunakan untuk:
-- pengujian fitur aplikasi,
-- pemrosesan transaksi,
-- pengembangan ETL,
-- dan analisis melalui data warehouse.
+## Sumber Data
 
----
+Lifespring Drugstore menggunakan kombinasi data hasil web scraping, data sintetis, dan data referensi untuk menyimulasikan kegiatan operasional apotek.
 
-## Catatan
+**Data obat** dikumpulkan melalui web scraping dari situs apotek daring sebagai referensi informasi produk. **Data apoteker** menggunakan identitas anggota kelompok sebagai data simulasi, sedangkan **data dokter** menggunakan identitas dummy untuk mendukung alur pemeriksaan resep dan pembelian obat keras.
 
-Lifespring Drugstore merupakan proyek pengembangan sistem berbasis simulasi. Sistem ini dibuat untuk merepresentasikan proses bisnis apotek dan kebutuhan analitik berbasis data warehouse, sehingga data yang digunakan bukan data operasional apotek komersial secara nyata.
+Data pasien, pembelian, transaksi, serta evaluasi dibuat secara sintetis menggunakan Laravel Factory dan Faker. Sementara itu, informasi wilayah kecamatan dan kelurahan di Kota Surabaya disusun berdasarkan referensi administratif resmi untuk kebutuhan analisis geografis.
+
+Pengelolaan data menggunakan mekanisme seperti Laravel Seeder, Factory, dan impor CSV sesuai dengan jenis data. Data tersebut kemudian digunakan untuk mendukung pengujian aplikasi, pemrosesan transaksi, pengembangan ETL, dan analisis data warehouse.
+
+## Tim Pengembang
+
+Lifespring Drugstore dikembangkan oleh **Kelompok 12 SD-A1**, yang terdiri dari:
+
+- Dyah Ayu Retnoningsih
+- Wanda Desi Rahmawati
+- Aura Najma Kustiananda
+- Ahmad Zulfikar Al Ghiffari
+
+## Catatan Proyek
+
+Lifespring Drugstore merupakan sistem simulasi yang dikembangkan untuk pembelajaran dan implementasi konsep basis data, pengembangan aplikasi web, serta data warehouse. Sistem dan data yang digunakan tidak merepresentasikan operasional apotek komersial yang sebenarnya.
